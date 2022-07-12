@@ -1,0 +1,11 @@
+
+cleoslocal set account permission eosnamesrvce active --add-code
+
+eosio-cpp eosnamesrvce.cpp -I . -o eosnamesrvce.wasm -abigen
+
+cleoslocal set contract eosnamesrvce ../eosnamesrvce -p eosnamesrvce@active
+
+cleoslocal -v push action eosnamesrvce cleardata '["table_name"]' -p eosnamesrvce@active
+
+cleoslocal get table eosnamesrvce eosnamesrvce table_name
+
