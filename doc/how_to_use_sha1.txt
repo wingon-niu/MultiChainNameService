@@ -1,0 +1,22 @@
+
+// 源代码：
+/usr/opt/eosio.cdt/1.8.0/include/eosiolib/capi/eosio/crypto.h
+/usr/opt/eosio.cdt/1.8.0/include/eosiolib/capi/eosio/types.h
+
+
+
+// 让我们首先从EOS框架中引入crypto.h库和EOS print.h。
+#include <eosiolib/types.h>
+#include <eosiolib/crypto.h>
+#include <eosiolib/print.h>
+
+// 定义输出变量：
+checksum256 sum{};
+
+// EOS框架为各种散列算法提供了一组方法。我们将使用sha256这个例子，因为它在大多数情况下都是快速，安全和典型的。
+sha256(const_cast<char*>(str.c_str()), str.size(), &sum);
+
+// 我们的sha256方法需要C类型的输入，所以我们首先需要将我们转换string为一个char集合，然后传递string一个checksum256引用的大小和一个将使用输出摘要更新的引用。现在剩下的就是打印散列输出结果。
+printhex(&sum, sizeof(sum));
+
+
