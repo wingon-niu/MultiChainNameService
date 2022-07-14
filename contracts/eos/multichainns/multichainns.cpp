@@ -1,9 +1,9 @@
-#include "eosnamesrvce.hpp"
+#include "multichainns.hpp"
 
 //
 
 // 获取某个表的主键
-uint64_t eosnamesrvce::get_pri_key(const name& table_name)
+uint64_t multichainns::get_pri_key(const name& table_name)
 {
     uint64_t key = 1;
 
@@ -27,7 +27,7 @@ uint64_t eosnamesrvce::get_pri_key(const name& table_name)
 
 #ifdef NAME_SERVICE_WITH_CLEAR_FUNCTION_YES
 // 清除指定的 multi_index 中的所有数据，测试时使用，上线时去掉
-ACTION eosnamesrvce::cleardata(const string& table_name)
+ACTION multichainns::cleardata(const string& table_name)
 {
     require_auth( _self );
 

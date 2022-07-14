@@ -27,13 +27,13 @@ using namespace std;
 // MultiChainNameService
 // 多链名称服务和唯一身份多链认证系统
 
-CONTRACT eosnamesrvce : public eosio::contract {
+CONTRACT multichainns : public eosio::contract {
 
 public:
 
     using contract::contract;
 
-    eosnamesrvce(name self, name first_receiver, datastream<const char*> ds) : contract(self, first_receiver, ds),
+    multichainns(name self, name first_receiver, datastream<const char*> ds) : contract(self, first_receiver, ds),
         _global_vars                    (get_self(), get_self().value),
         _global_parameters              (get_self(), get_self().value),
         _pri_keys                       (get_self(), get_self().value){};
@@ -60,26 +60,6 @@ private:
     uint64_t get_pri_key(const name& table_name);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // 全局变量
-    TABLE st_global_vars {
-        uint64_t     id;
-        //
-        //asset        quantity;
-
-        uint64_t primary_key() const { return id; }
-    };
-    typedef eosio::multi_index<"globalvars"_n, st_global_vars> tb_global_vars;
-
-    // 全局参数
-    TABLE st_global_parameters {
-        uint64_t     id;
-        //
-        //asset        quantity;
-
-        uint64_t primary_key() const { return id; }
-    };
-    typedef eosio::multi_index<"globalparams"_n, st_global_parameters> tb_global_parameters;
 
 //    // 文章
 //    TABLE st_article {
@@ -127,6 +107,137 @@ private:
 //        indexed_by< "byclrtimeart"_n, const_mem_fun<st_article, uint128_t, &st_article::by_category_last_replied_time_article> >,
 //        indexed_by< "byulrteptime"_n, const_mem_fun<st_article, uint128_t, &st_article::by_user_last_replied_time_post_time> >
 //    > tb_articles;
+
+    // 全局变量
+    TABLE st_global_vars {
+        uint64_t     id;
+
+        uint32_t     num_of_level_1_name_total;     // 1级名称的总数量
+        uint32_t     num_of_level_2_name_total;     // 2级名称的总数量
+        uint32_t     num_of_level_3_name_total;     // 3级名称的总数量
+
+        uint32_t     num_of_1_byte_level_1_name;    // 1个字节的1级名称的数量
+        uint32_t     num_of_2_byte_level_1_name;    // 2个字节的1级名称的数量
+        uint32_t     num_of_3_byte_level_1_name;    // 3个字节的1级名称的数量
+        uint32_t     num_of_4_byte_level_1_name;    // 4个字节的1级名称的数量
+        uint32_t     num_of_5_byte_level_1_name;    // 5个字节的1级名称的数量
+        uint32_t     num_of_6_byte_level_1_name;    // 6个字节的1级名称的数量
+        uint32_t     num_of_7_byte_level_1_name;    // 7个字节的1级名称的数量
+        uint32_t     num_of_8_byte_level_1_name;    // 8个字节的1级名称的数量
+        uint32_t     num_of_9_byte_level_1_name;    // 9个字节的1级名称的数量
+        uint32_t     num_of_10_byte_level_1_name;   // 10个字节的1级名称的数量
+        uint32_t     num_of_11_byte_level_1_name;   // 11个字节的1级名称的数量
+        uint32_t     num_of_12_byte_level_1_name;   // 12个字节的1级名称的数量
+        uint32_t     num_of_13_byte_level_1_name;   // 13个字节的1级名称的数量
+        uint32_t     num_of_14_byte_level_1_name;   // 14个字节的1级名称的数量
+        uint32_t     num_of_15_byte_level_1_name;   // 15个字节的1级名称的数量
+        uint32_t     num_of_16_byte_level_1_name;   // 16个字节的1级名称的数量
+        uint32_t     num_of_17_byte_level_1_name;   // 17和17以上个字节的1级名称的数量
+
+        uint32_t     num_of_1_byte_level_2_name;    // 1个字节的2级名称的数量
+        uint32_t     num_of_2_byte_level_2_name;    // 2个字节的2级名称的数量
+        uint32_t     num_of_3_byte_level_2_name;    // 3个字节的2级名称的数量
+        uint32_t     num_of_4_byte_level_2_name;    // 4个字节的2级名称的数量
+        uint32_t     num_of_5_byte_level_2_name;    // 5个字节的2级名称的数量
+        uint32_t     num_of_6_byte_level_2_name;    // 6个字节的2级名称的数量
+        uint32_t     num_of_7_byte_level_2_name;    // 7个字节的2级名称的数量
+        uint32_t     num_of_8_byte_level_2_name;    // 8个字节的2级名称的数量
+        uint32_t     num_of_9_byte_level_2_name;    // 9个字节的2级名称的数量
+        uint32_t     num_of_10_byte_level_2_name;   // 10个字节的2级名称的数量
+        uint32_t     num_of_11_byte_level_2_name;   // 11个字节的2级名称的数量
+        uint32_t     num_of_12_byte_level_2_name;   // 12个字节的2级名称的数量
+        uint32_t     num_of_13_byte_level_2_name;   // 13个字节的2级名称的数量
+        uint32_t     num_of_14_byte_level_2_name;   // 14个字节的2级名称的数量
+        uint32_t     num_of_15_byte_level_2_name;   // 15个字节的2级名称的数量
+        uint32_t     num_of_16_byte_level_2_name;   // 16个字节的2级名称的数量
+        uint32_t     num_of_17_byte_level_2_name;   // 17和17以上个字节的2级名称的数量
+
+        uint32_t     num_of_1_byte_level_3_name;    // 1个字节的3级名称的数量
+        uint32_t     num_of_2_byte_level_3_name;    // 2个字节的3级名称的数量
+        uint32_t     num_of_3_byte_level_3_name;    // 3个字节的3级名称的数量
+        uint32_t     num_of_4_byte_level_3_name;    // 4个字节的3级名称的数量
+        uint32_t     num_of_5_byte_level_3_name;    // 5个字节的3级名称的数量
+        uint32_t     num_of_6_byte_level_3_name;    // 6个字节的3级名称的数量
+        uint32_t     num_of_7_byte_level_3_name;    // 7个字节的3级名称的数量
+        uint32_t     num_of_8_byte_level_3_name;    // 8个字节的3级名称的数量
+        uint32_t     num_of_9_byte_level_3_name;    // 9个字节的3级名称的数量
+        uint32_t     num_of_10_byte_level_3_name;   // 10个字节的3级名称的数量
+        uint32_t     num_of_11_byte_level_3_name;   // 11个字节的3级名称的数量
+        uint32_t     num_of_12_byte_level_3_name;   // 12个字节的3级名称的数量
+        uint32_t     num_of_13_byte_level_3_name;   // 13个字节的3级名称的数量
+        uint32_t     num_of_14_byte_level_3_name;   // 14个字节的3级名称的数量
+        uint32_t     num_of_15_byte_level_3_name;   // 15个字节的3级名称的数量
+        uint32_t     num_of_16_byte_level_3_name;   // 16个字节的3级名称的数量
+        uint32_t     num_of_17_byte_level_3_name;   // 17和17以上个字节的3级名称的数量
+
+        uint64_t primary_key() const { return id; }
+    };
+    typedef eosio::multi_index<"globalvars"_n, st_global_vars> tb_global_vars;
+
+    // 全局参数
+    TABLE st_global_parameters {
+        uint64_t  id;
+
+        asset     fee_of_1_byte_level_1_name;    // 1个字节的1级名称的收费
+        asset     fee_of_2_byte_level_1_name;    // 2个字节的1级名称的收费
+        asset     fee_of_3_byte_level_1_name;    // 3个字节的1级名称的收费
+        asset     fee_of_4_byte_level_1_name;    // 4个字节的1级名称的收费
+        asset     fee_of_5_byte_level_1_name;    // 5个字节的1级名称的收费
+        asset     fee_of_6_byte_level_1_name;    // 6个字节的1级名称的收费
+        asset     fee_of_7_byte_level_1_name;    // 7个字节的1级名称的收费
+        asset     fee_of_8_byte_level_1_name;    // 8个字节的1级名称的收费
+        asset     fee_of_9_byte_level_1_name;    // 9个字节的1级名称的收费
+        asset     fee_of_10_byte_level_1_name;   // 10个字节的1级名称的收费
+        asset     fee_of_11_byte_level_1_name;   // 11个字节的1级名称的收费
+        asset     fee_of_12_byte_level_1_name;   // 12个字节的1级名称的收费
+        asset     fee_of_13_byte_level_1_name;   // 13个字节的1级名称的收费
+        asset     fee_of_14_byte_level_1_name;   // 14个字节的1级名称的收费
+        asset     fee_of_15_byte_level_1_name;   // 15个字节的1级名称的收费
+        asset     fee_of_16_byte_level_1_name;   // 16个字节的1级名称的收费
+        asset     fee_of_17_byte_level_1_name;   // 17和17以上个字节的1级名称的收费
+
+        asset     fee_of_1_byte_level_2_name;    // 1个字节的2级名称的收费
+        asset     fee_of_2_byte_level_2_name;    // 2个字节的2级名称的收费
+        asset     fee_of_3_byte_level_2_name;    // 3个字节的2级名称的收费
+        asset     fee_of_4_byte_level_2_name;    // 4个字节的2级名称的收费
+        asset     fee_of_5_byte_level_2_name;    // 5个字节的2级名称的收费
+        asset     fee_of_6_byte_level_2_name;    // 6个字节的2级名称的收费
+        asset     fee_of_7_byte_level_2_name;    // 7个字节的2级名称的收费
+        asset     fee_of_8_byte_level_2_name;    // 8个字节的2级名称的收费
+        asset     fee_of_9_byte_level_2_name;    // 9个字节的2级名称的收费
+        asset     fee_of_10_byte_level_2_name;   // 10个字节的2级名称的收费
+        asset     fee_of_11_byte_level_2_name;   // 11个字节的2级名称的收费
+        asset     fee_of_12_byte_level_2_name;   // 12个字节的2级名称的收费
+        asset     fee_of_13_byte_level_2_name;   // 13个字节的2级名称的收费
+        asset     fee_of_14_byte_level_2_name;   // 14个字节的2级名称的收费
+        asset     fee_of_15_byte_level_2_name;   // 15个字节的2级名称的收费
+        asset     fee_of_16_byte_level_2_name;   // 16个字节的2级名称的收费
+        asset     fee_of_17_byte_level_2_name;   // 17和17以上个字节的2级名称的收费
+
+        asset     fee_of_1_byte_level_3_name;    // 1个字节的3级名称的收费
+        asset     fee_of_2_byte_level_3_name;    // 2个字节的3级名称的收费
+        asset     fee_of_3_byte_level_3_name;    // 3个字节的3级名称的收费
+        asset     fee_of_4_byte_level_3_name;    // 4个字节的3级名称的收费
+        asset     fee_of_5_byte_level_3_name;    // 5个字节的3级名称的收费
+        asset     fee_of_6_byte_level_3_name;    // 6个字节的3级名称的收费
+        asset     fee_of_7_byte_level_3_name;    // 7个字节的3级名称的收费
+        asset     fee_of_8_byte_level_3_name;    // 8个字节的3级名称的收费
+        asset     fee_of_9_byte_level_3_name;    // 9个字节的3级名称的收费
+        asset     fee_of_10_byte_level_3_name;   // 10个字节的3级名称的收费
+        asset     fee_of_11_byte_level_3_name;   // 11个字节的3级名称的收费
+        asset     fee_of_12_byte_level_3_name;   // 12个字节的3级名称的收费
+        asset     fee_of_13_byte_level_3_name;   // 13个字节的3级名称的收费
+        asset     fee_of_14_byte_level_3_name;   // 14个字节的3级名称的收费
+        asset     fee_of_15_byte_level_3_name;   // 15个字节的3级名称的收费
+        asset     fee_of_16_byte_level_3_name;   // 16个字节的3级名称的收费
+        asset     fee_of_17_byte_level_3_name;   // 17和17以上个字节的3级名称的收费
+
+        uint8_t   max_num_of_repeated_hashes_in_resolves_table;  // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
+                                                                 // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
+
+        uint64_t primary_key() const { return id; }
+    };
+    typedef eosio::multi_index<"globalparams"_n, st_global_parameters> tb_global_parameters;
 
     // 保存各个表的主键的表
     TABLE st_pri_keys {

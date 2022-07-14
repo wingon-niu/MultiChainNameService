@@ -1,13 +1,13 @@
 
-cleoslocal set account permission eosnamesrvce active --add-code
+cleoslocal set account permission multichainns active --add-code
 
-eosio-cpp eosnamesrvce.cpp -I . -o eosnamesrvce.wasm -abigen
+eosio-cpp multichainns.cpp -I . -o multichainns.wasm -abigen
 
-cleoslocal set contract eosnamesrvce ../eosnamesrvce -p eosnamesrvce@active
+cleoslocal set contract multichainns ../multichainns -p multichainns@active
 
-cleoslocal -v push action eosnamesrvce cleardata '["table_name"]' -p eosnamesrvce@active
+cleoslocal -v push action multichainns cleardata '["table_name"]' -p multichainns@active
 
-cleoslocal get table eosnamesrvce eosnamesrvce globalvars
-cleoslocal get table eosnamesrvce eosnamesrvce globalparams
-cleoslocal get table eosnamesrvce eosnamesrvce prikeys
+cleoslocal get table multichainns multichainns globalvars
+cleoslocal get table multichainns multichainns globalparams
+cleoslocal get table multichainns multichainns prikeys
 
