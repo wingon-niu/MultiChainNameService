@@ -20,3 +20,135 @@ sha256(const_cast<char*>(str.c_str()), str.size(), &sum);
 printhex(&sum, sizeof(sum));
 
 
+
+//一些代码示例
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+#include <eosiolib/core/eosio/crypto.hpp>
+#include <eosiolib/core/eosio/asset.hpp>
+
+#include <eosiolib/capi/eosio/crypto.h>
+#include <eosiolib/capi/eosio/types.h>
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+Class List > eosio :: asset
+
+Public Attributes
+
+int64_t	amount
+symbol	symbol
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+无符号整型范围
+
+UInt8  - [0 : 255]
+UInt16 - [0 : 65535]
+UInt32 - [0 : 4294967295]
+UInt64 - [0 : 18446744073709551615]
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+struct [[eosio::table, eosio::contract("eosio.system")]] name_bid {
+  name            newname;
+  name            high_bidder;
+  int64_t         high_bid = 0; ///< negative high_bid == closed auction waiting to be claimed
+  time_point      last_bid_time;
+
+  uint64_t primary_key()const { return newname.value;                    }
+  uint64_t by_high_bid()const { return static_cast<uint64_t>(-high_bid); }
+};
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+#include <cstdio>
+#include <cstdint>
+
+int main() {
+  uint64_t ticks64 = 651444791362198llu;
+  uint64_t ticks32_manual = ticks64 & 0xFFFFFFFF;
+  uint32_t ticks32_auto = (uint32_t) ticks64;
+
+  printf("Periods: %llX\n", ticks64);
+  printf("32-bit manual truncation: %llX\n", ticks32_manual);
+  printf("32-bit automatic truncation: %X\n", ticks32_auto);
+}
+
+输出是：
+
+Periods: 2507C4F614296
+32-bit manual truncation: 4F614296
+32-bit automatic truncation: 4F614296
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+#include <eosiolib/asset.hpp>
+#include <eosiolib/crypto.h>
+#include <eosiolib/eosio.hpp>
+#include <eosiolib/print.hpp>
+#include <eosiolib/transaction.hpp>
+
+using namespace eosio;
+using namespace std;
+
+auto mixd = tapos_block_prefix()*tapos_block_num() + name.value + game_id - current_time() + myAcc.balance.amount;
+print("  mixd", mixd);
+
+const char *mixedChar = reinterpret_cast<const char *>(&mixd);
+
+capi_checksum256 result;
+sha256((char *)mixedChar, sizeof(mixedChar), &result);
+
+uint64_t random_num = *(uint64_t*)(&result.hash[0]) + *(uint64_t*)(&result.hash[8]) + *(uint64_t*)(&result.hash[16]) +  *(uint64_t*)(&result.hash[24]);
+print(" random:", random_num);
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+#include <type_traits> // For make_signed and make_unsigned
+
+template<typename T>
+static inline auto unsigned_cast(T s)
+{
+    return static_cast<std::make_unsigned<T>::type>(s);
+}
+
+template<typename T>
+static inline auto signed_cast(T s)
+{
+    return static_cast<std::make_signed<T>::type>(s);
+}
+
+#include <typeinfo>    // For "typeid"
+#include <iostream>    
+
+int main()
+{
+    int16_t s16 = 42;
+    auto u16 = unsigned_cast(s16);
+    std::cout << "Type of unsigned cast is: " << typeid(u16).name() << "\n";
+
+    uint64_t u64 = 39uLL;
+    auto s64 = signed_cast(u64);
+    std::cout << "Type of signed cast is: " << typeid(s64).name() << "\n";
+    return 0;
+}
+
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
