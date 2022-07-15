@@ -11,3 +11,6 @@ cleoslocal get table multichainns multichainns globalvars
 cleoslocal get table multichainns multichainns globalparams
 cleoslocal get table multichainns multichainns prikeys
 
+cleoslocal -v push action multichainns initgvarstbl '[]' -p multichainns@active
+
+

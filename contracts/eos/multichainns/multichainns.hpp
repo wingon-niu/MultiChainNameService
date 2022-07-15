@@ -38,6 +38,9 @@ public:
         _global_parameters              (get_self(), get_self().value),
         _pri_keys                       (get_self(), get_self().value){};
 
+    // 初始化全局变量表
+    ACTION initgvarstbl();
+
     // // 为用户新增转账信息
     // ACTION addaccount(const name& user, const asset& quantity);
 
@@ -58,6 +61,12 @@ private:
 
     // 获取某个表的主键
     uint64_t get_pri_key(const name& table_name);
+
+    // x级名称的总数量加1
+    void add_num_of_level_x_name_total(const uint32_t x);
+
+    // y个字节的x级名称的数量加1
+    void add_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
