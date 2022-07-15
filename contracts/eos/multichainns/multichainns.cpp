@@ -154,6 +154,72 @@ void multichainns::add_num_of_y_bytes_level_x_name(const uint32_t x, const uint3
     }
 }
 
+#ifdef NAME_SERVICE_VERSION_DEV
+// 将全局变量表中的所有计数类变量加1，测试时使用，上线时去掉。
+ACTION multichainns::addallgvars()
+{
+    require_auth( _self );
+
+    add_num_of_level_x_name_total(1);
+    add_num_of_level_x_name_total(2);
+    add_num_of_level_x_name_total(3);
+
+    add_num_of_y_bytes_level_x_name(1, 1);
+    add_num_of_y_bytes_level_x_name(1, 2);
+    add_num_of_y_bytes_level_x_name(1, 3);
+    add_num_of_y_bytes_level_x_name(1, 4);
+    add_num_of_y_bytes_level_x_name(1, 5);
+    add_num_of_y_bytes_level_x_name(1, 6);
+    add_num_of_y_bytes_level_x_name(1, 7);
+    add_num_of_y_bytes_level_x_name(1, 8);
+    add_num_of_y_bytes_level_x_name(1, 9);
+    add_num_of_y_bytes_level_x_name(1, 10);
+    add_num_of_y_bytes_level_x_name(1, 11);
+    add_num_of_y_bytes_level_x_name(1, 12);
+    add_num_of_y_bytes_level_x_name(1, 13);
+    add_num_of_y_bytes_level_x_name(1, 14);
+    add_num_of_y_bytes_level_x_name(1, 15);
+    add_num_of_y_bytes_level_x_name(1, 16);
+    add_num_of_y_bytes_level_x_name(1, 17);
+
+    add_num_of_y_bytes_level_x_name(2, 1);
+    add_num_of_y_bytes_level_x_name(2, 2);
+    add_num_of_y_bytes_level_x_name(2, 3);
+    add_num_of_y_bytes_level_x_name(2, 4);
+    add_num_of_y_bytes_level_x_name(2, 5);
+    add_num_of_y_bytes_level_x_name(2, 6);
+    add_num_of_y_bytes_level_x_name(2, 7);
+    add_num_of_y_bytes_level_x_name(2, 8);
+    add_num_of_y_bytes_level_x_name(2, 9);
+    add_num_of_y_bytes_level_x_name(2, 10);
+    add_num_of_y_bytes_level_x_name(2, 11);
+    add_num_of_y_bytes_level_x_name(2, 12);
+    add_num_of_y_bytes_level_x_name(2, 13);
+    add_num_of_y_bytes_level_x_name(2, 14);
+    add_num_of_y_bytes_level_x_name(2, 15);
+    add_num_of_y_bytes_level_x_name(2, 16);
+    add_num_of_y_bytes_level_x_name(2, 17);
+
+    add_num_of_y_bytes_level_x_name(3, 1);
+    add_num_of_y_bytes_level_x_name(3, 2);
+    add_num_of_y_bytes_level_x_name(3, 3);
+    add_num_of_y_bytes_level_x_name(3, 4);
+    add_num_of_y_bytes_level_x_name(3, 5);
+    add_num_of_y_bytes_level_x_name(3, 6);
+    add_num_of_y_bytes_level_x_name(3, 7);
+    add_num_of_y_bytes_level_x_name(3, 8);
+    add_num_of_y_bytes_level_x_name(3, 9);
+    add_num_of_y_bytes_level_x_name(3, 10);
+    add_num_of_y_bytes_level_x_name(3, 11);
+    add_num_of_y_bytes_level_x_name(3, 12);
+    add_num_of_y_bytes_level_x_name(3, 13);
+    add_num_of_y_bytes_level_x_name(3, 14);
+    add_num_of_y_bytes_level_x_name(3, 15);
+    add_num_of_y_bytes_level_x_name(3, 16);
+    add_num_of_y_bytes_level_x_name(3, 17);
+}
+#endif
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {

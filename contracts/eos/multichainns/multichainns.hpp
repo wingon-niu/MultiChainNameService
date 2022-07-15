@@ -52,6 +52,11 @@ public:
     ACTION cleardata(const string& table_name);
 #endif
 
+#ifdef NAME_SERVICE_VERSION_DEV
+    // 将全局变量表中的所有计数类变量加1，测试时使用，上线时去掉。
+    ACTION addallgvars();
+#endif
+
 private:
 
     // 返回当前时间戳
