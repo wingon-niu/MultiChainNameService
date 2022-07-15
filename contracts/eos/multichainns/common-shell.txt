@@ -11,7 +11,18 @@ cleoslocal get table multichainns multichainns globalvars
 cleoslocal get table multichainns multichainns globalparams
 cleoslocal get table multichainns multichainns prikeys
 
+# 下面是上线时需要执行的初始化操作：（标记为测试时使用的不做）
+
+# 初始化全局变量表
+cleoslocal get table multichainns multichainns globalvars
 cleoslocal -v push action multichainns initgvarstbl '[]' -p multichainns@active
+cleoslocal get table multichainns multichainns globalvars
+cleoslocal get table multichainns multichainns prikeys
+
 cleoslocal -v push action multichainns addallgvars  '[]' -p multichainns@active  # 测试时使用
+cleoslocal get table multichainns multichainns globalvars                        # 测试时使用
+
+# 初始化全局参数表
+
 
 
