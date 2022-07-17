@@ -41,6 +41,9 @@ public:
     // 初始化全局变量表
     ACTION initgvarstbl();
 
+    // 初始化全局参数表
+    ACTION initgprmstbl();
+
     // // 为用户新增转账信息
     // ACTION addaccount(const name& user, const asset& quantity);
 

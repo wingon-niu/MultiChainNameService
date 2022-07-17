@@ -220,6 +220,81 @@ ACTION multichainns::addallgvars()
 }
 #endif
 
+// 初始化全局参数表
+ACTION multichainns::initgprmstbl()
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr == _global_parameters.end(), "Error: Initialization has already been done." );
+
+    _global_parameters.emplace(_self, [&](auto& item){
+        item.id                                           = get_pri_key(name("globalparams"));
+
+        item.allowed_num_of_bytes_of_level_1_name         = 20;              // 允许的1级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
+        item.allowed_num_of_bytes_of_level_2_name         = 20;              // 允许的2级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
+        item.allowed_num_of_bytes_of_level_3_name         = 20;              // 允许的3级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
+
+        item.max_num_of_repeated_hashes_in_resolves_table = 10;              // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
+                                                                             // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
+
+        item.fee_of_1_byte_level_1_name   = asset((int64_t)0, MAIN_SYMBOL);  // 1个字节的1级名称的收费
+        item.fee_of_2_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 2个字节的1级名称的收费
+        item.fee_of_3_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 3个字节的1级名称的收费
+        item.fee_of_4_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 4个字节的1级名称的收费
+        item.fee_of_5_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 5个字节的1级名称的收费
+        item.fee_of_6_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 6个字节的1级名称的收费
+        item.fee_of_7_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 7个字节的1级名称的收费
+        item.fee_of_8_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 8个字节的1级名称的收费
+        item.fee_of_9_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 9个字节的1级名称的收费
+        item.fee_of_10_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 10个字节的1级名称的收费
+        item.fee_of_11_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 11个字节的1级名称的收费
+        item.fee_of_12_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 12个字节的1级名称的收费
+        item.fee_of_13_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 13个字节的1级名称的收费
+        item.fee_of_14_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 14个字节的1级名称的收费
+        item.fee_of_15_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 15个字节的1级名称的收费
+        item.fee_of_16_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 16个字节的1级名称的收费
+        item.fee_of_17_bytes_level_1_name = asset((int64_t)0, MAIN_SYMBOL);  // 17和17以上个字节的1级名称的收费
+
+        item.fee_of_1_byte_level_2_name   = asset((int64_t)0, MAIN_SYMBOL);  // 1个字节的2级名称的收费
+        item.fee_of_2_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 2个字节的2级名称的收费
+        item.fee_of_3_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 3个字节的2级名称的收费
+        item.fee_of_4_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 4个字节的2级名称的收费
+        item.fee_of_5_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 5个字节的2级名称的收费
+        item.fee_of_6_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 6个字节的2级名称的收费
+        item.fee_of_7_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 7个字节的2级名称的收费
+        item.fee_of_8_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 8个字节的2级名称的收费
+        item.fee_of_9_bytes_level_2_name  = asset((int64_t)0, MAIN_SYMBOL);  // 9个字节的2级名称的收费
+        item.fee_of_10_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 10个字节的2级名称的收费
+        item.fee_of_11_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 11个字节的2级名称的收费
+        item.fee_of_12_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 12个字节的2级名称的收费
+        item.fee_of_13_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 13个字节的2级名称的收费
+        item.fee_of_14_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 14个字节的2级名称的收费
+        item.fee_of_15_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 15个字节的2级名称的收费
+        item.fee_of_16_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 16个字节的2级名称的收费
+        item.fee_of_17_bytes_level_2_name = asset((int64_t)0, MAIN_SYMBOL);  // 17和17以上个字节的2级名称的收费
+
+        item.fee_of_1_byte_level_3_name   = asset((int64_t)0, MAIN_SYMBOL);  // 1个字节的3级名称的收费
+        item.fee_of_2_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 2个字节的3级名称的收费
+        item.fee_of_3_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 3个字节的3级名称的收费
+        item.fee_of_4_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 4个字节的3级名称的收费
+        item.fee_of_5_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 5个字节的3级名称的收费
+        item.fee_of_6_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 6个字节的3级名称的收费
+        item.fee_of_7_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 7个字节的3级名称的收费
+        item.fee_of_8_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 8个字节的3级名称的收费
+        item.fee_of_9_bytes_level_3_name  = asset((int64_t)0, MAIN_SYMBOL);  // 9个字节的3级名称的收费
+        item.fee_of_10_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 10个字节的3级名称的收费
+        item.fee_of_11_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 11个字节的3级名称的收费
+        item.fee_of_12_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 12个字节的3级名称的收费
+        item.fee_of_13_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 13个字节的3级名称的收费
+        item.fee_of_14_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 14个字节的3级名称的收费
+        item.fee_of_15_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 15个字节的3级名称的收费
+        item.fee_of_16_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 16个字节的3级名称的收费
+        item.fee_of_17_bytes_level_3_name = asset((int64_t)0, MAIN_SYMBOL);  // 17和17以上个字节的3级名称的收费
+    });
+}
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {

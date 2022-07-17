@@ -23,6 +23,10 @@ cleoslocal -v push action multichainns addallgvars  '[]' -p multichainns@active 
 cleoslocal get table multichainns multichainns globalvars                        # 测试时使用
 
 # 初始化全局参数表
+cleoslocal get table multichainns multichainns globalparams
+cleoslocal -v push action multichainns initgprmstbl '[]' -p multichainns@active
+cleoslocal get table multichainns multichainns globalparams
+cleoslocal get table multichainns multichainns prikeys
 
 
 
