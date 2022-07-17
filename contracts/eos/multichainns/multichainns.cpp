@@ -239,6 +239,8 @@ ACTION multichainns::initgprmstbl()
         item.max_num_of_repeated_hashes_in_resolves_table = 10;              // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
                                                                              // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
 
+        item.fee_of_one_resolv_record     = asset((int64_t)0, MAIN_SYMBOL);  // 每条解析记录的收费
+
         item.fee_of_1_byte_level_1_name   = asset((int64_t)0, MAIN_SYMBOL);  // 1个字节的1级名称的收费
         item.fee_of_2_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 2个字节的1级名称的收费
         item.fee_of_3_bytes_level_1_name  = asset((int64_t)0, MAIN_SYMBOL);  // 3个字节的1级名称的收费
@@ -322,6 +324,20 @@ ACTION multichainns::setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_re
 
     _global_parameters.modify( itr, _self, [&]( auto& item ) {
         item.max_num_of_repeated_hashes_in_resolves_table = max_num_of_repeated_hashes_in_resolves_table;
+    });
+}
+
+// 设置每条解析记录的收费
+ACTION multichainns::setfeeof1rr(const asset& quantity)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.fee_of_one_resolv_record = quantity;
     });
 }
 
