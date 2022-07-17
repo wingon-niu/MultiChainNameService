@@ -53,6 +53,9 @@ public:
     // 设置y个字节的x级名称的收费
     ACTION setfeeofxy(const uint32_t x, const uint32_t y, const asset& quantity);
 
+    // 设置所有的x级名称y个字节的收费，按照代码中写好的固定值
+    ACTION setallfee();
+
     // // 为用户新增转账信息
     // ACTION addaccount(const name& user, const asset& quantity);
 

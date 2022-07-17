@@ -404,6 +404,70 @@ void multichainns::set_fee_of_y_bytes_level_x_name(const uint32_t x, const uint3
     });
 }
 
+// 设置所有的x级名称y个字节的收费，按照代码中写好的固定值
+ACTION multichainns::setallfee()
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    set_fee_of_y_bytes_level_x_name(1, 1,  asset((int64_t)1080000, MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 2,  asset((int64_t)720000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 3,  asset((int64_t)360000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 4,  asset((int64_t)240000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 5,  asset((int64_t)231000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 6,  asset((int64_t)240000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 7,  asset((int64_t)231000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 8,  asset((int64_t)222000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 9,  asset((int64_t)240000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 10, asset((int64_t)231000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 11, asset((int64_t)222000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 12, asset((int64_t)240000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 13, asset((int64_t)231000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 14, asset((int64_t)222000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 15, asset((int64_t)240000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 16, asset((int64_t)231000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(1, 17, asset((int64_t)222000,  MAIN_SYMBOL));
+
+    set_fee_of_y_bytes_level_x_name(2, 1,  asset((int64_t)190000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 2,  asset((int64_t)180000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 3,  asset((int64_t)170000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 4,  asset((int64_t)160000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 5,  asset((int64_t)150000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 6,  asset((int64_t)190000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 7,  asset((int64_t)140000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 8,  asset((int64_t)130000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 9,  asset((int64_t)190000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 10, asset((int64_t)120000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 11, asset((int64_t)110000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 12, asset((int64_t)190000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 13, asset((int64_t)104000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 14, asset((int64_t)103000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 15, asset((int64_t)190000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 16, asset((int64_t)102000,  MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(2, 17, asset((int64_t)101000,  MAIN_SYMBOL));
+
+    set_fee_of_y_bytes_level_x_name(3, 1,  asset((int64_t)90000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 2,  asset((int64_t)81000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 3,  asset((int64_t)72000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 4,  asset((int64_t)60000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 5,  asset((int64_t)51000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 6,  asset((int64_t)90000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 7,  asset((int64_t)42000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 8,  asset((int64_t)30000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 9,  asset((int64_t)90000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 10, asset((int64_t)21000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 11, asset((int64_t)12000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 12, asset((int64_t)60000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 13, asset((int64_t) 9000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 14, asset((int64_t) 8100,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 15, asset((int64_t)60000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 16, asset((int64_t) 6000,   MAIN_SYMBOL));
+    set_fee_of_y_bytes_level_x_name(3, 17, asset((int64_t) 5100,   MAIN_SYMBOL));
+}
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {
