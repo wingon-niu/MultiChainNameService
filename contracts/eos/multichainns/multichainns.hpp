@@ -75,6 +75,11 @@ public:
     ACTION addallgvars();
 #endif
 
+#ifdef NAME_SERVICE_VERSION_DEV
+    // 打印全局参数表中的所有参数，测试时使用，上线时去掉。
+    ACTION printallgpms();
+#endif
+
 private:
 
     // 返回当前时间戳

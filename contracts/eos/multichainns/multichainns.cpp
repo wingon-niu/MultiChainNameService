@@ -589,6 +589,76 @@ asset multichainns::get_fee_of_y_bytes_level_x_name(const uint32_t x, const uint
     }
 }
 
+#ifdef NAME_SERVICE_VERSION_DEV
+// 打印全局参数表中的所有参数，测试时使用，上线时去掉。
+ACTION multichainns::printallgpms()
+{
+    require_auth( _self );
+
+    print("allowed_num_of_bytes_of_level_1_name: ", get_allowed_num_of_bytes_of_level_x_name(1), "\n");
+    print("allowed_num_of_bytes_of_level_2_name: ", get_allowed_num_of_bytes_of_level_x_name(2), "\n");
+    print("allowed_num_of_bytes_of_level_3_name: ", get_allowed_num_of_bytes_of_level_x_name(3), "\n\n");
+
+    print("max_num_of_repeated_hashes_in_resolves_table: ", get_max_num_of_repeated_hashes_in_resolves_table(), "\n\n");
+
+    print("fee_of_one_resolv_record: ", get_fee_of_one_resolv_record(), "\n\n");
+
+    print("fee_of_1_byte_level_1_name:   ", get_fee_of_y_bytes_level_x_name(1, 1),  "\n");
+    print("fee_of_2_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 2),  "\n");
+    print("fee_of_3_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 3),  "\n");
+    print("fee_of_4_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 4),  "\n");
+    print("fee_of_5_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 5),  "\n");
+    print("fee_of_6_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 6),  "\n");
+    print("fee_of_7_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 7),  "\n");
+    print("fee_of_8_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 8),  "\n");
+    print("fee_of_9_bytes_level_1_name:  ", get_fee_of_y_bytes_level_x_name(1, 9),  "\n");
+    print("fee_of_10_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 10), "\n");
+    print("fee_of_11_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 11), "\n");
+    print("fee_of_12_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 12), "\n");
+    print("fee_of_13_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 13), "\n");
+    print("fee_of_14_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 14), "\n");
+    print("fee_of_15_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 15), "\n");
+    print("fee_of_16_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 16), "\n");
+    print("fee_of_17_bytes_level_1_name: ", get_fee_of_y_bytes_level_x_name(1, 17), "\n\n");
+
+    print("fee_of_1_byte_level_2_name:   ", get_fee_of_y_bytes_level_x_name(2, 1),  "\n");
+    print("fee_of_2_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 2),  "\n");
+    print("fee_of_3_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 3),  "\n");
+    print("fee_of_4_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 4),  "\n");
+    print("fee_of_5_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 5),  "\n");
+    print("fee_of_6_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 6),  "\n");
+    print("fee_of_7_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 7),  "\n");
+    print("fee_of_8_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 8),  "\n");
+    print("fee_of_9_bytes_level_2_name:  ", get_fee_of_y_bytes_level_x_name(2, 9),  "\n");
+    print("fee_of_10_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 10), "\n");
+    print("fee_of_11_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 11), "\n");
+    print("fee_of_12_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 12), "\n");
+    print("fee_of_13_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 13), "\n");
+    print("fee_of_14_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 14), "\n");
+    print("fee_of_15_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 15), "\n");
+    print("fee_of_16_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 16), "\n");
+    print("fee_of_17_bytes_level_2_name: ", get_fee_of_y_bytes_level_x_name(2, 17), "\n\n");
+
+    print("fee_of_1_byte_level_3_name:   ", get_fee_of_y_bytes_level_x_name(3, 1),  "\n");
+    print("fee_of_2_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 2),  "\n");
+    print("fee_of_3_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 3),  "\n");
+    print("fee_of_4_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 4),  "\n");
+    print("fee_of_5_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 5),  "\n");
+    print("fee_of_6_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 6),  "\n");
+    print("fee_of_7_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 7),  "\n");
+    print("fee_of_8_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 8),  "\n");
+    print("fee_of_9_bytes_level_3_name:  ", get_fee_of_y_bytes_level_x_name(3, 9),  "\n");
+    print("fee_of_10_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 10), "\n");
+    print("fee_of_11_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 11), "\n");
+    print("fee_of_12_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 12), "\n");
+    print("fee_of_13_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 13), "\n");
+    print("fee_of_14_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 14), "\n");
+    print("fee_of_15_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 15), "\n");
+    print("fee_of_16_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 16), "\n");
+    print("fee_of_17_bytes_level_3_name: ", get_fee_of_y_bytes_level_x_name(3, 17), "\n\n");
+}
+#endif
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {
