@@ -295,6 +295,22 @@ ACTION multichainns::initgprmstbl()
     });
 }
 
+// 设置x级名称允许的字节数量为y和y以上
+ACTION multichainns::setallowedxy(const uint32_t x, const uint8_t y)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        if      ( x == 1) { item.allowed_num_of_bytes_of_level_1_name = y; }
+        else if ( x == 2) { item.allowed_num_of_bytes_of_level_2_name = y; }
+        else if ( x == 3) { item.allowed_num_of_bytes_of_level_3_name = y; }
+    });
+}
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {

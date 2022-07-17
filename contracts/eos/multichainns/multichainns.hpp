@@ -44,6 +44,9 @@ public:
     // 初始化全局参数表
     ACTION initgprmstbl();
 
+    // 设置x级名称允许的字节数量为y和y以上
+    ACTION setallowedxy(const uint32_t x, const uint8_t y);
+
     // // 为用户新增转账信息
     // ACTION addaccount(const name& user, const asset& quantity);
 
