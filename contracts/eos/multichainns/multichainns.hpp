@@ -50,6 +50,9 @@ public:
     // 设置同一个hash字符串在解析表中出现的最大次数
     ACTION setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_resolves_table);
 
+    // 设置y个字节的x级名称的收费
+    ACTION setfeeofxy(const uint32_t x, const uint32_t y, const asset& quantity);
+
     // // 为用户新增转账信息
     // ACTION addaccount(const name& user, const asset& quantity);
 
@@ -81,6 +84,9 @@ private:
 
     // y个字节的x级名称的数量加1
     void add_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
+
+    // 设置y个字节的x级名称的收费
+    void set_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y, const asset& quantity);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
