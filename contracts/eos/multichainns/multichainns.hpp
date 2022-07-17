@@ -94,6 +94,15 @@ private:
     // 设置y个字节的x级名称的收费
     void set_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y, const asset& quantity);
 
+    // 获取解析表中的hash字符串的最大重复次数
+    uint8_t get_max_num_of_repeated_hashes_in_resolves_table();
+
+    // 获取每条解析记录的收费
+    asset get_fee_of_one_resolv_record();
+
+    // 获取x级名称允许的字节数量
+    uint8_t get_allowed_num_of_bytes_of_level_x_name(const uint32_t x);
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //    // 文章

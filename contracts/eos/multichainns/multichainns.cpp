@@ -484,6 +484,39 @@ ACTION multichainns::setallfee()
     set_fee_of_y_bytes_level_x_name(3, 17, asset((int64_t) 5100,   MAIN_SYMBOL));
 }
 
+// 获取解析表中的hash字符串的最大重复次数
+uint8_t multichainns::get_max_num_of_repeated_hashes_in_resolves_table()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->max_num_of_repeated_hashes_in_resolves_table;
+}
+
+// 获取每条解析记录的收费
+asset multichainns::get_fee_of_one_resolv_record()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->fee_of_one_resolv_record;
+}
+
+// 获取x级名称允许的字节数量
+uint8_t multichainns::get_allowed_num_of_bytes_of_level_x_name(const uint32_t x)
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    if      (x == 1) { return itr->allowed_num_of_bytes_of_level_1_name; }
+    else if (x == 2) { return itr->allowed_num_of_bytes_of_level_2_name; }
+    else if (x == 3) { return itr->allowed_num_of_bytes_of_level_3_name; }
+    else             { return 255; }
+}
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {
