@@ -103,6 +103,9 @@ private:
     // 获取x级名称允许的字节数量
     uint8_t get_allowed_num_of_bytes_of_level_x_name(const uint32_t x);
 
+    // 获取y个字节的x级名称的收费
+    asset get_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //    // 文章

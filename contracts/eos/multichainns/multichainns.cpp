@@ -517,6 +517,78 @@ uint8_t multichainns::get_allowed_num_of_bytes_of_level_x_name(const uint32_t x)
     else             { return 255; }
 }
 
+// 获取y个字节的x级名称的收费
+asset multichainns::get_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y)
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    if      (x == 1) {
+        if      (y == 1)  { return itr->fee_of_1_byte_level_1_name;   }
+        else if (y == 2)  { return itr->fee_of_2_bytes_level_1_name;  }
+        else if (y == 3)  { return itr->fee_of_3_bytes_level_1_name;  }
+        else if (y == 4)  { return itr->fee_of_4_bytes_level_1_name;  }
+        else if (y == 5)  { return itr->fee_of_5_bytes_level_1_name;  }
+        else if (y == 6)  { return itr->fee_of_6_bytes_level_1_name;  }
+        else if (y == 7)  { return itr->fee_of_7_bytes_level_1_name;  }
+        else if (y == 8)  { return itr->fee_of_8_bytes_level_1_name;  }
+        else if (y == 9)  { return itr->fee_of_9_bytes_level_1_name;  }
+        else if (y == 10) { return itr->fee_of_10_bytes_level_1_name; }
+        else if (y == 11) { return itr->fee_of_11_bytes_level_1_name; }
+        else if (y == 12) { return itr->fee_of_12_bytes_level_1_name; }
+        else if (y == 13) { return itr->fee_of_13_bytes_level_1_name; }
+        else if (y == 14) { return itr->fee_of_14_bytes_level_1_name; }
+        else if (y == 15) { return itr->fee_of_15_bytes_level_1_name; }
+        else if (y == 16) { return itr->fee_of_16_bytes_level_1_name; }
+        else if (y == 17) { return itr->fee_of_17_bytes_level_1_name; }
+        else              { return asset((int64_t)1000000000000, MAIN_SYMBOL); }
+    }
+    else if (x == 2) {
+        if      (y == 1)  { return itr->fee_of_1_byte_level_2_name;   }
+        else if (y == 2)  { return itr->fee_of_2_bytes_level_2_name;  }
+        else if (y == 3)  { return itr->fee_of_3_bytes_level_2_name;  }
+        else if (y == 4)  { return itr->fee_of_4_bytes_level_2_name;  }
+        else if (y == 5)  { return itr->fee_of_5_bytes_level_2_name;  }
+        else if (y == 6)  { return itr->fee_of_6_bytes_level_2_name;  }
+        else if (y == 7)  { return itr->fee_of_7_bytes_level_2_name;  }
+        else if (y == 8)  { return itr->fee_of_8_bytes_level_2_name;  }
+        else if (y == 9)  { return itr->fee_of_9_bytes_level_2_name;  }
+        else if (y == 10) { return itr->fee_of_10_bytes_level_2_name; }
+        else if (y == 11) { return itr->fee_of_11_bytes_level_2_name; }
+        else if (y == 12) { return itr->fee_of_12_bytes_level_2_name; }
+        else if (y == 13) { return itr->fee_of_13_bytes_level_2_name; }
+        else if (y == 14) { return itr->fee_of_14_bytes_level_2_name; }
+        else if (y == 15) { return itr->fee_of_15_bytes_level_2_name; }
+        else if (y == 16) { return itr->fee_of_16_bytes_level_2_name; }
+        else if (y == 17) { return itr->fee_of_17_bytes_level_2_name; }
+        else              { return asset((int64_t)1000000000000, MAIN_SYMBOL); }
+    }
+    else if (x == 3) {
+        if      (y == 1)  { return itr->fee_of_1_byte_level_3_name;   }
+        else if (y == 2)  { return itr->fee_of_2_bytes_level_3_name;  }
+        else if (y == 3)  { return itr->fee_of_3_bytes_level_3_name;  }
+        else if (y == 4)  { return itr->fee_of_4_bytes_level_3_name;  }
+        else if (y == 5)  { return itr->fee_of_5_bytes_level_3_name;  }
+        else if (y == 6)  { return itr->fee_of_6_bytes_level_3_name;  }
+        else if (y == 7)  { return itr->fee_of_7_bytes_level_3_name;  }
+        else if (y == 8)  { return itr->fee_of_8_bytes_level_3_name;  }
+        else if (y == 9)  { return itr->fee_of_9_bytes_level_3_name;  }
+        else if (y == 10) { return itr->fee_of_10_bytes_level_3_name; }
+        else if (y == 11) { return itr->fee_of_11_bytes_level_3_name; }
+        else if (y == 12) { return itr->fee_of_12_bytes_level_3_name; }
+        else if (y == 13) { return itr->fee_of_13_bytes_level_3_name; }
+        else if (y == 14) { return itr->fee_of_14_bytes_level_3_name; }
+        else if (y == 15) { return itr->fee_of_15_bytes_level_3_name; }
+        else if (y == 16) { return itr->fee_of_16_bytes_level_3_name; }
+        else if (y == 17) { return itr->fee_of_17_bytes_level_3_name; }
+        else              { return asset((int64_t)1000000000000, MAIN_SYMBOL); }
+    }
+    else {
+        return asset((int64_t)1000000000000, MAIN_SYMBOL);
+    }
+}
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {
