@@ -32,5 +32,7 @@ cleoslocal -v push action multichainns setallowedxy '[1, 81]' -p multichainns@ac
 cleoslocal -v push action multichainns setallowedxy '[2, 82]' -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 cleoslocal -v push action multichainns setallowedxy '[3, 83]' -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
+cleoslocal -v push action multichainns setmaxnumorh '[90]'    -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+
 
 

@@ -311,6 +311,20 @@ ACTION multichainns::setallowedxy(const uint32_t x, const uint8_t y)
     });
 }
 
+// 设置同一个hash字符串在解析表中出现的最大次数
+ACTION multichainns::setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_resolves_table)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.max_num_of_repeated_hashes_in_resolves_table = max_num_of_repeated_hashes_in_resolves_table;
+    });
+}
+
 // 获取某个表的主键
 uint64_t multichainns::get_pri_key(const name& table_name)
 {

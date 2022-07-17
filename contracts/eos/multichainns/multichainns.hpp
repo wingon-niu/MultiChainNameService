@@ -47,6 +47,9 @@ public:
     // 设置x级名称允许的字节数量为y和y以上
     ACTION setallowedxy(const uint32_t x, const uint8_t y);
 
+    // 设置同一个hash字符串在解析表中出现的最大次数
+    ACTION setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_resolves_table);
+
     // // 为用户新增转账信息
     // ACTION addaccount(const name& user, const asset& quantity);
 
