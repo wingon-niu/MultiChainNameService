@@ -93,6 +93,15 @@ private:
     // x级名称的总数量加1
     void add_num_of_level_x_name_total(const uint32_t x);
 
+    // 累加总成交金额
+    void add_total_transaction_amount(const asset& quantity);
+
+    // 解析表中的记录的总数加1
+    void add_total_num_of_records_in_resolv_table();
+
+    // 解析表中的记录的总数减1
+    void sub_total_num_of_records_in_resolv_table();
+
     // y个字节的x级名称的数量加1
     void add_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
 
@@ -167,6 +176,9 @@ private:
         uint32_t     num_of_level_1_name_total;     // 1级名称的总数量
         uint32_t     num_of_level_2_name_total;     // 2级名称的总数量
         uint32_t     num_of_level_3_name_total;     // 3级名称的总数量
+
+        asset        total_transaction_amount;                  // 总成交金额
+        uint32_t     total_num_of_records_in_resolv_table;      // 解析表中的记录的总数
 
         uint32_t     num_of_1_byte_level_1_name;    // 1个字节的1级名称的数量
         uint32_t     num_of_2_bytes_level_1_name;   // 2个字节的1级名称的数量
