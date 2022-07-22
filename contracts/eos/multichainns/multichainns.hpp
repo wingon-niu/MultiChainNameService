@@ -50,6 +50,9 @@ public:
     // 设置同一个hash字符串在解析表中出现的最大次数
     ACTION setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_resolves_table);
 
+    // 设置名称的最大长度，单位是字节。
+    ACTION setmnlength(const uint8_t n);
+
     // 设置每条解析记录的收费
     ACTION setfeeof1rr(const asset& quantity);
 
@@ -110,6 +113,9 @@ private:
 
     // 获取解析表中的hash字符串的最大重复次数
     uint8_t get_max_num_of_repeated_hashes_in_resolves_table();
+
+    // 获取名称的最大长度，单位是字节。
+    uint8_t get_max_num_of_bytes_of_name();
 
     // 获取每条解析记录的收费
     asset get_fee_of_one_resolv_record();
@@ -248,6 +254,11 @@ private:
 
         uint8_t   max_num_of_repeated_hashes_in_resolves_table;  // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
                                                                  // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
+
+        uint8_t   max_num_of_bytes_of_name;      // 名称的最大长度，单位是字节。
+                                                 // 例如设置为6，则允许创建的最长的1级名称为：abcdef。
+                                                 // 允许创建的最长的2级名称为：abcdef.abcdef。
+                                                 // 允许创建的最长的3级名称为：abcdef.abcdef.abcdef。
 
         asset     fee_of_one_resolv_record;      // 每条解析记录的收费
 

@@ -275,6 +275,8 @@ ACTION multichainns::initgprmstbl()
         item.max_num_of_repeated_hashes_in_resolves_table = 10;              // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
                                                                              // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
 
+        item.max_num_of_bytes_of_name     = 10;                              // 名称的最大长度，单位是字节。
+
         item.fee_of_one_resolv_record     = asset((int64_t)0, MAIN_SYMBOL);  // 每条解析记录的收费
 
         item.fee_of_1_byte_level_1_name   = asset((int64_t)0, MAIN_SYMBOL);  // 1个字节的1级名称的收费
@@ -360,6 +362,20 @@ ACTION multichainns::setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_re
 
     _global_parameters.modify( itr, _self, [&]( auto& item ) {
         item.max_num_of_repeated_hashes_in_resolves_table = max_num_of_repeated_hashes_in_resolves_table;
+    });
+}
+
+// 设置名称的最大长度，单位是字节。
+ACTION multichainns::setmnlength(const uint8_t n)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.max_num_of_bytes_of_name = n;
     });
 }
 
@@ -530,6 +546,16 @@ uint8_t multichainns::get_max_num_of_repeated_hashes_in_resolves_table()
     return itr->max_num_of_repeated_hashes_in_resolves_table;
 }
 
+// 获取名称的最大长度，单位是字节。
+uint8_t multichainns::get_max_num_of_bytes_of_name()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->max_num_of_bytes_of_name;
+}
+
 // 获取每条解析记录的收费
 asset multichainns::get_fee_of_one_resolv_record()
 {
@@ -636,6 +662,8 @@ ACTION multichainns::printallgpms()
     print("allowed_num_of_bytes_of_level_3_name: ", get_allowed_num_of_bytes_of_level_x_name(3), "\n\n");
 
     print("max_num_of_repeated_hashes_in_resolves_table: ", get_max_num_of_repeated_hashes_in_resolves_table(), "\n\n");
+
+    print("max_num_of_bytes_of_name: ", get_max_num_of_bytes_of_name(), "\n\n");
 
     print("fee_of_one_resolv_record: ", get_fee_of_one_resolv_record(), "\n\n");
 
