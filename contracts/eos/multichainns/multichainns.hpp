@@ -34,6 +34,7 @@ public:
     using contract::contract;
 
     multichainns(name self, name first_receiver, datastream<const char*> ds) : contract(self, first_receiver, ds),
+        _meta_names                     (get_self(), get_self().value),
         _global_vars                    (get_self(), get_self().value),
         _global_parameters              (get_self(), get_self().value),
         _pri_keys                       (get_self(), get_self().value){};
@@ -127,6 +128,84 @@ private:
     asset get_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 名称表
+    TABLE st_meta_names {
+        uint64_t     id64;
+        uint32_t     id32;
+        name         owner;
+        string       meta_name;
+        checksum256  meta_name_sha256_hash;
+        uint8_t      language;               // 0: 没有设定      1: 中文      2: 英文
+        uint32_t     id32_of_upper_level;    // 上级名称的id32。如果是0，表示这是一个1级名称。
+        uint8_t      level;                  // 本名称的级别
+        uint8_t      length;                 // 本名称的长度，单位是字节。只包括自身字符串的长度，不包括上、下级字符串与“.”在内。
+        uint8_t      category;               // 1: 公共的              2: 私有的
+        uint8_t      status;                 // 0: 不在挂单出售中      1: 挂单出售中
+        asset        selling_price;          // 挂单出售的价格，允许的最高价格为： 429496.7295 EOS
+        name         active_buyer;           // 主动求购者。创建时此项设置为_self，用于区分是否有真正的主动求购者。
+        asset        active_purchase_price;  // 主动求购价格
+        string       description;            // 描述
+        uint32_t     creation_time;          // 创建时间
+        uint32_t     expiration_time;        // 到期时间。在创建时间的1024年之后到期。
+        string       spare1;                 // 备用1
+        string       spare2;                 // 备用2
+        string       spare3;                 // 备用3
+
+        uint64_t  primary_key()                const { return id64; }
+
+        uint128_t by_language_id32upper_selflevel_length_status_sellingpriceasc_selfid32asc() const {
+            uint32_t sp32 = static_cast<uint32_t>(static_cast<uint64_t>(selling_price.amount));
+            return (uint128_t{language}<<120) + (uint128_t{id32_of_upper_level}<<88) + (uint128_t{level}<<80) + (uint128_t{length}<<72) + (uint128_t{status}<<64) + (uint128_t{sp32}<<32) + (uint128_t{id32});
+        }
+
+        uint128_t by_language_id32upper_selflevel_length_status_sellingpriceasc_selfid32desc() const {
+            uint32_t sp32 = static_cast<uint32_t>(static_cast<uint64_t>(selling_price.amount));
+            return (uint128_t{language}<<120) + (uint128_t{id32_of_upper_level}<<88) + (uint128_t{level}<<80) + (uint128_t{length}<<72) + (uint128_t{status}<<64) + (uint128_t{sp32}<<32) + (uint128_t{~id32});
+        }
+
+        uint128_t by_language_id32upper_selflevel_length_status_sellingpricedesc_selfid32asc() const {
+            uint32_t sp32 = static_cast<uint32_t>(static_cast<uint64_t>(selling_price.amount));
+            return (uint128_t{language}<<120) + (uint128_t{id32_of_upper_level}<<88) + (uint128_t{level}<<80) + (uint128_t{length}<<72) + (uint128_t{status}<<64) + (uint128_t{~sp32}<<32) + (uint128_t{id32});
+        }
+
+        uint128_t by_language_id32upper_selflevel_length_status_sellingpricedesc_selfid32desc() const {
+            uint32_t sp32 = static_cast<uint32_t>(static_cast<uint64_t>(selling_price.amount));
+            return (uint128_t{language}<<120) + (uint128_t{id32_of_upper_level}<<88) + (uint128_t{level}<<80) + (uint128_t{length}<<72) + (uint128_t{status}<<64) + (uint128_t{~sp32}<<32) + (uint128_t{~id32});
+        }
+
+        checksum256 by_meta_name_sha256_hash() const {
+            return meta_name_sha256_hash;
+        }
+
+        uint128_t by_owner_id32asc() const {
+            return (uint128_t{owner.value}<<64) + uint128_t{id32};
+        }
+
+        uint128_t by_owner_id32desc() const {
+            return (uint128_t{owner.value}<<64) + uint128_t{~id32};
+        }
+
+        uint128_t by_activebuyer_id32asc() const {
+            return (uint128_t{active_buyer.value}<<64) + uint128_t{id32};
+        }
+
+        uint128_t by_activebuyer_id32desc() const {
+            return (uint128_t{active_buyer.value}<<64) + uint128_t{~id32};
+        }
+    };
+    typedef eosio::multi_index<
+        "metanames"_n, st_meta_names,
+        indexed_by< "byascasc"_n,     const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_language_id32upper_selflevel_length_status_sellingpriceasc_selfid32asc> >,
+        indexed_by< "byascdesc"_n,    const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_language_id32upper_selflevel_length_status_sellingpriceasc_selfid32desc> >,
+        indexed_by< "bydescasc"_n,    const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_language_id32upper_selflevel_length_status_sellingpricedesc_selfid32asc> >,
+        indexed_by< "bydescdesc"_n,   const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_language_id32upper_selflevel_length_status_sellingpricedesc_selfid32desc> >,
+        indexed_by< "bynamehash"_n,   const_mem_fun<st_meta_names, checksum256, &st_meta_names::by_meta_name_sha256_hash> >,
+        indexed_by< "byowneridasc"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_owner_id32asc> >,
+        indexed_by< "byowniddesc"_n,  const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_owner_id32desc> >,
+        indexed_by< "bybuyeridasc"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_activebuyer_id32asc> >,
+        indexed_by< "bybuyeriddes"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_activebuyer_id32desc> >
+    > tb_meta_names;
 
 //    // 文章
 //    TABLE st_article {
@@ -331,6 +410,7 @@ private:
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    tb_meta_names                     _meta_names;
     tb_global_vars                    _global_vars;
     tb_global_parameters              _global_parameters;
     tb_pri_keys                       _pri_keys;

@@ -7,6 +7,7 @@ cleoslocal set contract multichainns ../multichainns -p multichainns@active
 
 cleoslocal -v push action multichainns cleardata '["table_name"]' -p multichainns@active
 
+cleoslocal get table multichainns multichainns metanames
 cleoslocal get table multichainns multichainns globalvars
 cleoslocal get table multichainns multichainns globalparams
 cleoslocal get table multichainns multichainns prikeys
