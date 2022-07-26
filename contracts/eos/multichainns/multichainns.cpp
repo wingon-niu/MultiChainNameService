@@ -296,6 +296,12 @@ ACTION multichainns::initgprmstbl()
         item.allowed_num_of_bytes_of_level_2_name         = 20;              // 允许的2级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
         item.allowed_num_of_bytes_of_level_3_name         = 20;              // 允许的3级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
 
+        item.fee_of_transaction_amount_percentage         = 0.03;            // 交易名称的时候，收取的交易费用所占成交金额的比例。
+        item.fee_of_level_1_name_share_percentage         = 0.01;            // 创建、交易2级和3级名称的时候，所属上级1级名称的拥有者可以分享的费用的比例。
+        item.fee_of_level_2_name_share_percentage         = 0.02;            // 创建、交易3级名称的时候，所属上级2级名称的拥有者可以分享的费用的比例。
+        item.fee_of_level_1_name_share_quantity           = asset((int64_t)0, MAIN_SYMBOL);  // 为2级和3级名称新增解析记录的时候，所属上级1级名称的拥有者可以分享的费用的金额。
+        item.fee_of_level_2_name_share_quantity           = asset((int64_t)0, MAIN_SYMBOL);  // 为3级名称新增解析记录的时候，所属上级2级名称的拥有者可以分享的费用的金额。
+
         item.max_num_of_repeated_hashes_in_resolves_table = 10;              // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
                                                                              // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
 
@@ -372,6 +378,76 @@ ACTION multichainns::setallowedxy(const uint32_t x, const uint8_t y)
         if      ( x == 1) { item.allowed_num_of_bytes_of_level_1_name = y; }
         else if ( x == 2) { item.allowed_num_of_bytes_of_level_2_name = y; }
         else if ( x == 3) { item.allowed_num_of_bytes_of_level_3_name = y; }
+    });
+}
+
+// 设置：交易名称的时候，收取的交易费用所占成交金额的比例。
+ACTION multichainns::settxnpercnt(const float percentage)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.fee_of_transaction_amount_percentage = percentage;
+    });
+}
+
+// 设置：创建、交易2级和3级名称的时候，所属上级1级名称的拥有者可以分享的费用的比例。
+ACTION multichainns::set1namepert(const float percentage)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.fee_of_level_1_name_share_percentage = percentage;
+    });
+}
+
+// 设置：创建、交易3级名称的时候，所属上级2级名称的拥有者可以分享的费用的比例。
+ACTION multichainns::set2namepert(const float percentage)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.fee_of_level_2_name_share_percentage = percentage;
+    });
+}
+
+// 设置：为2级和3级名称新增解析记录的时候，所属上级1级名称的拥有者可以分享的费用的金额。
+ACTION multichainns::set1nameqtt(const asset& quantity)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.fee_of_level_1_name_share_quantity = quantity;
+    });
+}
+
+// 设置：为3级名称新增解析记录的时候，所属上级2级名称的拥有者可以分享的费用的金额。
+ACTION multichainns::set2nameqtt(const asset& quantity)
+{
+    require_auth( _self );
+
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    _global_parameters.modify( itr, _self, [&]( auto& item ) {
+        item.fee_of_level_2_name_share_quantity = quantity;
     });
 }
 
@@ -560,6 +636,56 @@ ACTION multichainns::setallfee()
     set_fee_of_y_bytes_level_x_name(3, 17, asset((int64_t) 5100,   MAIN_SYMBOL));
 }
 
+// 获取：交易名称的时候，收取的交易费用所占成交金额的比例。
+float multichainns::get_fee_of_transaction_amount_percentage()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->fee_of_transaction_amount_percentage;
+}
+
+// 获取：创建、交易2级和3级名称的时候，所属上级1级名称的拥有者可以分享的费用的比例。
+float multichainns::get_fee_of_level_1_name_share_percentage()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->fee_of_level_1_name_share_percentage;
+}
+
+// 获取：创建、交易3级名称的时候，所属上级2级名称的拥有者可以分享的费用的比例。
+float multichainns::get_fee_of_level_2_name_share_percentage()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->fee_of_level_2_name_share_percentage;
+}
+
+// 获取：为2级和3级名称新增解析记录的时候，所属上级1级名称的拥有者可以分享的费用的金额。
+asset multichainns::get_fee_of_level_1_name_share_quantity()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->fee_of_level_1_name_share_quantity;
+}
+
+// 获取：为3级名称新增解析记录的时候，所属上级2级名称的拥有者可以分享的费用的金额。
+asset multichainns::get_fee_of_level_2_name_share_quantity()
+{
+    uint64_t id = 1;
+    auto itr = _global_parameters.find(id);
+    eosio::check( itr != _global_parameters.end(), "Error: There is no record in global parameters table." );
+
+    return itr->fee_of_level_2_name_share_quantity;
+}
+
 // 获取解析表中的hash字符串的最大重复次数
 uint8_t multichainns::get_max_num_of_repeated_hashes_in_resolves_table()
 {
@@ -684,6 +810,12 @@ ACTION multichainns::printallgpms()
     print("allowed_num_of_bytes_of_level_1_name: ", get_allowed_num_of_bytes_of_level_x_name(1), "\n");
     print("allowed_num_of_bytes_of_level_2_name: ", get_allowed_num_of_bytes_of_level_x_name(2), "\n");
     print("allowed_num_of_bytes_of_level_3_name: ", get_allowed_num_of_bytes_of_level_x_name(3), "\n\n");
+
+    print("fee_of_transaction_amount_percentage: ", get_fee_of_transaction_amount_percentage(), "\n");
+    print("fee_of_level_1_name_share_percentage: ", get_fee_of_level_1_name_share_percentage(), "\n");
+    print("fee_of_level_2_name_share_percentage: ", get_fee_of_level_2_name_share_percentage(), "\n");
+    print("fee_of_level_1_name_share_quantity: ",   get_fee_of_level_1_name_share_quantity(),   "\n");
+    print("fee_of_level_2_name_share_quantity: ",   get_fee_of_level_2_name_share_quantity(),   "\n\n");
 
     print("max_num_of_repeated_hashes_in_resolves_table: ", get_max_num_of_repeated_hashes_in_resolves_table(), "\n\n");
 

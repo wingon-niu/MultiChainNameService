@@ -33,6 +33,12 @@ cleoslocal -v push action multichainns setallowedxy '[1, 4]' -p multichainns@act
 cleoslocal -v push action multichainns setallowedxy '[2, 3]' -p multichainns@active     # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 cleoslocal -v push action multichainns setallowedxy '[3, 2]' -p multichainns@active     # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
+cleoslocal -v push action multichainns settxnpercnt '[0.05]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+cleoslocal -v push action multichainns set1namepert '[0.38]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+cleoslocal -v push action multichainns set2namepert '[0.32]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+cleoslocal -v push action multichainns set1nameqtt  '["0.1200 SYS"]'        -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+cleoslocal -v push action multichainns set2nameqtt  '["0.0800 SYS"]'        -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+
 cleoslocal -v push action multichainns setmaxnumorh '[12]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 cleoslocal -v push action multichainns setmnlength  '[36]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 cleoslocal -v push action multichainns setfeeof1rr  '["1.2000 SYS"]'      -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试

@@ -48,6 +48,21 @@ public:
     // 设置x级名称允许的字节数量为y和y以上
     ACTION setallowedxy(const uint32_t x, const uint8_t y);
 
+    // 设置：交易名称的时候，收取的交易费用所占成交金额的比例。
+    ACTION settxnpercnt(const float percentage);
+
+    // 设置：创建、交易2级和3级名称的时候，所属上级1级名称的拥有者可以分享的费用的比例。
+    ACTION set1namepert(const float percentage);
+
+    // 设置：创建、交易3级名称的时候，所属上级2级名称的拥有者可以分享的费用的比例。
+    ACTION set2namepert(const float percentage);
+
+    // 设置：为2级和3级名称新增解析记录的时候，所属上级1级名称的拥有者可以分享的费用的金额。
+    ACTION set1nameqtt(const asset& quantity);
+
+    // 设置：为3级名称新增解析记录的时候，所属上级2级名称的拥有者可以分享的费用的金额。
+    ACTION set2nameqtt(const asset& quantity);
+
     // 设置同一个hash字符串在解析表中出现的最大次数
     ACTION setmaxnumorh(const uint8_t max_num_of_repeated_hashes_in_resolves_table);
 
@@ -117,6 +132,21 @@ private:
 
     // 设置y个字节的x级名称的收费
     void set_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y, const asset& quantity);
+
+    // 获取：交易名称的时候，收取的交易费用所占成交金额的比例。
+    float get_fee_of_transaction_amount_percentage();
+
+    // 获取：创建、交易2级和3级名称的时候，所属上级1级名称的拥有者可以分享的费用的比例。
+    float get_fee_of_level_1_name_share_percentage();
+
+    // 获取：创建、交易3级名称的时候，所属上级2级名称的拥有者可以分享的费用的比例。
+    float get_fee_of_level_2_name_share_percentage();
+
+    // 获取：为2级和3级名称新增解析记录的时候，所属上级1级名称的拥有者可以分享的费用的金额。
+    asset get_fee_of_level_1_name_share_quantity();
+
+    // 获取：为3级名称新增解析记录的时候，所属上级2级名称的拥有者可以分享的费用的金额。
+    asset get_fee_of_level_2_name_share_quantity();
 
     // 获取解析表中的hash字符串的最大重复次数
     uint8_t get_max_num_of_repeated_hashes_in_resolves_table();
@@ -339,6 +369,12 @@ private:
         uint8_t   allowed_num_of_bytes_of_level_1_name;          // 允许的1级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
         uint8_t   allowed_num_of_bytes_of_level_2_name;          // 允许的2级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
         uint8_t   allowed_num_of_bytes_of_level_3_name;          // 允许的3级名称的字节数量，允许创建长度等于或者大于此项设置的名称。
+
+        float     fee_of_transaction_amount_percentage;          // 交易名称的时候，收取的交易费用所占成交金额的比例。
+        float     fee_of_level_1_name_share_percentage;          // 创建、交易2级和3级名称的时候，所属上级1级名称的拥有者可以分享的费用的比例。
+        float     fee_of_level_2_name_share_percentage;          // 创建、交易3级名称的时候，所属上级2级名称的拥有者可以分享的费用的比例。
+        asset     fee_of_level_1_name_share_quantity;            // 为2级和3级名称新增解析记录的时候，所属上级1级名称的拥有者可以分享的费用的金额。
+        asset     fee_of_level_2_name_share_quantity;            // 为3级名称新增解析记录的时候，所属上级2级名称的拥有者可以分享的费用的金额。
 
         uint8_t   max_num_of_repeated_hashes_in_resolves_table;  // 在解析表中，一个相同的 sha256 hash 字符串允许出现的最大次数，默认为12次。
                                                                  // 例如，很多人把自己的BTC地址解析为中本聪的BTC地址，那么这个地址在整个解析表中最多出现12次。
