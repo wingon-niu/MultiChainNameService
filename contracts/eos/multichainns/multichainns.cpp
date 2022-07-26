@@ -791,5 +791,17 @@ ACTION multichainns::cleardata(const string& table_name)
             }
         }
     }
+    else if (table_name == "metanames") {
+        keysForDeletion.clear();
+        for (auto& item : _meta_names) {
+            keysForDeletion.push_back(item.id64);
+        }
+        for (uint64_t key : keysForDeletion) {
+            auto itr = _meta_names.find(key);
+            if (itr != _meta_names.end()) {
+                _meta_names.erase(itr);
+            }
+        }
+    }
 }
 #endif

@@ -145,6 +145,7 @@ private:
         asset        selling_price;          // 挂单出售的价格，允许的最高价格为： 429496.7295 EOS
         name         active_buyer;           // 主动求购者。创建时此项设置为_self，用于区分是否有真正的主动求购者。
         asset        active_purchase_price;  // 主动求购价格
+        string       avatar;                 // JSON字符串，内含头像的首hash等内容。
         string       description;            // 描述
         uint32_t     creation_time;          // 创建时间
         uint32_t     expiration_time;        // 到期时间。在创建时间的1024年之后到期。
