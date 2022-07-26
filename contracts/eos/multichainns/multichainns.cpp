@@ -22,6 +22,8 @@ ACTION multichainns::initgvarstbl()
 
         item.total_transaction_amount             = asset((int64_t)0, MAIN_SYMBOL);  // 总成交金额
         item.total_num_of_records_in_resolv_table = 0;                               // 解析表中的记录的总数
+        item.total_share_amount_of_level_1_name   = asset((int64_t)0, MAIN_SYMBOL);  // 与拥有1级名称的用户分享的总金额。
+        item.total_share_amount_of_level_2_name   = asset((int64_t)0, MAIN_SYMBOL);  // 与拥有2级名称的用户分享的总金额。
 
         item.num_of_1_byte_level_1_name   = 0;   // 1个字节的1级名称的数量
         item.num_of_2_bytes_level_1_name  = 0;   // 2个字节的1级名称的数量
@@ -121,6 +123,26 @@ void multichainns::sub_total_num_of_records_in_resolv_table()
     }
 }
 
+// 累加 与拥有1级名称的用户分享的总金额
+void multichainns::add_total_share_amount_of_level_1_name(const asset& quantity)
+{
+    uint64_t id = 1;
+    auto itr = _global_vars.find(id);
+    if( itr != _global_vars.end() ) {
+        _global_vars.modify( itr, _self, [&]( auto& item ) { item.total_share_amount_of_level_1_name += quantity; });
+    }
+}
+
+// 累加 与拥有2级名称的用户分享的总金额
+void multichainns::add_total_share_amount_of_level_2_name(const asset& quantity)
+{
+    uint64_t id = 1;
+    auto itr = _global_vars.find(id);
+    if( itr != _global_vars.end() ) {
+        _global_vars.modify( itr, _self, [&]( auto& item ) { item.total_share_amount_of_level_2_name += quantity; });
+    }
+}
+
 // y个字节的x级名称的数量加1
 void multichainns::add_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y)
 {
@@ -199,6 +221,8 @@ ACTION multichainns::addallgvars()
 
     add_total_transaction_amount(asset((int64_t)10010001, MAIN_SYMBOL));
     add_total_num_of_records_in_resolv_table();
+    add_total_share_amount_of_level_1_name(asset((int64_t)20020002, MAIN_SYMBOL));
+    add_total_share_amount_of_level_2_name(asset((int64_t)30030003, MAIN_SYMBOL));
 
     add_num_of_y_bytes_level_x_name(1, 1);
     add_num_of_y_bytes_level_x_name(1, 2);

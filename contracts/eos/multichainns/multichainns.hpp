@@ -106,6 +106,12 @@ private:
     // 解析表中的记录的总数减1
     void sub_total_num_of_records_in_resolv_table();
 
+    // 累加 与拥有1级名称的用户分享的总金额
+    void add_total_share_amount_of_level_1_name(const asset& quantity);
+
+    // 累加 与拥有2级名称的用户分享的总金额
+    void add_total_share_amount_of_level_2_name(const asset& quantity);
+
     // y个字节的x级名称的数量加1
     void add_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
 
@@ -265,6 +271,8 @@ private:
 
         asset        total_transaction_amount;                  // 总成交金额
         uint32_t     total_num_of_records_in_resolv_table;      // 解析表中的记录的总数
+        asset        total_share_amount_of_level_1_name;        // 与拥有1级名称的用户分享的总金额。拥有1级名称的用户在下属的2级和3级名称创建、交易、解析的时候，都可以得到分享。
+        asset        total_share_amount_of_level_2_name;        // 与拥有2级名称的用户分享的总金额。拥有2级名称的用户在下属的3级名称创建、交易、解析的时候，都可以得到分享。
 
         uint32_t     num_of_1_byte_level_1_name;    // 1个字节的1级名称的数量
         uint32_t     num_of_2_bytes_level_1_name;   // 2个字节的1级名称的数量
