@@ -40,6 +40,10 @@ public:
         _global_parameters              (get_self(), get_self().value),
         _pri_keys                       (get_self(), get_self().value){};
 
+    // 接收用户转账，进行相应处理
+    [[eosio::on_notify("eosio.token::transfer")]]
+    void deposit(name from, name to, eosio::asset quantity, std::string memo);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
@@ -101,6 +105,9 @@ public:
 #endif
 
 private:
+
+    // 创建名称
+    void create_meta_name(name from, name to, eosio::asset quantity, std::string memo);
 
     // 返回当前时间戳
     uint32_t now() const {

@@ -2,6 +2,44 @@
 
 //
 
+// 接收用户转账，进行相应处理
+[[eosio::on_notify("eosio.token::transfer")]]
+void multichainns::deposit(name from, name to, eosio::asset quantity, std::string memo)
+{
+    if (from == _self) {
+        return;
+    }
+    if (to != _self) {
+        return;
+    }
+    if (!quantity.symbol.is_valid()) {
+        return;
+    }
+    if (!(quantity.symbol == MAIN_SYMBOL)) {
+        return;
+    }
+    if (!quantity.is_valid()) {
+        return;
+    }
+    if (!quantity.is_amount_within_range()) {
+        return;
+    }
+    if (!(quantity.amount > 0)) {
+        return;
+    }
+
+    if (memo.find("Create meta name: ") == 0) {             // 创建名称
+        create_meta_name(from, to, quantity, memo);
+    }
+    else {
+    }
+}
+
+// 创建名称
+void multichainns::create_meta_name(name from, name to, eosio::asset quantity, std::string memo)
+{
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {
