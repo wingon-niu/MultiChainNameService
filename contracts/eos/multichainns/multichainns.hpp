@@ -35,6 +35,7 @@ public:
 
     multichainns(name self, name first_receiver, datastream<const char*> ds) : contract(self, first_receiver, ds),
         _meta_names                     (get_self(), get_self().value),
+        _resolves                       (get_self(), get_self().value),
         _global_vars                    (get_self(), get_self().value),
         _global_parameters              (get_self(), get_self().value),
         _pri_keys                       (get_self(), get_self().value){};
@@ -244,52 +245,37 @@ private:
         indexed_by< "bybuyeriddes"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_activebuyer_id32desc> >
     > tb_meta_names;
 
-//    // 文章
-//    TABLE st_article {
-//        name         user;
-//        uint64_t     article_id;
-//        string       article_hash;        // 文章的内容的数据的首hash
-//        uint64_t     num_of_trns;         // 发送文章进行的转账交易次数
-//        string       content_sha3_hash;   // 文章内容的Sha3 Hash字符串，64个字节
-//        uint8_t      category;            // 1=现实笔记；2=梦想笔记
-//        uint8_t      type;                // 1=微文；    2=长文      （区别在于长文可以有标题，微文没有标题。长文与微文都没有长度限制。）
-//        uint8_t      storage_location;    // 1=EOS；     2=ETH；     3=BSC；    5=BTC；                    （文章内容数据存储在哪条链上）
-//        uint64_t     forward_article_id;  // 转发的文章的id，0表示没有转发
-//        uint32_t     forwarded_times;     // 被转发的次数
-//        uint32_t     replied_times;       // 被回复的次数
-//        uint32_t     num_of_liked;        // 被点赞的次数
-//        uint32_t     last_replied_time;
-//        uint32_t     post_time;
-//
-//        uint64_t  primary_key()                const { return article_id; }
-//        uint128_t by_user_category_post_time() const {
-//            return (uint128_t{user.value}<<64) + (uint128_t{category}<<32) + uint128_t{~post_time};
-//        }
-//        uint128_t by_category_article()        const {
-//            return (uint128_t{category}<<64) + uint128_t{~article_id};
-//        }
-//        uint128_t by_forward_article()         const {
-//            return (uint128_t{forward_article_id}<<64) + uint128_t{~article_id};
-//        }
-//        uint128_t by_user_article()            const {
-//            return (uint128_t{user.value}<<64) + uint128_t{~article_id};
-//        }
-//        uint128_t by_category_last_replied_time_article() const {
-//            return (uint128_t{category}<<96) + (uint128_t{~last_replied_time}<<64) + uint128_t{~article_id};
-//        }
-//        uint128_t by_user_last_replied_time_post_time() const {
-//            return (uint128_t{user.value}<<64) + (uint128_t{~last_replied_time}<<32) + uint128_t{~post_time};
-//        }
-//    };
-//    typedef eosio::multi_index<
-//        "articles"_n, st_article,
-//        indexed_by< "byusrcatpost"_n, const_mem_fun<st_article, uint128_t, &st_article::by_user_category_post_time> >,
-//        indexed_by< "bycatarticle"_n, const_mem_fun<st_article, uint128_t, &st_article::by_category_article> >,
-//        indexed_by< "byforwardart"_n, const_mem_fun<st_article, uint128_t, &st_article::by_forward_article> >,
-//        indexed_by< "byusrarticle"_n, const_mem_fun<st_article, uint128_t, &st_article::by_user_article> >,
-//        indexed_by< "byclrtimeart"_n, const_mem_fun<st_article, uint128_t, &st_article::by_category_last_replied_time_article> >,
-//        indexed_by< "byulrteptime"_n, const_mem_fun<st_article, uint128_t, &st_article::by_user_last_replied_time_post_time> >
-//    > tb_articles;
+    // 解析表
+    TABLE st_resolves {
+        uint64_t     id;
+        uint32_t     id32_of_meta_name;
+        string       meta_name;
+        string       target_object;              // 解析的目标。例如：btc/eth/eos/arweave/ipvfour/ipvsix
+        string       target_content;             // 解析出来的内容。例如：btc地址
+        checksum256  target_content_sha256_hash; // 解析出来的内容的sha256 hash
+        string       reverse_proof;              // 反向证明。
+        uint8_t      verified;                   // 反向证明是否已经经过验证。   0：未验证；   1：已验证。
+
+        uint64_t  primary_key()                    const { return id; }
+
+        uint128_t by_id32ofmetaname_targetobject() const {
+            return (uint128_t{id32_of_meta_name}<<64) + uint128_t{name(target_object).value};
+        }
+
+        checksum256 by_targetcontentsha256hash()   const {
+            return target_content_sha256_hash;
+        }
+
+        uint128_t by_verified_id()                 const {
+            return (uint128_t{verified}<<64) + uint128_t{id};
+        }
+    };
+    typedef eosio::multi_index<
+        "resolves"_n, st_resolves,
+        indexed_by< "byid32object"_n, const_mem_fun<st_resolves, uint128_t,   &st_resolves::by_id32ofmetaname_targetobject> >,
+        indexed_by< "bytargethash"_n, const_mem_fun<st_resolves, checksum256, &st_resolves::by_targetcontentsha256hash> >,
+        indexed_by< "byverifiedid"_n, const_mem_fun<st_resolves, uint128_t,   &st_resolves::by_verified_id> >
+    > tb_resolves;
 
     // 全局变量
     TABLE st_global_vars {
@@ -456,6 +442,7 @@ private:
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     tb_meta_names                     _meta_names;
+    tb_resolves                       _resolves;
     tb_global_vars                    _global_vars;
     tb_global_parameters              _global_parameters;
     tb_pri_keys                       _pri_keys;
