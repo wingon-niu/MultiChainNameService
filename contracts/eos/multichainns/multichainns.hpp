@@ -83,12 +83,6 @@ public:
     // 设置所有的x级名称y个字节的收费，按照代码中写好的固定值
     ACTION setallfee();
 
-    // // 为用户新增转账信息
-    // ACTION addaccount(const name& user, const asset& quantity);
-
-    // // 用户注册
-    // ACTION userregist(const name& user, const string& user_name, const string& user_family_name, const string& gender, const string& birthday, const string& description);
-
 #ifdef NAME_SERVICE_WITH_CLEAR_FUNCTION_YES
     // 清除指定的 multi_index 中的所有数据，测试时使用，上线时去掉
     ACTION cleardata(const string& table_name);
@@ -102,6 +96,11 @@ public:
 #ifdef NAME_SERVICE_VERSION_DEV
     // 打印全局参数表中的所有参数，测试时使用，上线时去掉。
     ACTION printallgpms();
+#endif
+
+#ifdef NAME_SERVICE_VERSION_DEV
+    // 做一些测试使用，测试时使用，上线时去掉。
+    ACTION test();
 #endif
 
 private:
@@ -170,6 +169,12 @@ private:
 
     // 获取y个字节的x级名称的收费
     asset get_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
+
+    // 去掉字符串首尾的空格、Tab、回车、换行
+    string my_trim(const string& str_src);
+
+    // 获取字符串中含有.的数量
+    uint8_t get_num_of_dot_in_string(const string& str_src);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 

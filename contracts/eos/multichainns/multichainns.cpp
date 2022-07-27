@@ -38,6 +38,17 @@ void multichainns::deposit(name from, name to, eosio::asset quantity, std::strin
 // 创建名称
 void multichainns::create_meta_name(name from, name to, eosio::asset quantity, std::string memo)
 {
+    string  flag        = "Create meta name: ";
+    string  meta_name   = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
+
+    eosio::check( meta_name != "", "Error: Bad format of meta name." );
+
+    string  level_1_str = "";
+    string  level_2_str = "";
+    string  level_3_str = "";
+    uint8_t my_level    = 0;
+    uint8_t my_length   = 0;
+
 }
 
 // 初始化全局变量表
@@ -1009,5 +1020,44 @@ ACTION multichainns::cleardata(const string& table_name)
             }
         }
     }
+}
+#endif
+
+// 去掉字符串首尾的空格、Tab、回车、换行
+string multichainns::my_trim(const string& str_src)
+{
+    if (str_src == "") {
+        return "";
+    }
+    string s = str_src;
+    s.erase(0, s.find_first_not_of(" \t\r\n"));
+    s.erase(s.find_last_not_of(" \t\r\n") + 1);
+    return s;
+}
+
+// 获取字符串中含有.的数量
+uint8_t multichainns::get_num_of_dot_in_string(const string& str_src)
+{
+    uint8_t r = 0;
+    auto i = str_src.find(".");
+    auto j = str_src.find(".");
+    j = 0;
+    while (true) {
+        i = str_src.find(".", j);
+        if (i == str_src.npos) {
+            break;
+        }
+        else {
+            r++;
+            j = i + 1;
+        }
+    }
+    return r;
+}
+
+#ifdef NAME_SERVICE_VERSION_DEV
+// 做一些测试使用，测试时使用，上线时去掉。
+ACTION multichainns::test()
+{
 }
 #endif
