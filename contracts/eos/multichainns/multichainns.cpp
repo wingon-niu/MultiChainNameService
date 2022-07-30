@@ -1042,7 +1042,7 @@ uint8_t multichainns::get_num_of_dot_in_string(const string& str_src)
     auto i = str_src.find(".");
     auto j = str_src.find(".");
     j = 0;
-    while (true) {
+    for (auto k = 0; k < 256; k++) {
         i = str_src.find(".", j);
         if (i == str_src.npos) {
             break;
@@ -1059,5 +1059,33 @@ uint8_t multichainns::get_num_of_dot_in_string(const string& str_src)
 // 做一些测试使用，测试时使用，上线时去掉。
 ACTION multichainns::test()
 {
+    require_auth( _self );
+
+    print("\n\n");
+    print("\n<>: <",                                    my_trim(""),                               ">\n");
+    print("\n< >: <",                                   my_trim(" "),                              ">\n");
+    print("\n<  >: <",                                  my_trim("  "),                             ">\n");
+    print("\n<   >: <",                                 my_trim("   "),                            ">\n");
+    print("\n< \\t\\r\\n>: <",                          my_trim(" \t\r\n"),                        ">\n");
+    print("\n< \\t\\r\\n abc def>: <",                  my_trim(" \t\r\n abc def"),                ">\n");
+    print("\n< \\t\\r\\n  abc def>: <",                 my_trim(" \t\r\n  abc def"),               ">\n");
+    print("\n< \\t\\r\\n   abc def>: <",                my_trim(" \t\r\n   abc def"),              ">\n");
+    print("\n<abc def \\t\\r\\n >: <",                  my_trim("abc def \t\r\n "),                ">\n");
+    print("\n<abc def  \\t\\r\\n >: <",                 my_trim("abc def  \t\r\n "),               ">\n");
+    print("\n<abc def   \\t\\r\\n >: <",                my_trim("abc def   \t\r\n "),              ">\n");
+    print("\n< \\t\\r\\n abc def \\t\\r\\n >: <",       my_trim(" \t\r\n abc def \t\r\n "),        ">\n");
+    print("\n< \\t\\r\\n  abc def  \\t\\r\\n >: <",     my_trim(" \t\r\n  abc def  \t\r\n "),      ">\n");
+    print("\n< \\t\\r\\n   abc def   \\t\\r\\n >: <",   my_trim(" \t\r\n   abc def   \t\r\n "),    ">\n");
+    print("##############################\n");
+    print("\nabc : ",     get_num_of_dot_in_string("abc"),     "\n");
+    print("\nabc. : ",    get_num_of_dot_in_string("abc."),    "\n");
+    print("\n.abc : ",    get_num_of_dot_in_string(".abc"),    "\n");
+    print("\n.abc. : ",   get_num_of_dot_in_string(".abc."),   "\n");
+    print("\n.abc.d : ",  get_num_of_dot_in_string(".abc.d"),  "\n");
+    print("\ne.abc. : ",  get_num_of_dot_in_string("e.abc."),  "\n");
+    print("\ne.abc.d : ", get_num_of_dot_in_string("e.abc.d"), "\n");
+    print("\n... : ",     get_num_of_dot_in_string("..."),     "\n");
+    print("\n.a.a. : ",   get_num_of_dot_in_string(".a.a."),   "\n");
+    print("\n\n");
 }
 #endif
