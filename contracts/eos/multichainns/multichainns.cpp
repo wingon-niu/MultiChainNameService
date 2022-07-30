@@ -43,11 +43,88 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
 
     eosio::check( meta_name != "", "Error: Bad format of meta name." );
 
+    auto num_of_dot = get_num_of_dot_in_string(meta_name);
+
+    eosio::check( num_of_dot < 3, "Error: Bad format of meta name." );
+
     string  level_1_str = "";
     string  level_2_str = "";
     string  level_3_str = "";
     uint8_t my_level    = 0;
     uint8_t my_length   = 0;
+
+    if      (num_of_dot == 0) { my_level = 1; }
+    else if (num_of_dot == 1) { my_level = 2; }
+    else if (num_of_dot == 2) { my_level = 3; }
+
+    // 将名称分拆到各级字符串
+    if (my_level == 1) {
+        level_1_str = meta_name;
+    }
+    else if (my_level == 2) {
+        auto i = meta_name.find(".");
+        level_1_str = meta_name.substr(i + 1, meta_name.size() - i - 1);
+        level_2_str = meta_name.substr(0, i);
+    }
+    else if (my_level == 3) {
+        auto i = meta_name.find(".");
+        auto j = meta_name.find(".", i + 1);
+        level_1_str = meta_name.substr(j + 1, meta_name.size() - j - 1);
+        level_2_str = meta_name.substr(i + 1, j - i - 1);
+        level_3_str = meta_name.substr(0, i);
+    }
+
+    #ifdef NAME_SERVICE_VERSION_DEV
+    print("\n");
+    print("\nlevel_1_str: <", level_1_str, ">");
+    print("\nlevel_2_str: <", level_2_str, ">");
+    print("\nlevel_3_str: <", level_3_str, ">");
+    print("\n");
+    #endif
+
+    // 检查各级字符串的首尾是否有空格
+    if (my_level == 1) {
+        eosio::check(         level_1_str  != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_1_str) != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_1_str) == level_1_str, "Error: Bad format of meta name." );
+    }
+    else if (my_level == 2) {
+        eosio::check(         level_1_str  != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_1_str) != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_1_str) == level_1_str, "Error: Bad format of meta name." );
+
+        eosio::check(         level_2_str  != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_2_str) != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_2_str) == level_2_str, "Error: Bad format of meta name." );
+    }
+    else if (my_level == 3) {
+        eosio::check(         level_1_str  != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_1_str) != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_1_str) == level_1_str, "Error: Bad format of meta name." );
+
+        eosio::check(         level_2_str  != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_2_str) != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_2_str) == level_2_str, "Error: Bad format of meta name." );
+
+        eosio::check(         level_3_str  != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_3_str) != "",          "Error: Bad format of meta name." );
+        eosio::check( my_trim(level_3_str) == level_3_str, "Error: Bad format of meta name." );
+    }
+
+    // 检查各级字符串的长度
+    if (my_level == 1) {
+        my_length = level_1_str.size();
+    }
+    else if (my_level == 2) {
+        my_length = level_2_str.size();
+    }
+    else if (my_level == 3) {
+        my_length = level_3_str.size();
+    }
+    auto allowed_num_of_bytes     = get_allowed_num_of_bytes_of_level_x_name(my_level);
+    auto max_num_of_bytes_of_name = get_max_num_of_bytes_of_name();
+    eosio::check( my_length >= allowed_num_of_bytes,     "Error: Bad format of meta name." );
+    eosio::check( my_length <= max_num_of_bytes_of_name, "Error: Bad format of meta name." );
 
 }
 
