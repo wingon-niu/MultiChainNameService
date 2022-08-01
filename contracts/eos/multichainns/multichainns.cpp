@@ -136,11 +136,12 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     eosio::check( exist_in_meta_names(new_meta_name_sha_256_hash) == false, "Error: new meta name already exists." );
 
     // 检查上级名称是否存在
-    string upper_level_name = "";
+    string      upper_level_name = "";
+    checksum256 upper_level_name_sha256_hash;
     if      (my_level == 2) { upper_level_name = level_1_str; }
     else if (my_level == 3) { upper_level_name = level_2_str + "." + level_1_str; }
     if (my_level == 2 || my_level == 3) {
-        checksum256 upper_level_name_sha256_hash = sha256(upper_level_name.c_str(), upper_level_name.size());
+        upper_level_name_sha256_hash = sha256(upper_level_name.c_str(), upper_level_name.size());
         eosio::check( exist_in_meta_names(upper_level_name_sha256_hash) == true, "Error: upper level name does not exist." );
     }
 
@@ -150,6 +151,39 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     else                { name_length = 17; }
     asset fee = get_fee_of_y_bytes_level_x_name((uint32_t)my_level, name_length);
     eosio::check( fee == quantity, "Error: The transfer quantity is wrong." );
+
+    // 查询上级名称的id32
+    uint32_t id32_of_upper_level = 0;
+    if (my_level == 2 || my_level == 3) {
+        id32_of_upper_level = get_id32_of_name(upper_level_name_sha256_hash);
+    }
+
+    // 创建名称
+    _meta_names.emplace(_self, [&](auto& item) {
+        auto id                             = get_pri_key(name("metanames"));
+        eosio::check( id <= 4294967295,     "Error: The number of names exceeds the maximum limit." );
+        item.id64                           = id;
+        item.id32                           = static_cast<uint32_t>(id);
+        item.owner                          = from;
+        item.meta_name                      = new_meta_name;
+        item.meta_name_sha256_hash          = new_meta_name_sha_256_hash;
+        item.language                       = 0;
+        item.id32_of_upper_level            = id32_of_upper_level;
+        item.level                          = my_level;
+        item.length                         = my_length;
+        item.category                       = 1;
+        item.status                         = 0;
+        item.selling_price                  = asset((int64_t)0, MAIN_SYMBOL);
+        item.active_buyer                   = _self;
+        item.active_purchase_price          = asset((int64_t)0, MAIN_SYMBOL);
+        item.avatar                         = "";
+        item.description                    = "";
+        item.creation_time                  = now();
+        item.expiration_time                = ((uint64_t)1024)*365*24*60*60 + now();
+        item.spare1                         = "";
+        item.spare2                         = "";
+        item.spare3                         = "";
+    });
 
 }
 
@@ -1136,6 +1170,20 @@ bool multichainns::exist_in_meta_names(const checksum256& hash_of_name)
     else {
         if (itr->meta_name_sha256_hash == hash_of_name) { return true;  }
         else                                            { return false; }
+    }
+}
+
+// 获取指定sha256 hash对应的名称的id32，如果名称不存在则返回0
+uint32_t multichainns::get_id32_of_name(const checksum256& hash_of_name)
+{
+    auto index = _meta_names.get_index<name("bynamehash")>();
+    auto itr = index.lower_bound(hash_of_name);
+    if (itr == index.end()) {
+        return 0;
+    }
+    else {
+        if (itr->meta_name_sha256_hash == hash_of_name) { return itr->id32; }
+        else                                            { return 0;         }
     }
 }
 

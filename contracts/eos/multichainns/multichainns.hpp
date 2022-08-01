@@ -180,6 +180,9 @@ private:
     // 检查名称表中是否存在指定sha256 hash对应的名称
     bool exist_in_meta_names(const checksum256& hash_of_name);
 
+    // 获取指定sha256 hash对应的名称的id32，如果名称不存在则返回0
+    uint32_t get_id32_of_name(const checksum256& hash_of_name);
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 名称表
@@ -200,8 +203,8 @@ private:
         asset        active_purchase_price;  // 主动求购价格
         string       avatar;                 // JSON字符串，内含头像的首hash等内容。
         string       description;            // 描述
-        uint32_t     creation_time;          // 创建时间
-        uint32_t     expiration_time;        // 到期时间。在创建时间的1024年之后到期。
+        uint64_t     creation_time;          // 创建时间
+        uint64_t     expiration_time;        // 到期时间。在创建时间的1024年之后到期。
         string       spare1;                 // 备用1
         string       spare2;                 // 备用2
         string       spare3;                 // 备用3
