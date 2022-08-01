@@ -42,6 +42,7 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     string  meta_name   = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
 
     eosio::check( meta_name != "", "Error: Bad format of meta name." );
+    eosio::check( meta_name.find("\t") == meta_name.npos && meta_name.find("\r") == meta_name.npos && meta_name.find("\n") == meta_name.npos, "Error: Bad format of meta name." );
 
     auto num_of_dot = get_num_of_dot_in_string(meta_name);
 
@@ -126,6 +127,13 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     eosio::check( my_length >= allowed_num_of_bytes,     "Error: Bad format of meta name." );
     eosio::check( my_length <= max_num_of_bytes_of_name, "Error: Bad format of meta name." );
 
+    // 检查自己是否已经存在
+    string new_meta_name = "";
+    if      (my_level == 1) { new_meta_name = level_1_str; }
+    else if (my_level == 2) { new_meta_name = level_2_str + "." + level_1_str; }
+    else if (my_level == 3) { new_meta_name = level_3_str + "." + level_2_str + "." + level_1_str; }
+    checksum256 new_meta_name_sha_256_hash = sha256(new_meta_name.c_str(), new_meta_name.size());
+    //
 }
 
 // 初始化全局变量表

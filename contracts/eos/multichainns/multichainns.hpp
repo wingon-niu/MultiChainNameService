@@ -5,6 +5,7 @@
 #include <eosio/contract.hpp>
 #include <eosio/dispatcher.hpp>
 #include <eosio/print.hpp>
+#include <eosiolib/core/eosio/crypto.hpp>
 #include <utility>
 #include <vector>
 #include <string>
