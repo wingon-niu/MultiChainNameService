@@ -144,6 +144,13 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
         eosio::check( exist_in_meta_names(upper_level_name_sha256_hash) == true, "Error: upper level name does not exist." );
     }
 
+    // 检查转账金额是否正确
+    uint32_t name_length = 0;
+    if (my_length < 17) { name_length = my_length; }
+    else                { name_length = 17; }
+    asset fee = get_fee_of_y_bytes_level_x_name((uint32_t)my_level, name_length);
+    eosio::check( fee == quantity, "Error: The transfer quantity is wrong." );
+
 }
 
 // 初始化全局变量表
