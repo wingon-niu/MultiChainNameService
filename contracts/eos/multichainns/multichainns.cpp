@@ -133,7 +133,8 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     else if (my_level == 2) { new_meta_name = level_2_str + "." + level_1_str; }
     else if (my_level == 3) { new_meta_name = level_3_str + "." + level_2_str + "." + level_1_str; }
     checksum256 new_meta_name_sha_256_hash = sha256(new_meta_name.c_str(), new_meta_name.size());
-    //
+    eosio::check( exist_in_meta_names(new_meta_name_sha_256_hash) == false, "Error: new meta name already exists." );
+
 }
 
 // 初始化全局变量表
@@ -1107,6 +1108,20 @@ ACTION multichainns::cleardata(const string& table_name)
     }
 }
 #endif
+
+// 检查名称表中是否存在指定sha256 hash对应的名称
+bool multichainns::exist_in_meta_names(const checksum256& hash_of_name)
+{
+    auto index = _meta_names.get_index<name("bynamehash")>();
+    auto itr = index.lower_bound(hash_of_name);
+    if (itr == index.end()) {
+        return false;
+    }
+    else {
+        if (itr->meta_name_sha256_hash == hash_of_name) { return true;  }
+        else                                            { return false; }
+    }
+}
 
 // 去掉字符串首尾的空格、Tab、回车、换行
 string multichainns::my_trim(const string& str_src)

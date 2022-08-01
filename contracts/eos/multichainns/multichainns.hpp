@@ -177,6 +177,9 @@ private:
     // 获取字符串中含有.的数量
     uint8_t get_num_of_dot_in_string(const string& str_src);
 
+    // 检查名称表中是否存在指定sha256 hash对应的名称
+    bool exist_in_meta_names(const checksum256& hash_of_name);
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 名称表
