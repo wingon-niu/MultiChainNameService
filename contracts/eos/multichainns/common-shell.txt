@@ -9,7 +9,12 @@ cleoslocal -v push action multichainns cleardata '["table_name"]' -p multichainn
 cleoslocal -v push action multichainns test      '[]'             -p multichainns@active
 cleoslocal get currency balance eosio.token niuaaaaaaaaa SYS
 cleoslocal get currency balance eosio.token multichainns SYS
-cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name: abc" ]' -p niuaaaaaaaaa@owner
+cleoslocal get currency balance eosio.token eosnamesrvce SYS
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name: abc"    ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:       " ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:   \t  " ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:   \r  " ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:   \n  " ]' -p niuaaaaaaaaa@owner
 
 cleoslocal get table multichainns multichainns metanames
 cleoslocal get table multichainns multichainns resolves
