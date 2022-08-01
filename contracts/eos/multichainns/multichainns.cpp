@@ -135,6 +135,15 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     checksum256 new_meta_name_sha_256_hash = sha256(new_meta_name.c_str(), new_meta_name.size());
     eosio::check( exist_in_meta_names(new_meta_name_sha_256_hash) == false, "Error: new meta name already exists." );
 
+    // 检查上级名称是否存在
+    string upper_level_name = "";
+    if      (my_level == 2) { upper_level_name = level_1_str; }
+    else if (my_level == 3) { upper_level_name = level_2_str + "." + level_1_str; }
+    if (my_level == 2 || my_level == 3) {
+        checksum256 upper_level_name_sha256_hash = sha256(upper_level_name.c_str(), upper_level_name.size());
+        eosio::check( exist_in_meta_names(upper_level_name_sha256_hash) == true, "Error: upper level name does not exist." );
+    }
+
 }
 
 // 初始化全局变量表
