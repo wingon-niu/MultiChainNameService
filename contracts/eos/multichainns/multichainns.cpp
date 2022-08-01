@@ -185,6 +185,53 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
         item.spare3                         = "";
     });
 
+    // 更新名称数量
+    add_num_of_level_x_name_total((uint32_t)my_level);
+    add_num_of_y_bytes_level_x_name((uint32_t)my_level, (uint32_t)name_length);
+
+    // 给金库转账、给分享用户转账、更新分享总金额
+    if (my_level == 1) {
+    }
+    else if (my_level == 2) {
+    }
+    else if (my_level == 3) {
+        // 处理上级2级名称对应的用户分享
+        name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
+        float fee_of_level_2_name_share_percentage = get_fee_of_level_2_name_share_percentage();
+        asset share_quantity  = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = quantity.amount * fee_of_level_2_name_share_percentage;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_upper_level_name, share_quantity, string("Share from MultiChainNameService. Create meta name: ") + new_meta_name)
+        }.send();
+        add_total_share_amount_of_level_2_name(share_quantity);
+
+        // 处理上级1级名称对应的用户分享
+        checksum256 level_1_name_sha256_hash = sha256(level_1_str.c_str(), level_1_str.size());
+        name owner_of_level_1_name = get_owner_of_name(level_1_name_sha256_hash);
+        float fee_of_level_1_name_share_percentage = get_fee_of_level_1_name_share_percentage();
+        share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = quantity.amount * fee_of_level_1_name_share_percentage;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_level_1_name, share_quantity, string("Share from MultiChainNameService. Create meta name: ") + new_meta_name)
+        }.send();
+        add_total_share_amount_of_level_1_name(share_quantity);
+
+        // 剩余部分转到金库
+        share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = quantity.amount * (1.0 - fee_of_level_2_name_share_percentage - fee_of_level_1_name_share_percentage);
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, share_quantity, string("From MultiChainNameService. Create meta name: ") + new_meta_name)
+        }.send();
+    }
 }
 
 // 初始化全局变量表
@@ -1184,6 +1231,20 @@ uint32_t multichainns::get_id32_of_name(const checksum256& hash_of_name)
     else {
         if (itr->meta_name_sha256_hash == hash_of_name) { return itr->id32; }
         else                                            { return 0;         }
+    }
+}
+
+// 获取指定sha256 hash对应的名称的拥有者，如果名称不存在则返回name(".")
+name multichainns::get_owner_of_name(const checksum256& hash_of_name)
+{
+    auto index = _meta_names.get_index<name("bynamehash")>();
+    auto itr = index.lower_bound(hash_of_name);
+    if (itr == index.end()) {
+        return name(".");
+    }
+    else {
+        if (itr->meta_name_sha256_hash == hash_of_name) { return itr->owner; }
+        else                                            { return name(".");  }
     }
 }
 

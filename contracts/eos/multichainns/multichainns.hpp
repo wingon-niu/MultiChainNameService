@@ -21,6 +21,7 @@
 
 #define  MAIN_SYMBOL         symbol(symbol_code(NAME_SERVICE_MAIN_TOKEN), 4)
 #define  ZERO_ASSET          asset((int64_t)0, MAIN_SYMBOL)                       // 0 EOS
+#define  VAULT_ACCOUNT       name("eosnamesrvce")
 
 using namespace eosio;
 using namespace std;
@@ -182,6 +183,9 @@ private:
 
     // 获取指定sha256 hash对应的名称的id32，如果名称不存在则返回0
     uint32_t get_id32_of_name(const checksum256& hash_of_name);
+
+    // 获取指定sha256 hash对应的名称的拥有者，如果名称不存在则返回name(".")
+    name get_owner_of_name(const checksum256& hash_of_name);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
