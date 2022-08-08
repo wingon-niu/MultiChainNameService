@@ -2,6 +2,18 @@
 
 //
 
+// 检查 quantity 是否是有效的
+bool multichainns::check_quantity_is_available_or_not(const asset& quantity)
+{
+    if ( ! (quantity.symbol.is_valid())        )  { return false; }
+    if ( ! (quantity.symbol == MAIN_SYMBOL)    )  { return false; }
+    if ( ! (quantity.is_valid())               )  { return false; }
+    if ( ! (quantity.is_amount_within_range()) )  { return false; }
+    if ( ! (quantity.amount > 0)               )  { return false; }
+
+    return true;
+}
+
 // 接收用户转账，进行相应处理
 [[eosio::on_notify("eosio.token::transfer")]]
 void multichainns::deposit(name from, name to, eosio::asset quantity, std::string memo)
@@ -12,19 +24,7 @@ void multichainns::deposit(name from, name to, eosio::asset quantity, std::strin
     if (to != _self) {
         return;
     }
-    if (!quantity.symbol.is_valid()) {
-        return;
-    }
-    if (!(quantity.symbol == MAIN_SYMBOL)) {
-        return;
-    }
-    if (!quantity.is_valid()) {
-        return;
-    }
-    if (!quantity.is_amount_within_range()) {
-        return;
-    }
-    if (!(quantity.amount > 0)) {
+    if (check_quantity_is_available_or_not(quantity) == false) {
         return;
     }
 
@@ -261,6 +261,29 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
             std::make_tuple(get_self(), VAULT_ACCOUNT, share_quantity, string("From MultiChainNameService. Create meta name: ") + new_meta_name)
         }.send();
     }
+}
+
+// 将名称挂单出售
+ACTION multichainns::makesellord(const name& user, const string& meta_name, const asset& quantity)
+{
+    require_auth( user );
+
+    eosio::check( check_quantity_is_available_or_not(quantity) == true, "Error: quantity is not available." );
+    eosio::check( quantity.amount <= 4294967295,                        "Error: quantity exceeds maximum limit. Max = 429496.7295 EOS" );
+
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(), "Error: meta name does not exist." );
+    eosio::check( itr->owner == user,       "Error: this meta name is not belong to you.");
+
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.status        = 1;
+        item.selling_price = quantity;
+    });
 }
 
 // 初始化全局变量表

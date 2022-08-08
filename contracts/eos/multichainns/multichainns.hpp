@@ -46,6 +46,9 @@ public:
     [[eosio::on_notify("eosio.token::transfer")]]
     void deposit(name from, name to, eosio::asset quantity, std::string memo);
 
+    // 将名称挂单出售
+    ACTION makesellord(const name& user, const string& meta_name, const asset& quantity);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
@@ -109,6 +112,9 @@ private:
 
     // 创建名称
     void create_meta_name(name from, name to, eosio::asset quantity, std::string memo);
+
+    // 检查 quantity 是否是有效的
+    bool check_quantity_is_available_or_not(const asset& quantity);
 
     // 返回当前时间戳
     uint32_t now() const {
