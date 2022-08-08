@@ -208,7 +208,7 @@ private:
         string       avatar;                 // JSON字符串，内含头像的首hash等内容。
         string       description;            // 描述
         uint64_t     creation_time;          // 创建时间
-        uint64_t     expiration_time;        // 到期时间。在创建时间的1024年之后到期。
+        uint64_t     expiration_time;        // 到期时间
         string       spare1;                 // 备用1
         string       spare2;                 // 备用2
         string       spare3;                 // 备用3

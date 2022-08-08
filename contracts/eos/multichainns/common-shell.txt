@@ -15,6 +15,9 @@ cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:   \t  " ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:   \r  " ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:   \n  " ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\tb " ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\rb " ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\nb " ]' -p niuaaaaaaaaa@owner
 
 cleoslocal get table multichainns multichainns metanames
 cleoslocal get table multichainns multichainns resolves
@@ -50,7 +53,7 @@ cleoslocal -v push action multichainns set1nameqtt  '["0.1200 SYS"]'        -p m
 cleoslocal -v push action multichainns set2nameqtt  '["0.0800 SYS"]'        -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
 cleoslocal -v push action multichainns setmaxnumorh '[12]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
-cleoslocal -v push action multichainns setmnlength  '[36]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
+cleoslocal -v push action multichainns setmnlength  '[18]'                -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 cleoslocal -v push action multichainns setfeeof1rr  '["1.2000 SYS"]'      -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
 ###### 以下3行命令，用于在生产上线之后，需要单独修改x级名称y个字节的收费时使用。系统初始化时不需执行。
