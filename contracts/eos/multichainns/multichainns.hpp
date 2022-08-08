@@ -49,6 +49,9 @@ public:
     // 将名称挂单出售
     ACTION makesellord(const name& user, const string& meta_name, const asset& quantity);
 
+    // 撤消名称的挂单出售
+    ACTION cancelsellod(const name& user, const string& meta_name);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
