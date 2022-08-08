@@ -161,8 +161,7 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
     // 创建名称
     _meta_names.emplace(_self, [&](auto& item) {
         auto id                             = get_pri_key(name("metanames"));
-        //eosio::check( id <= 4294967295,     "Error: The number of names exceeds the maximum limit." );
-        eosio::check( id <= 23,             "Error: The number of names exceeds the maximum limit." );
+        eosio::check( id <= 4294967295,     "Error: The number of names exceeds the maximum limit." );
         item.id64                           = id;
         item.id32                           = static_cast<uint32_t>(id);
         item.owner                          = from;
