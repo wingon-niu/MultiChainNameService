@@ -116,6 +116,9 @@ private:
     // 创建名称
     void create_meta_name(name from, name to, eosio::asset quantity, std::string memo);
 
+    // 按照挂单出售直接购买名称
+    void direct_buy_meta_name(name from, name to, eosio::asset quantity, std::string memo);
+
     // 检查 quantity 是否是有效的
     bool check_quantity_is_available_or_not(const asset& quantity);
 

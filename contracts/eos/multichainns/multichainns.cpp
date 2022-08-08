@@ -31,6 +31,9 @@ void multichainns::deposit(name from, name to, eosio::asset quantity, std::strin
     if (memo.find("Create meta name: ") == 0) {             // 创建名称
         create_meta_name(from, to, quantity, memo);
     }
+    else if (memo.find("Direct buy meta name: ") == 0) {    // 按照挂单出售直接购买名称
+        direct_buy_meta_name(from, to, quantity, memo);
+    }
     else {
     }
 }
@@ -304,6 +307,11 @@ ACTION multichainns::cancelsellod(const name& user, const string& meta_name)
         item.status        = 0;
         item.selling_price = ZERO_ASSET;
     });
+}
+
+// 按照挂单出售直接购买名称
+void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantity, std::string memo)
+{
 }
 
 // 初始化全局变量表
