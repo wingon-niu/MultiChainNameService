@@ -286,6 +286,26 @@ ACTION multichainns::makesellord(const name& user, const string& meta_name, cons
     });
 }
 
+// 撤消名称的挂单出售
+ACTION multichainns::cancelsellod(const name& user, const string& meta_name)
+{
+    require_auth( user );
+
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(), "Error: meta name does not exist." );
+    eosio::check( itr->owner == user,       "Error: this meta name is not belong to you.");
+
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.status        = 0;
+        item.selling_price = ZERO_ASSET;
+    });
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {
