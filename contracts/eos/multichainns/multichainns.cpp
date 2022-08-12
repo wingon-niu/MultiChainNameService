@@ -287,7 +287,7 @@ ACTION multichainns::makeaspry(const name& user, const string& meta_name)
     if (itr_old != index.end() && itr_old->owner == user && itr_old->is_primary == 1) {
         auto id64_old = itr_old->id64;
         auto itr2 = _meta_names.find(id64_old);
-        eosio::check( itr2 != _meta_names.end(), "Error: meta name does not exist." );
+        eosio::check( itr2 != _meta_names.end(), "Error: the previous primary meta name does not exist. But it does exist!" );
         _meta_names.modify( itr2, _self, [&]( auto& item ) {
             item.is_primary = 0;
         });
