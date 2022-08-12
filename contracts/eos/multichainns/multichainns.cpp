@@ -270,6 +270,34 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
 // 将名称设置为主meta_name
 ACTION multichainns::makeaspry(const name& user, const string& meta_name)
 {
+    require_auth( user );
+
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(), "Error: meta name does not exist." );
+    eosio::check( itr->owner == user,       "Error: this meta name is not belong to you.");
+
+    // 去掉旧的主meta_name标志，如果有的话
+    auto index = _meta_names.get_index<name("byownpryid32")>();
+    auto itr_old = index.lower_bound( (uint128_t{user.value}<<64) + (uint128_t{1}<<32) + uint128_t{0} );
+    if (itr_old != index.end() && itr_old->owner == user && itr_old->is_primary == 1) {
+        auto id64_old = itr_old->id64;
+        auto itr2 = _meta_names.find(id64_old);
+        if (itr2 != _meta_names.end()) {
+            _meta_names.modify( itr2, _self, [&]( auto& item ) {
+                item.is_primary = 0;
+            });
+        }
+    }
+
+    // 设置新的主meta_name标志
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.is_primary = 1;
+    });
 }
 
 // 将名称挂单出售
