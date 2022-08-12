@@ -23,8 +23,8 @@ cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\rb " ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\nb " ]' -p niuaaaaaaaaa@owner
 
-cleoslocal get table multichainns multichainns metanames
-cleoslocal get table multichainns multichainns resolves
+cleoslocal get table multichainns multichainns metanames -l 100
+cleoslocal get table multichainns multichainns resolves  -l 100
 cleoslocal get table multichainns multichainns globalvars
 cleoslocal get table multichainns multichainns globalparams
 cleoslocal get table multichainns multichainns prikeys
