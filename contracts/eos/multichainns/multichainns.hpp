@@ -46,6 +46,9 @@ public:
     [[eosio::on_notify("eosio.token::transfer")]]
     void deposit(name from, name to, eosio::asset quantity, std::string memo);
 
+    // 将名称设置为主meta_name
+    ACTION makeaspry(const name& user, const string& meta_name);
+
     // 将名称挂单出售
     ACTION makesellord(const name& user, const string& meta_name, const asset& quantity);
 
@@ -209,6 +212,7 @@ private:
         string       meta_name;
         checksum256  meta_name_sha256_hash;
         uint8_t      language;               // 0: 没有设定      1: 中文      2: 英文
+        uint8_t      is_primary;             // 0：不是主meta_name  1：是主meta_name。一个owner可能会有多个meta_name，当只需要查询owner对应的一个meta_name时，会返回主meta_name。如果没有设置主meta_name，则返回没有查询到主meta_name的提示信息。
         uint32_t     id32_of_upper_level;    // 上级名称的id32。如果是0，表示这是一个1级名称。
         uint8_t      level;                  // 本名称的级别
         uint8_t      length;                 // 本名称的长度，单位是字节。只包括自身字符串的长度，不包括上、下级字符串与“.”在内。
@@ -266,6 +270,10 @@ private:
         uint128_t by_activebuyer_id32desc() const {
             return (uint128_t{active_buyer.value}<<64) + uint128_t{~id32};
         }
+
+        uint128_t by_owner_isprimary_id32() const {
+            return (uint128_t{owner.value}<<64) + (uint128_t{is_primary}<<32) + uint128_t{id32};
+        }
     };
     typedef eosio::multi_index<
         "metanames"_n, st_meta_names,
@@ -277,7 +285,8 @@ private:
         indexed_by< "byowneridasc"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_owner_id32asc> >,
         indexed_by< "byowniddesc"_n,  const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_owner_id32desc> >,
         indexed_by< "bybuyeridasc"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_activebuyer_id32asc> >,
-        indexed_by< "bybuyeriddes"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_activebuyer_id32desc> >
+        indexed_by< "bybuyeriddes"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_activebuyer_id32desc> >,
+        indexed_by< "byownpryid32"_n, const_mem_fun<st_meta_names, uint128_t,   &st_meta_names::by_owner_isprimary_id32> >
     > tb_meta_names;
 
     // 解析表

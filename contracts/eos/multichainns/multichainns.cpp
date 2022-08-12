@@ -171,6 +171,7 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
         item.meta_name                      = new_meta_name;
         item.meta_name_sha256_hash          = new_meta_name_sha_256_hash;
         item.language                       = 0;
+        item.is_primary                     = 0;
         item.id32_of_upper_level            = id32_of_upper_level;
         item.level                          = my_level;
         item.length                         = my_length;
@@ -264,6 +265,11 @@ void multichainns::create_meta_name(name from, name to, eosio::asset quantity, s
             std::make_tuple(get_self(), VAULT_ACCOUNT, share_quantity, string("From MultiChainNameService. Create meta name: ") + new_meta_name)
         }.send();
     }
+}
+
+// 将名称设置为主meta_name
+ACTION multichainns::makeaspry(const name& user, const string& meta_name)
+{
 }
 
 // 将名称挂单出售
