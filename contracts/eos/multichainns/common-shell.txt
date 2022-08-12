@@ -7,6 +7,7 @@ cleoslocal set contract multichainns ../multichainns -p multichainns@active
 
 cleoslocal -v push action multichainns cleardata '["table_name"]' -p multichainns@active
 cleoslocal -v push action multichainns test      '[]'             -p multichainns@active
+cleoslocal -v push action multichainns makeaspry    '["niuaaaaaaaaa", "abc"                ]'             -p niuaaaaaaaaa@owner
 cleoslocal -v push action multichainns makesellord  '["niuaaaaaaaaa", "abc", "100.0001 SYS"]'             -p niuaaaaaaaaa@owner
 cleoslocal -v push action multichainns cancelsellod '["niuaaaaaaaaa", "abc"                ]'             -p niuaaaaaaaaa@owner
 
