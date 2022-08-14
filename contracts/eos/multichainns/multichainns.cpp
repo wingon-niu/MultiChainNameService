@@ -445,7 +445,7 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
         name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
         float fee_of_level_1_name_share_percentage = get_fee_of_level_1_name_share_percentage();
         asset share_quantity  = asset((int64_t)0, MAIN_SYMBOL);
-        share_quantity.amount = fee * fee_of_level_1_name_share_percentage;
+        share_quantity.amount = fee.amount * fee_of_level_1_name_share_percentage;
         action{
             permission_level{get_self(), "active"_n},
             "eosio.token"_n,
@@ -458,7 +458,7 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
 
         // 剩余部分转到金库
         share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
-        share_quantity.amount = fee * (1.0 - fee_of_level_1_name_share_percentage);
+        share_quantity.amount = fee.amount * (1.0 - fee_of_level_1_name_share_percentage);
         action{
             permission_level{get_self(), "active"_n},
             "eosio.token"_n,
@@ -473,7 +473,7 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
         name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
         float fee_of_level_2_name_share_percentage = get_fee_of_level_2_name_share_percentage();
         asset share_quantity  = asset((int64_t)0, MAIN_SYMBOL);
-        share_quantity.amount = fee * fee_of_level_2_name_share_percentage;
+        share_quantity.amount = fee.amount * fee_of_level_2_name_share_percentage;
         action{
             permission_level{get_self(), "active"_n},
             "eosio.token"_n,
@@ -490,7 +490,7 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
         name owner_of_level_1_name = get_owner_of_name(level_1_name_sha256_hash);
         float fee_of_level_1_name_share_percentage = get_fee_of_level_1_name_share_percentage();
         share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
-        share_quantity.amount = fee * fee_of_level_1_name_share_percentage;
+        share_quantity.amount = fee.amount * fee_of_level_1_name_share_percentage;
         action{
             permission_level{get_self(), "active"_n},
             "eosio.token"_n,
@@ -503,7 +503,7 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
 
         // 剩余部分转到金库
         share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
-        share_quantity.amount = fee * (1.0 - fee_of_level_2_name_share_percentage - fee_of_level_1_name_share_percentage);
+        share_quantity.amount = fee.amount * (1.0 - fee_of_level_2_name_share_percentage - fee_of_level_1_name_share_percentage);
         action{
             permission_level{get_self(), "active"_n},
             "eosio.token"_n,
