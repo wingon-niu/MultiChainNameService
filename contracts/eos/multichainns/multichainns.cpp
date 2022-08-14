@@ -345,6 +345,47 @@ ACTION multichainns::cancelsellod(const name& user, const string& meta_name)
 // 按照挂单出售直接购买名称
 void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantity, std::string memo)
 {
+    string flag             = "Direct buy meta name: ";
+    string left_str         = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
+    auto   space_pos        = left_str.find(" ");
+    string target_owner     = my_trim(left_str.substr(0, space_pos));
+    string target_meta_name = my_trim(left_str.substr(space_pos + 1, left_str.size() - space_pos - 1));
+
+    checksum256 meta_name_sha_256_hash = sha256(target_meta_name.c_str(), target_meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(),         "Error: meta name does not exist." );
+    eosio::check( itr->owner == name(target_owner), "Error: the owner of this meta name has changed.");
+    eosio::check( itr->status == 1,                 "Error: this meta name is not for sale now.");
+    eosio::check( itr->selling_price == quantity,   "Error: the selling price of this meta name is wrong.");
+    eosio::check( itr->owner != from,               "Error: you can't buy your own meta name.");
+
+    // 更新owner和相关状态
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.owner         = from;
+        item.is_primary    = 0;
+        item.status        = 0;
+        item.selling_price = ZERO_ASSET;
+    });
+
+    // 向原owner转账，原owner得到出售名称的收入
+    float fee_of_transaction_amount_percentage = get_fee_of_transaction_amount_percentage();
+    asset fee = ZERO_ASSET;
+    fee.amount = quantity.amount * fee_of_transaction_amount_percentage;
+    asset owner_income = ZERO_ASSET;
+    owner_income.amount = quantity.amount - fee.amount;
+    action{
+        permission_level{get_self(), "active"_n},
+        "eosio.token"_n,
+        "transfer"_n,
+        std::make_tuple(get_self(), name(target_owner), owner_income, 
+                        string("From MultiChainNameService. The sale order has been closed. The transaction has been concluded. Saled meta name: ") + target_meta_name
+        )
+    }.send();
+
 }
 
 // 初始化全局变量表
