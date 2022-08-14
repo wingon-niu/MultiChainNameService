@@ -386,8 +386,7 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
         )
     }.send();
 
-    // 下面进行收入的分享
-
+    // 下面进行交易手续费收入的分享
     auto meta_name  = target_meta_name;
     auto num_of_dot = get_num_of_dot_in_string(meta_name);
     eosio::check( num_of_dot < 3, "Error: Bad format of meta name." );
