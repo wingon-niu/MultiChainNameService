@@ -351,9 +351,8 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
     string target_owner     = my_trim(left_str.substr(0, space_pos));
     string target_meta_name = my_trim(left_str.substr(space_pos + 1, left_str.size() - space_pos - 1));
 
-    eosio::check( left_str         != "",         "Error: wrong format, missing owner and meta name." );
-    eosio::check( target_owner     != "",         "Error: wrong format, missing owner." );
-    eosio::check( target_meta_name != "",         "Error: wrong format, missing meta name." );
+    eosio::check( left_str  != "",            "Error: wrong format, missing owner and meta name." );
+    eosio::check( space_pos != left_str.npos, "Error: wrong format, missing owner or  meta name." );
 
     checksum256 meta_name_sha_256_hash = sha256(target_meta_name.c_str(), target_meta_name.size());
     eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
@@ -1596,5 +1595,16 @@ ACTION multichainns::test()
     print("\n... : ",     get_num_of_dot_in_string("..."),     "\n");
     print("\n.a.a. : ",   get_num_of_dot_in_string(".a.a."),   "\n");
     print("\n\n");
+
+    string memo             = "Direct buy meta name: abcdefabcdef ";
+    string flag             = "Direct buy meta name: ";
+    string left_str         = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
+    auto   space_pos        = left_str.find(" ");
+    string target_owner     = my_trim(left_str.substr(0, space_pos));
+    string target_meta_name = my_trim(left_str.substr(space_pos + 1, left_str.size() - space_pos - 1));
+    print("left_str:        <", left_str,         ">\n");
+    print("space_pos:       <", space_pos,        ">\n");
+    print("target_owner:    <", target_owner,     ">\n");
+    print("target_meta_name:<", target_meta_name, ">\n");
 }
 #endif

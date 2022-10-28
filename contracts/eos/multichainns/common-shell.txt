@@ -12,6 +12,8 @@ cleoslocal -v push action multichainns makesellord  '["niuaaaaaaaaa", "abc", "10
 cleoslocal -v push action multichainns cancelsellod '["niuaaaaaaaaa", "abc"                ]'             -p niuaaaaaaaaa@owner
 
 cleoslocal get currency balance eosio.token niuaaaaaaaaa SYS
+cleoslocal get currency balance eosio.token niubbbbbbbbb SYS
+cleoslocal get currency balance eosio.token niuccccccccc SYS
 cleoslocal get currency balance eosio.token multichainns SYS
 cleoslocal get currency balance eosio.token eosnamesrvce SYS
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name: abc"    ]' -p niuaaaaaaaaa@owner
@@ -29,6 +31,11 @@ cleoslocal get table multichainns multichainns resolves  -l 100
 cleoslocal get table multichainns multichainns globalvars
 cleoslocal get table multichainns multichainns globalparams
 cleoslocal get table multichainns multichainns prikeys
+
+cleoslocal get actions eosnamesrvce
+cleoslocal get actions eosnamesrvce -j 8 0
+cleoslocal get actions niuaaaaaaaaa
+cleoslocal get actions niuaaaaaaaaa -j 8 0
 
 # 下面是上线时需要执行的初始化操作：（标记为测试时使用的不做）
 
