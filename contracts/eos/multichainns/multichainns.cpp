@@ -515,6 +515,9 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
             )
         }.send();
     }
+
+    // 累加总成交金额
+    add_total_transaction_amount(quantity);
 }
 
 // 初始化全局变量表
