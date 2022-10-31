@@ -34,6 +34,9 @@ void multichainns::deposit(name from, name to, eosio::asset quantity, std::strin
     else if (memo.find("Direct buy meta name: ") == 0) {    // 按照挂单出售直接购买名称
         direct_buy_meta_name(from, to, quantity, memo);
     }
+    else if (memo.find("Actively place purchase order for meta name: ") == 0) {    // 对名称发起主动求购订单
+        actively_place_purchase_order_for_meta_name(from, to, quantity, memo);
+    }
     else {
     }
 }
@@ -518,6 +521,29 @@ void multichainns::direct_buy_meta_name(name from, name to, eosio::asset quantit
 
     // 累加总成交金额
     add_total_transaction_amount(quantity);
+}
+
+// 对名称发起主动求购订单
+void multichainns::actively_place_purchase_order_for_meta_name(name from, name to, eosio::asset quantity, std::string memo)
+{
+    string flag             = "Actively place purchase order for meta name: ";
+    string target_meta_name = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
+    eosio::check( target_meta_name != "", "Error: wrong format, missing meta name." );
+
+    checksum256 meta_name_sha_256_hash = sha256(target_meta_name.c_str(), target_meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(),         "Error: meta name does not exist." );
+    eosio::check( itr->owner != from,               "Error: you can't actively place purchase order for your own meta name.");
+
+    name previous_active_buyer = itr->active_buyer;
+    if (previous_active_buyer != _self) {
+        eosio::check( quantity.amount > itr->active_purchase_price.amount, "Error: The purchase price must be greater than the current purchase price." );
+    }
+
 }
 
 // 初始化全局变量表

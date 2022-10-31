@@ -122,6 +122,9 @@ private:
     // 按照挂单出售直接购买名称
     void direct_buy_meta_name(name from, name to, eosio::asset quantity, std::string memo);
 
+    // 对名称发起主动求购订单
+    void actively_place_purchase_order_for_meta_name(name from, name to, eosio::asset quantity, std::string memo);
+
     // 检查 quantity 是否是有效的
     bool check_quantity_is_available_or_not(const asset& quantity);
 
