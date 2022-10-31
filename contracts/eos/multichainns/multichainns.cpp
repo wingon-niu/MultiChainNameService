@@ -564,6 +564,38 @@ void multichainns::actively_place_purchase_order_for_meta_name(name from, name t
     }
 }
 
+// 撤消主动求购订单
+ACTION multichainns::cancelactpo(const name& user, const string& meta_name, const asset& quantity)
+{
+    require_auth( user );
+
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(),               "Error: meta name does not exist." );
+    eosio::check( itr->active_buyer == user,              "Error: You are not the current owner of the purchase order.");
+    eosio::check( itr->active_purchase_price == quantity, "Error: The price you entered is inconsistent with the purchase order.");
+
+    // 更新相关状态
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.active_buyer          = _self;
+        item.active_purchase_price = asset((int64_t)0, MAIN_SYMBOL);
+    });
+
+    // 向本用户也就是主动求购者退款
+    action{
+        permission_level{get_self(), "active"_n},
+        "eosio.token"_n,
+        "transfer"_n,
+        std::make_tuple(get_self(), user, quantity, 
+                        string("Refund from MultiChainNameService. Your purchase order has been canceled by yourself. Meta name: ") + meta_name
+        )
+    }.send();
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {

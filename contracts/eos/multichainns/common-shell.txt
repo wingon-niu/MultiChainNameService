@@ -10,6 +10,7 @@ cleoslocal -v push action multichainns test      '[]'             -p multichainn
 cleoslocal -v push action multichainns makeaspry    '["niuaaaaaaaaa", "abc"                ]'             -p niuaaaaaaaaa@owner
 cleoslocal -v push action multichainns makesellord  '["niuaaaaaaaaa", "abc", "100.0001 SYS"]'             -p niuaaaaaaaaa@owner
 cleoslocal -v push action multichainns cancelsellod '["niuaaaaaaaaa", "abc"                ]'             -p niuaaaaaaaaa@owner
+cleoslocal -v push action multichainns cancelactpo  '["niuaaaaaaaaa", "abc", "100.0001 SYS"]'             -p niuaaaaaaaaa@owner
 
 cleoslocal get currency balance eosio.token niuaaaaaaaaa SYS
 cleoslocal get currency balance eosio.token niubbbbbbbbb SYS
@@ -25,6 +26,7 @@ cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\rb " ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\nb " ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Direct buy meta name: niuaaaaaaaaa abc" ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Actively place purchase order for meta name: abc" ]' -p niuaaaaaaaaa@owner
 
 cleoslocal get table multichainns multichainns metanames -l 100
 cleoslocal get table multichainns multichainns resolves  -l 100

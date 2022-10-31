@@ -55,6 +55,9 @@ public:
     // 撤消名称的挂单出售
     ACTION cancelsellod(const name& user, const string& meta_name);
 
+    // 撤消主动求购订单
+    ACTION cancelactpo(const name& user, const string& meta_name, const asset& quantity);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
