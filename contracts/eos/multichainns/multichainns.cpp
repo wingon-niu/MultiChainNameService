@@ -539,11 +539,29 @@ void multichainns::actively_place_purchase_order_for_meta_name(name from, name t
     eosio::check( itr != _meta_names.end(),         "Error: meta name does not exist." );
     eosio::check( itr->owner != from,               "Error: you can't actively place purchase order for your own meta name.");
 
-    name previous_active_buyer = itr->active_buyer;
+    name  previous_active_buyer          = itr->active_buyer;
+    asset previous_active_purchase_price = itr->active_purchase_price;
     if (previous_active_buyer != _self) {
         eosio::check( quantity.amount > itr->active_purchase_price.amount, "Error: The purchase price must be greater than the current purchase price." );
     }
 
+    // 更新相关状态
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.active_buyer          = from;
+        item.active_purchase_price = quantity;
+    });
+
+    // 向原来的主动求购者退款
+    if (previous_active_buyer != _self) {
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), previous_active_buyer, previous_active_purchase_price, 
+                            string("Refund from MultiChainNameService. Your purchase order has been replaced by a higher price. Meta name: ") + target_meta_name
+            )
+        }.send();
+    }
 }
 
 // 初始化全局变量表
