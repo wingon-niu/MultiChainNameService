@@ -596,6 +596,179 @@ ACTION multichainns::cancelactpo(const name& user, const string& meta_name, cons
     }.send();
 }
 
+// 按照求购订单直接出售名称
+ACTION multichainns::directdealpo(const name& user, const name& buyer, const string& meta_name, const asset& quantity)
+{
+    require_auth( user );
+
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32 = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64 = id32;
+    auto itr = _meta_names.find(id64);
+    eosio::check( itr != _meta_names.end(),               "Error: meta name does not exist." );
+    eosio::check( itr->active_buyer != _self,             "Error: buyer can not be _self.");
+    eosio::check( itr->owner == user,                     "Error: this meta name is not belong to you.");
+    eosio::check( itr->active_buyer == buyer,             "Error: wrong buyer.");
+    eosio::check( itr->active_purchase_price == quantity, "Error: wrong quantity.");
+    eosio::check( itr->owner != itr->active_buyer,        "Error: owner can not be active buyer.");
+
+    // 更新相关状态
+    _meta_names.modify( itr, _self, [&]( auto& item ) {
+        item.owner                 = buyer;
+        item.is_primary            = 0;
+        item.status                = 0;
+        item.selling_price         = asset((int64_t)0, MAIN_SYMBOL);
+        item.active_buyer          = _self;
+        item.active_purchase_price = asset((int64_t)0, MAIN_SYMBOL);
+    });
+
+    // 向原owner转账，原owner得到出售名称的收入
+    float fee_of_transaction_amount_percentage = get_fee_of_transaction_amount_percentage();
+    asset fee = ZERO_ASSET;
+    fee.amount = quantity.amount * fee_of_transaction_amount_percentage;
+    asset owner_income = ZERO_ASSET;
+    owner_income.amount = quantity.amount - fee.amount;
+    action{
+        permission_level{get_self(), "active"_n},
+        "eosio.token"_n,
+        "transfer"_n,
+        std::make_tuple(get_self(), user, owner_income, 
+                        string("From MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+        )
+    }.send();
+
+    // 下面进行交易手续费收入的分享
+    auto num_of_dot = get_num_of_dot_in_string(meta_name);
+    eosio::check( num_of_dot < 3, "Error: Bad format of meta name." );
+
+    string  level_1_str = "";
+    string  level_2_str = "";
+    string  level_3_str = "";
+    uint8_t my_level    = 0;
+
+    if      (num_of_dot == 0) { my_level = 1; }
+    else if (num_of_dot == 1) { my_level = 2; }
+    else if (num_of_dot == 2) { my_level = 3; }
+
+    // 将名称分拆到各级字符串
+    if (my_level == 1) {
+        level_1_str = meta_name;
+    }
+    else if (my_level == 2) {
+        auto i = meta_name.find(".");
+        level_1_str = meta_name.substr(i + 1, meta_name.size() - i - 1);
+        level_2_str = meta_name.substr(0, i);
+    }
+    else if (my_level == 3) {
+        auto i = meta_name.find(".");
+        auto j = meta_name.find(".", i + 1);
+        level_1_str = meta_name.substr(j + 1, meta_name.size() - j - 1);
+        level_2_str = meta_name.substr(i + 1, j - i - 1);
+        level_3_str = meta_name.substr(0, i);
+    }
+
+    // 检查上级名称是否存在
+    string      upper_level_name = "";
+    checksum256 upper_level_name_sha256_hash;
+    if      (my_level == 2) { upper_level_name = level_1_str; }
+    else if (my_level == 3) { upper_level_name = level_2_str + "." + level_1_str; }
+    if (my_level == 2 || my_level == 3) {
+        upper_level_name_sha256_hash = sha256(upper_level_name.c_str(), upper_level_name.size());
+        eosio::check( exist_in_meta_names(upper_level_name_sha256_hash) == true, "Error: upper level name does not exist." );
+    }
+
+    // 给金库转账、给分享用户转账、更新分享总金额
+    if (my_level == 1) {
+        // 转到金库
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, fee, 
+                            string("From MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+            )
+        }.send();
+    }
+    else if (my_level == 2) {
+        // 处理上级1级名称对应的用户分享
+        name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
+        float fee_of_level_1_name_share_percentage = get_fee_of_level_1_name_share_percentage();
+        asset share_quantity  = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = fee.amount * fee_of_level_1_name_share_percentage;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_upper_level_name, share_quantity, 
+                            string("Share from MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+            )
+        }.send();
+        add_total_share_amount_of_level_1_name(share_quantity);
+
+        // 剩余部分转到金库
+        share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = fee.amount * (1.0 - fee_of_level_1_name_share_percentage);
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, share_quantity, 
+                            string("From MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+            )
+        }.send();
+    }
+    else if (my_level == 3) {
+        // 处理上级2级名称对应的用户分享
+        name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
+        float fee_of_level_2_name_share_percentage = get_fee_of_level_2_name_share_percentage();
+        asset share_quantity  = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = fee.amount * fee_of_level_2_name_share_percentage;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_upper_level_name, share_quantity, 
+                            string("Share from MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+            )
+        }.send();
+        add_total_share_amount_of_level_2_name(share_quantity);
+
+        // 处理上级1级名称对应的用户分享
+        checksum256 level_1_name_sha256_hash = sha256(level_1_str.c_str(), level_1_str.size());
+        eosio::check( exist_in_meta_names(level_1_name_sha256_hash) == true, "Error: level 1 name does not exist." );
+        name owner_of_level_1_name = get_owner_of_name(level_1_name_sha256_hash);
+        float fee_of_level_1_name_share_percentage = get_fee_of_level_1_name_share_percentage();
+        share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = fee.amount * fee_of_level_1_name_share_percentage;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_level_1_name, share_quantity, 
+                            string("Share from MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+            )
+        }.send();
+        add_total_share_amount_of_level_1_name(share_quantity);
+
+        // 剩余部分转到金库
+        share_quantity        = asset((int64_t)0, MAIN_SYMBOL);
+        share_quantity.amount = fee.amount * (1.0 - fee_of_level_2_name_share_percentage - fee_of_level_1_name_share_percentage);
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, share_quantity, 
+                            string("From MultiChainNameService. The purchase order has been closed. The transaction has been concluded. Meta name: ") + meta_name
+            )
+        }.send();
+    }
+
+    // 累加总成交金额
+    add_total_transaction_amount(quantity);
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {

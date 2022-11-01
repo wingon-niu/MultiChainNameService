@@ -58,6 +58,9 @@ public:
     // 撤消主动求购订单
     ACTION cancelactpo(const name& user, const string& meta_name, const asset& quantity);
 
+    // 按照求购订单直接出售名称
+    ACTION directdealpo(const name& user, const name& buyer, const string& meta_name, const asset& quantity);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
