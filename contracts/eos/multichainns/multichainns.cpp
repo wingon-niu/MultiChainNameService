@@ -769,6 +769,34 @@ ACTION multichainns::directdealpo(const name& user, const name& buyer, const str
     add_total_transaction_amount(quantity);
 }
 
+// 创建或者编辑解析目标
+ACTION multichainns::crtedrtarget(const name& target, const uint64_t sort_number, const uint32_t max_length, const string& allowed_characters, const string& denied_characters)
+{
+    require_auth( _self );
+
+    auto itr = _resolve_targets.find(target.value);
+
+    if( itr == _resolve_targets.end() ) {
+        _resolve_targets.emplace(_self, [&](auto& item){
+            item.target             = target;
+            item.sort_number        = sort_number;
+            item.max_length         = max_length;
+            item.allowed_characters = allowed_characters;
+            item.denied_characters  = denied_characters;
+            item.create_edit_time   = now();
+        });
+    }
+    else {
+        _resolve_targets.modify( itr, _self, [&]( auto& item ) {
+            item.sort_number        = sort_number;
+            item.max_length         = max_length;
+            item.allowed_characters = allowed_characters;
+            item.denied_characters  = denied_characters;
+            item.create_edit_time   = now();
+        });
+    }
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {

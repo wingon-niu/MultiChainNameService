@@ -62,6 +62,9 @@ public:
     // 按照求购订单直接出售名称
     ACTION directdealpo(const name& user, const name& buyer, const string& meta_name, const asset& quantity);
 
+    // 创建或者编辑解析目标
+    ACTION crtedrtarget(const name& target, const uint64_t sort_number, const uint32_t max_length, const string& allowed_characters, const string& denied_characters);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
@@ -307,8 +310,10 @@ private:
         string       target_object;              // 解析的目标。例如：btc/eth/eos/arweave/ipvfour/ipvsix
         string       target_content;             // 解析出来的内容。例如：btc地址
         checksum256  target_content_sha256_hash; // 解析出来的内容的sha256 hash
+        uint64_t     resolve_time;               // 解析时间
         string       reverse_proof;              // 反向证明。
         uint8_t      verified;                   // 反向证明是否已经经过验证。   0：未验证；   1：已验证。
+        uint64_t     verified_time;              // 反向证明通过验证的时间
 
         uint64_t  primary_key()                    const { return id; }
 
@@ -338,6 +343,7 @@ private:
         uint32_t     max_length;                 // 解析出来的内容允许的最大长度，单位：字节
         string       allowed_characters;         // 解析出来的内容允许的字符
         string       denied_characters;          // 解析出来的内容禁止的字符
+        uint64_t     create_edit_time;           // 创建或者修改的时间
 
         uint64_t  primary_key()                  const { return target.value; }
 

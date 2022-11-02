@@ -80,6 +80,12 @@ cleoslocal -v push action multichainns setfeeofxy '[3, 9, "99.9999 SYS"]' -p mul
 ###### 以下1行命令，在系统初始化时执行一次，生产上线之后，不可再次执行。
 cleoslocal -v push action multichainns setallfee '[]'                     -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
+###### 以下的命令是初始化解析目标的，可以多次执行。
+cleoslocal -v push action multichainns crtedrtarget '["btc",     100, 68, "allowed_characters", "denied_characters"]' -p multichainns@active
+cleoslocal -v push action multichainns crtedrtarget '["eth",     200, 84, "allowed_characters", "denied_characters"]' -p multichainns@active
+cleoslocal -v push action multichainns crtedrtarget '["arweave", 300, 86, "allowed_characters", "denied_characters"]' -p multichainns@active
+
+###### 以下1行命令，是测试时使用的。
 cleoslocal -v push action multichainns printallgpms '[]'                  -p multichainns@active  # 测试时使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
 
