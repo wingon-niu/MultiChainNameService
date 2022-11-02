@@ -215,6 +215,9 @@ private:
     // 获取指定sha256 hash对应的名称的拥有者，如果名称不存在则返回name(".")
     name get_owner_of_name(const checksum256& hash_of_name);
 
+    // 获取解析表中的某个解析出来的内容的sha256 hash的数量
+    uint8_t get_count_of_target_content_sha256_hash(const checksum256& target_content_sha256_hash);
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 名称表

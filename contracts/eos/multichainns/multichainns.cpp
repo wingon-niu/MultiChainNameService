@@ -797,6 +797,19 @@ ACTION multichainns::crtedrtarget(const name& target, const uint64_t sort_number
     }
 }
 
+// 获取解析表中的某个解析出来的内容的sha256 hash的数量
+uint8_t multichainns::get_count_of_target_content_sha256_hash(const checksum256& target_content_sha256_hash)
+{
+    uint8_t num = 0;
+    auto index = _resolves.get_index<name("bytargethash")>();
+    auto itr = index.lower_bound(target_content_sha256_hash);
+    while(itr != index.end() && itr->target_content_sha256_hash == target_content_sha256_hash) {
+        num++;
+        itr++;
+    }
+    return num;
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {

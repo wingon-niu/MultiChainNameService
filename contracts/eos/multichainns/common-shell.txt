@@ -84,6 +84,8 @@ cleoslocal -v push action multichainns setallfee '[]'                     -p mul
 cleoslocal -v push action multichainns crtedrtarget '["btc",     100, 68, "allowed_characters", "denied_characters"]' -p multichainns@active
 cleoslocal -v push action multichainns crtedrtarget '["eth",     200, 84, "allowed_characters", "denied_characters"]' -p multichainns@active
 cleoslocal -v push action multichainns crtedrtarget '["arweave", 300, 86, "allowed_characters", "denied_characters"]' -p multichainns@active
+cleoslocal -v push action multichainns crtedrtarget '["ipvfour", 500, 30, "allowed_characters", "denied_characters"]' -p multichainns@active
+cleoslocal -v push action multichainns crtedrtarget '["ipvsix",  600, 78, "allowed_characters", "denied_characters"]' -p multichainns@active
 
 ###### 以下1行命令，是测试时使用的。
 cleoslocal -v push action multichainns printallgpms '[]'                  -p multichainns@active  # 测试时使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
