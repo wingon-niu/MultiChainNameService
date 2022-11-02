@@ -38,6 +38,7 @@ public:
     multichainns(name self, name first_receiver, datastream<const char*> ds) : contract(self, first_receiver, ds),
         _meta_names                     (get_self(), get_self().value),
         _resolves                       (get_self(), get_self().value),
+        _resolve_targets                (get_self(), get_self().value),
         _global_vars                    (get_self(), get_self().value),
         _global_parameters              (get_self(), get_self().value),
         _pri_keys                       (get_self(), get_self().value){};
@@ -330,6 +331,25 @@ private:
         indexed_by< "byverifiedid"_n, const_mem_fun<st_resolves, uint128_t,   &st_resolves::by_verified_id> >
     > tb_resolves;
 
+    // 解析的目标或者种类
+    TABLE st_resolve_targets {
+        name         target;                     // 解析的目标。例如：btc/eth/eos/arweave/ipvfour/ipvsix
+        uint64_t     sort_number;                // 用于显示时的排序
+        uint32_t     max_length;                 // 解析出来的内容允许的最大长度，单位：字节
+        string       allowed_characters;         // 解析出来的内容允许的字符
+        string       denied_characters;          // 解析出来的内容禁止的字符
+
+        uint64_t  primary_key()                  const { return target.value; }
+
+        uint64_t  by_sortnumber_asc()            const {
+            return sort_number;
+        }
+    };
+    typedef eosio::multi_index<
+        "rslvtargets"_n, st_resolve_targets,
+        indexed_by< "bysortnumasc"_n, const_mem_fun<st_resolve_targets, uint64_t,   &st_resolve_targets::by_sortnumber_asc> >
+    > tb_resolve_targets;
+
     // 全局变量
     TABLE st_global_vars {
         uint64_t     id;
@@ -496,6 +516,7 @@ private:
 
     tb_meta_names                     _meta_names;
     tb_resolves                       _resolves;
+    tb_resolve_targets                _resolve_targets;
     tb_global_vars                    _global_vars;
     tb_global_parameters              _global_parameters;
     tb_pri_keys                       _pri_keys;

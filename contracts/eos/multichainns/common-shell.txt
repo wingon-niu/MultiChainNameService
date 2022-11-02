@@ -31,6 +31,7 @@ cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "
 
 cleoslocal get table multichainns multichainns metanames -l 100
 cleoslocal get table multichainns multichainns resolves  -l 100
+cleoslocal get table multichainns multichainns rslvtargets  --index 2 --key-type i64 --encode-type dec -l 100 
 cleoslocal get table multichainns multichainns globalvars
 cleoslocal get table multichainns multichainns globalparams
 cleoslocal get table multichainns multichainns prikeys

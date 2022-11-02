@@ -1738,6 +1738,18 @@ ACTION multichainns::cleardata(const string& table_name)
             }
         }
     }
+    else if (table_name == "rslvtargets") {
+        keysForDeletion.clear();
+        for (auto& item : _resolve_targets) {
+            keysForDeletion.push_back(item.target.value);
+        }
+        for (uint64_t key : keysForDeletion) {
+            auto itr = _resolve_targets.find(key);
+            if (itr != _resolve_targets.end()) {
+                _resolve_targets.erase(itr);
+            }
+        }
+    }
 }
 #endif
 
