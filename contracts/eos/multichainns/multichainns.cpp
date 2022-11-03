@@ -901,6 +901,126 @@ void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio:
         add_total_num_of_records_in_resolv_table();
     }
 
+    // 下面进行解析费用的分享
+    auto num_of_dot = get_num_of_dot_in_string(meta_name);
+    eosio::check( num_of_dot < 3, "Error: Bad format of meta name." );
+
+    string  level_1_str = "";
+    string  level_2_str = "";
+    string  level_3_str = "";
+    uint8_t my_level    = 0;
+
+    if      (num_of_dot == 0) { my_level = 1; }
+    else if (num_of_dot == 1) { my_level = 2; }
+    else if (num_of_dot == 2) { my_level = 3; }
+
+    // 将名称分拆到各级字符串
+    if (my_level == 1) {
+        level_1_str = meta_name;
+    }
+    else if (my_level == 2) {
+        auto i = meta_name.find(".");
+        level_1_str = meta_name.substr(i + 1, meta_name.size() - i - 1);
+        level_2_str = meta_name.substr(0, i);
+    }
+    else if (my_level == 3) {
+        auto i = meta_name.find(".");
+        auto j = meta_name.find(".", i + 1);
+        level_1_str = meta_name.substr(j + 1, meta_name.size() - j - 1);
+        level_2_str = meta_name.substr(i + 1, j - i - 1);
+        level_3_str = meta_name.substr(0, i);
+    }
+
+    // 检查上级名称是否存在
+    string      upper_level_name = "";
+    checksum256 upper_level_name_sha256_hash;
+    if      (my_level == 2) { upper_level_name = level_1_str; }
+    else if (my_level == 3) { upper_level_name = level_2_str + "." + level_1_str; }
+    if (my_level == 2 || my_level == 3) {
+        upper_level_name_sha256_hash = sha256(upper_level_name.c_str(), upper_level_name.size());
+        eosio::check( exist_in_meta_names(upper_level_name_sha256_hash) == true, "Error: upper level name does not exist." );
+    }
+
+    // 给金库转账、给分享用户转账、更新分享总金额
+    asset fee = quantity;
+    if (my_level == 1) {
+        // 转到金库
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, fee, 
+                            string("From MultiChainNameService. Meta name: ") + meta_name + string(" ...... Resolve target object: ") + target_object
+            )
+        }.send();
+    }
+    else if (my_level == 2) {
+        // 处理上级1级名称对应的用户分享
+        name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
+        asset share_quantity_1 = get_fee_of_level_1_name_share_quantity();
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_upper_level_name, share_quantity_1,
+                            string("Share from MultiChainNameService. Meta name: ") + meta_name + string(" ...... Resolve target object: ") + target_object
+            )
+        }.send();
+        add_total_share_amount_of_level_1_name(share_quantity_1);
+
+        // 剩余部分转到金库
+        asset vault_quantity  = asset((int64_t)0, MAIN_SYMBOL);
+        vault_quantity.amount = fee.amount - share_quantity_1.amount;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, vault_quantity,
+                            string("From MultiChainNameService. Meta name: ") + meta_name + string(" ...... Resolve target object: ") + target_object
+            )
+        }.send();
+    }
+    else if (my_level == 3) {
+        // 处理上级2级名称对应的用户分享
+        name owner_of_upper_level_name = get_owner_of_name(upper_level_name_sha256_hash);
+        asset share_quantity_2 = get_fee_of_level_2_name_share_quantity();
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_upper_level_name, share_quantity_2,
+                            string("Share from MultiChainNameService. Meta name: ") + meta_name + string(" ...... Resolve target object: ") + target_object
+            )
+        }.send();
+        add_total_share_amount_of_level_2_name(share_quantity_2);
+
+        // 处理上级1级名称对应的用户分享
+        checksum256 level_1_name_sha256_hash = sha256(level_1_str.c_str(), level_1_str.size());
+        eosio::check( exist_in_meta_names(level_1_name_sha256_hash) == true, "Error: level 1 name does not exist." );
+        name owner_of_level_1_name = get_owner_of_name(level_1_name_sha256_hash);
+        asset share_quantity_1 = get_fee_of_level_1_name_share_quantity();
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), owner_of_level_1_name, share_quantity_1,
+                            string("Share from MultiChainNameService. Meta name: ") + meta_name + string(" ...... Resolve target object: ") + target_object
+            )
+        }.send();
+        add_total_share_amount_of_level_1_name(share_quantity_1);
+
+        // 剩余部分转到金库
+        asset vault_quantity  = asset((int64_t)0, MAIN_SYMBOL);
+        vault_quantity.amount = fee.amount - share_quantity_2.amount - share_quantity_1.amount;
+        action{
+            permission_level{get_self(), "active"_n},
+            "eosio.token"_n,
+            "transfer"_n,
+            std::make_tuple(get_self(), VAULT_ACCOUNT, vault_quantity,
+                            string("From MultiChainNameService. Meta name: ") + meta_name + string(" ...... Resolve target object: ") + target_object
+            )
+        }.send();
+    }
 }
 
 // 初始化全局变量表
