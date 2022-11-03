@@ -28,6 +28,7 @@ cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Create meta name:  a\nb " ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Direct buy meta name: niuaaaaaaaaa abc" ]' -p niuaaaaaaaaa@owner
 cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Actively place purchase order for meta name: abc" ]' -p niuaaaaaaaaa@owner
+cleoslocal push action eosio.token transfer '[ "niuaaaaaaaaa", "multichainns", "1.0000 SYS", "Insert or update one resolv record: <meta_name_begin_flag>abc<meta_name_end_flag> btc btc地址" ]' -p niuaaaaaaaaa@owner
 
 cleoslocal get table multichainns multichainns metanames -l 100
 cleoslocal get table multichainns multichainns resolves  -l 100
@@ -81,6 +82,7 @@ cleoslocal -v push action multichainns setfeeofxy '[3, 9, "99.9999 SYS"]' -p mul
 cleoslocal -v push action multichainns setallfee '[]'                     -p multichainns@active    # 生产使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
 
 ###### 以下的命令是初始化解析目标的，可以多次执行。
+###### 注意：在名称最大长度为18字节的情况下，解析出来的内容允许的最大长度（单位：字节），最大可以设置为107字节。否则可能超出EOS的MEMO的长度限制255字节。
 cleoslocal -v push action multichainns crtedrtarget '["btc",     100, 68, "allowed_characters", "<>"]' -p multichainns@active
 cleoslocal -v push action multichainns crtedrtarget '["eth",     200, 84, "allowed_characters", "<>"]' -p multichainns@active
 cleoslocal -v push action multichainns crtedrtarget '["arweave", 300, 86, "allowed_characters", "<>"]' -p multichainns@active

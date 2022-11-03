@@ -820,8 +820,8 @@ void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio:
     string left_str         = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
     eosio::check( left_str != "",                     "Error: wrong format, missing meta name and target_object and target_content." );
 
-    string begin_flag       = "<a>";
-    string end_flag         = "<b>";
+    string begin_flag       = "<meta_name_begin_flag>";
+    string end_flag         = "<meta_name_end_flag>";
     auto   begin_pos        = left_str.find(begin_flag);
     auto   end_pos          = left_str.find(end_flag);
     eosio::check( begin_pos != left_str.npos && end_pos != left_str.npos && begin_pos == 0 && end_pos > begin_pos + begin_flag.size(), "Error: wrong format of meta name or missing meta name." );
