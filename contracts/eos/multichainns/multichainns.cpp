@@ -818,7 +818,26 @@ void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio:
 {
     string flag             = "Insert or update one resolv record: ";
     string left_str         = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
+    eosio::check( left_str != "",                     "Error: wrong format, missing meta name and target_object and target_content." );
+
+    string begin_flag       = "<a>";
+    string end_flag         = "<b>";
+    auto   begin_pos        = left_str.find(begin_flag);
+    auto   end_pos          = left_str.find(end_flag);
+    eosio::check( begin_pos != left_str.npos && end_pos != left_str.npos && begin_pos == 0 && end_pos > begin_pos + begin_flag.size(), "Error: wrong format of meta name or missing meta name." );
+
+    string meta_name        = my_trim(left_str.substr(begin_pos + begin_flag.size(), end_pos - begin_flag.size()));
+    eosio::check( meta_name != "",                     "Error: wrong format, missing meta name." );
+
+    string tmp_str          = my_trim(left_str.substr(end_pos + end_flag.size(), left_str.size() - end_pos - end_flag.size()));
+    eosio::check( tmp_str   != "",                     "Error: wrong format, missing target_object and target_content." );
+    left_str                = tmp_str;
     auto   space_pos        = left_str.find(" ");
+    eosio::check( space_pos != left_str.npos,          "Error: wrong format, missing target_content." );
+
+    string target_object    = my_trim(left_str.substr(0, space_pos));
+    string target_content   = my_trim(left_str.substr(space_pos + 1, left_str.size() - space_pos - 1));
+    eosio::check( target_object != "" && target_content != "",          "Error: wrong format, missing target_content or something." );
 
 }
 
