@@ -867,7 +867,7 @@ void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio:
     checksum256 target_content_sha_256_hash = sha256(target_content.c_str(), target_content.size());
     uint8_t count     = get_count_of_target_content_sha256_hash(target_content_sha_256_hash);
     uint8_t count_max = get_max_num_of_repeated_hashes_in_resolves_table();
-    eosio::check( count <= count_max,                                "Error: target_content repeated too many times." );
+    eosio::check( count < count_max,                                 "Error: target_content repeated too many times." );
 
     // 对 quantity 进行检查
     eosio::check( quantity == get_fee_of_one_resolv_record(),        "Error: quantity is wrong." );
