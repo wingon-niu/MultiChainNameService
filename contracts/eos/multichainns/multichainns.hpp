@@ -135,6 +135,9 @@ private:
     // 对名称发起主动求购订单
     void actively_place_purchase_order_for_meta_name(name from, name to, eosio::asset quantity, std::string memo);
 
+    // 新增或者修改一条解析记录
+    void insert_or_update_one_resolv_record(name from, name to, eosio::asset quantity, std::string memo);
+
     // 检查 quantity 是否是有效的
     bool check_quantity_is_available_or_not(const asset& quantity);
 

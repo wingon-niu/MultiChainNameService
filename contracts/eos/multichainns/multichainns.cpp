@@ -37,6 +37,9 @@ void multichainns::deposit(name from, name to, eosio::asset quantity, std::strin
     else if (memo.find("Actively place purchase order for meta name: ") == 0) {    // 对名称发起主动求购订单
         actively_place_purchase_order_for_meta_name(from, to, quantity, memo);
     }
+    else if (memo.find("Insert or update one resolv record: ") == 0) {             // 新增或者修改一条解析记录
+        insert_or_update_one_resolv_record(from, to, quantity, memo);
+    }
     else {
     }
 }
@@ -808,6 +811,15 @@ uint8_t multichainns::get_count_of_target_content_sha256_hash(const checksum256&
         itr++;
     }
     return num;
+}
+
+// 新增或者修改一条解析记录
+void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio::asset quantity, std::string memo)
+{
+    string flag             = "Insert or update one resolv record: ";
+    string left_str         = my_trim(memo.substr(flag.size(), memo.size()-flag.size()));
+    auto   space_pos        = left_str.find(" ");
+
 }
 
 // 初始化全局变量表
