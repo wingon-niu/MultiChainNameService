@@ -839,6 +839,68 @@ void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio:
     string target_content   = my_trim(left_str.substr(space_pos + 1, left_str.size() - space_pos - 1));
     eosio::check( target_object != "" && target_content != "",          "Error: wrong format, missing target_content or something." );
 
+    // 对 meta_name 进行检查
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32_meta_name = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64_meta_name = id32_meta_name;
+    auto itr_meta_name = _meta_names.find(id64_meta_name);
+    eosio::check( itr_meta_name != _meta_names.end(),               "Error: meta name does not exist." );
+    eosio::check( itr_meta_name->owner == from,                     "Error: this meta name is not belong to you.");
+
+    // 对 target_object 进行检查
+    auto itr_resolve_target = _resolve_targets.find(name(target_object).value);
+    eosio::check( itr_resolve_target != _resolve_targets.end(),               "Error: target object does not exist." );
+    uint32_t max_length         = itr_resolve_target->max_length;
+    string   allowed_characters = itr_resolve_target->allowed_characters;
+    string   denied_characters  = itr_resolve_target->denied_characters;
+
+    // 对 target_content 进行检查
+    eosio::check( target_content.size() <= max_length,               "Error: the length of target_content exceeds limit." );
+    if (allowed_characters != "") {
+        eosio::check( target_content.find_first_not_of(allowed_characters) == target_content.npos, "Error: some char not in allowed_characters." );
+    }
+    if (denied_characters != "") {
+        eosio::check( target_content.find_first_of(denied_characters) == target_content.npos,      "Error: some char in denied_characters." );
+    }
+    checksum256 target_content_sha_256_hash = sha256(target_content.c_str(), target_content.size());
+    uint8_t count     = get_count_of_target_content_sha256_hash(target_content_sha_256_hash);
+    uint8_t count_max = get_max_num_of_repeated_hashes_in_resolves_table();
+    eosio::check( count <= count_max,                                "Error: target_content repeated too many times." );
+
+    // 对 quantity 进行检查
+    eosio::check( quantity == get_fee_of_one_resolv_record(),        "Error: quantity is wrong." );
+
+    // 新增或者修改一条解析记录
+    auto index = _resolves.get_index<name("byid32object")>();
+    auto itr_resolves = index.lower_bound((uint128_t{id32_meta_name}<<64) + uint128_t{name(target_object).value});
+    if (itr_resolves != index.end() && itr_resolves->id32_of_meta_name == id32_meta_name && itr_resolves->meta_name == meta_name && itr_resolves->target_object == target_object) {
+        auto id = itr_resolves->id;
+        auto itr = _resolves.find(id);
+        eosio::check( itr != _resolves.end(),               "Error: resolv record does not exist." );
+        _resolves.modify( itr, _self, [&]( auto& item ) {
+            item.target_content             = target_content;
+            item.target_content_sha256_hash = target_content_sha_256_hash;
+            item.resolve_time               = now();
+        });
+    }
+    else {
+        _resolves.emplace(_self, [&](auto& item){
+            item.id                         = get_pri_key(name("resolves"));
+            item.id32_of_meta_name          = id32_meta_name;
+            item.meta_name                  = meta_name;
+            item.target_object              = target_object;
+            item.target_content             = target_content;
+            item.target_content_sha256_hash = target_content_sha_256_hash;
+            item.resolve_time               = now();
+            item.reverse_proof              = "";
+            item.verified                   = 0;
+            item.verified_time              = 0;
+        });
+        add_total_num_of_records_in_resolv_table();
+    }
+
 }
 
 // 初始化全局变量表
