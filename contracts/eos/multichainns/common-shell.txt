@@ -90,11 +90,11 @@ cleoslocal -v push action multichainns crtedrtarget '["ipvfour",  500,  30,     
 cleoslocal -v push action multichainns crtedrtarget '["ipvsix",   600,  78,     "",          "<>"]' -p multichainns@active      # 生产使用。
 
 ###### 以下的命令是初始化解析目标的，可以多次执行。测试使用。
-cleoslocal -v push action multichainns crtedrtarget '["btc",       10,   1,  "abc",          "<>"]' -p multichainns@active      # 测试使用。
-cleoslocal -v push action multichainns crtedrtarget '["eth",       20,   2,  "def",          "<>"]' -p multichainns@active      # 测试使用。
-cleoslocal -v push action multichainns crtedrtarget '["arweave",   30,   3,  "123",          "<>"]' -p multichainns@active      # 测试使用。
-cleoslocal -v push action multichainns crtedrtarget '["ipvfour",   50,   5,  "789",          "<>"]' -p multichainns@active      # 测试使用。
-cleoslocal -v push action multichainns crtedrtarget '["ipvsix",    60,   6,  "好的 abc 123", "<>"]' -p multichainns@active      # 测试使用。
+cleoslocal -v push action multichainns crtedrtarget '["btc",       10,   1,  "abc<>",          "<>"]' -p multichainns@active      # 测试使用。
+cleoslocal -v push action multichainns crtedrtarget '["eth",       20,   2,  "def<>",          "<>"]' -p multichainns@active      # 测试使用。
+cleoslocal -v push action multichainns crtedrtarget '["arweave",   30,   3,  "123<>",          "<>"]' -p multichainns@active      # 测试使用。
+cleoslocal -v push action multichainns crtedrtarget '["ipvfour",   50,   5,  "789<>",          "<>"]' -p multichainns@active      # 测试使用。
+cleoslocal -v push action multichainns crtedrtarget '["ipvsix",    60,   6,  "好的 abc 123<>", "<>"]' -p multichainns@active      # 测试使用。
 
 ###### 以下1行命令，是测试时使用的。
 cleoslocal -v push action multichainns printallgpms '[]'                  -p multichainns@active  # 测试时使用。测试时，需要在全局参数表初始化以前进行一下前段测试，然后再进行后段测试
