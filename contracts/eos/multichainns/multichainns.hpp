@@ -65,6 +65,12 @@ public:
     // 创建或者编辑解析目标
     ACTION crtedrtarget(const name& target, const uint64_t sort_number, const uint32_t max_length, const string& allowed_characters, const string& denied_characters);
 
+    // 用户删除自己的解析记录
+    ACTION userrmrr(const name& user, const string& meta_name, const name& target);
+
+    // 监管删除解析记录
+    ACTION supvisermrr(const string& meta_name, const name& target);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
@@ -137,6 +143,9 @@ private:
 
     // 新增或者修改一条解析记录
     void insert_or_update_one_resolv_record(name from, name to, eosio::asset quantity, std::string memo);
+
+    // 删除一条解析记录
+    void remove_one_resolve_record(const uint32_t id32_of_meta_name, const name& target);
 
     // 检查 quantity 是否是有效的
     bool check_quantity_is_available_or_not(const asset& quantity);

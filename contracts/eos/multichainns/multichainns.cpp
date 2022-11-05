@@ -1023,6 +1023,43 @@ void multichainns::insert_or_update_one_resolv_record(name from, name to, eosio:
     }
 }
 
+// 用户删除自己的解析记录
+ACTION multichainns::userrmrr(const name& user, const string& meta_name, const name& target)
+{
+    require_auth( user );
+
+    // 对 meta_name 进行检查
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32_meta_name = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64_meta_name = id32_meta_name;
+    auto itr_meta_name = _meta_names.find(id64_meta_name);
+    eosio::check( itr_meta_name != _meta_names.end(),               "Error: meta name does not exist." );
+    eosio::check( itr_meta_name->owner == user,                     "Error: this meta name is not belong to you.");
+
+    remove_one_resolve_record(id32_meta_name, target);
+}
+
+// 监管删除解析记录
+ACTION multichainns::supvisermrr(const string& meta_name, const name& target)
+{
+
+
+    // 对 meta_name 进行检查
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    uint32_t id32_meta_name = get_id32_of_name(meta_name_sha_256_hash);
+
+    remove_one_resolve_record(id32_meta_name, target);
+}
+
+// 删除一条解析记录
+void multichainns::remove_one_resolve_record(const uint32_t id32_of_meta_name, const name& target)
+{
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {
