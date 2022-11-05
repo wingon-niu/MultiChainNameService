@@ -72,6 +72,9 @@ public:
     // 监管删除解析记录
     ACTION supvisermrr(const string& meta_name, const name& target);
 
+    // 监管删除名称
+    ACTION supvisermmn(const string& meta_name);
+
     // 初始化全局变量表
     ACTION initgvarstbl();
 
@@ -147,6 +150,9 @@ private:
 
     // 删除一条解析记录
     void remove_one_resolve_record(const uint32_t id32_of_meta_name, const name& target);
+
+    // 删除一个名称对应的所有解析记录
+    void remove_all_resolve_records_of_a_meta_name(const uint32_t id32_of_meta_name);
 
     // 检查 quantity 是否是有效的
     bool check_quantity_is_available_or_not(const asset& quantity);

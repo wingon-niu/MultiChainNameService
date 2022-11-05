@@ -1075,6 +1075,50 @@ void multichainns::remove_one_resolve_record(const uint32_t id32_of_meta_name, c
     }
 }
 
+// 监管删除名称
+ACTION multichainns::supvisermmn(const string& meta_name)
+{
+    require_auth( REGULATOR_ACCOUNT );
+
+    // 对 meta_name 进行检查
+    checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
+    eosio::check( exist_in_meta_names(meta_name_sha_256_hash) == true,  "Error: meta name does not exist." );
+
+    // 查找并删除名称
+    uint32_t id32_meta_name = get_id32_of_name(meta_name_sha_256_hash);
+    uint64_t id64_meta_name = id32_meta_name;
+    auto itr_meta_name = _meta_names.find(id64_meta_name);
+    if (itr_meta_name != _meta_names.end()) {
+        _meta_names.erase(itr_meta_name);
+    }
+
+    // 更新相关计数
+
+    // 删除这个名称对应的所有解析记录
+    remove_all_resolve_records_of_a_meta_name(id32_meta_name);
+}
+
+// 删除一个名称对应的所有解析记录
+void multichainns::remove_all_resolve_records_of_a_meta_name(const uint32_t id32_of_meta_name)
+{
+    // 查找并进行删除。如果查找不到，不需报错。
+    std::vector<uint64_t> keysForDeletion;
+    keysForDeletion.clear();
+    auto index = _resolves.get_index<name("byid32object")>();
+    auto itr_resolves = index.lower_bound((uint128_t{id32_of_meta_name}<<64) + uint128_t{0});
+    while (itr_resolves != index.end() && itr_resolves->id32_of_meta_name == id32_of_meta_name) {
+        keysForDeletion.push_back(itr_resolves->id);
+        itr_resolves++;
+    }
+    for (uint64_t key : keysForDeletion) {
+        auto itr = _resolves.find(key);
+        if (itr != _resolves.end()) {
+            _resolves.erase(itr);
+            sub_total_num_of_records_in_resolv_table();
+        }
+    }
+}
+
 // 初始化全局变量表
 ACTION multichainns::initgvarstbl()
 {
