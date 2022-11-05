@@ -1044,7 +1044,7 @@ ACTION multichainns::userrmrr(const name& user, const string& meta_name, const n
 // 监管删除解析记录
 ACTION multichainns::supvisermrr(const string& meta_name, const name& target)
 {
-
+    require_auth( REGULATOR_ACCOUNT );
 
     // 对 meta_name 进行检查
     checksum256 meta_name_sha_256_hash = sha256(meta_name.c_str(), meta_name.size());
@@ -1058,6 +1058,21 @@ ACTION multichainns::supvisermrr(const string& meta_name, const name& target)
 // 删除一条解析记录
 void multichainns::remove_one_resolve_record(const uint32_t id32_of_meta_name, const name& target)
 {
+    // 对 target 进行检查
+    auto itr_resolve_target = _resolve_targets.find(name(target).value);
+    eosio::check( itr_resolve_target != _resolve_targets.end(),               "Error: target does not exist." );
+
+    // 查找并进行删除。如果查找不到，不需报错。
+    auto index = _resolves.get_index<name("byid32object")>();
+    auto itr_resolves = index.lower_bound((uint128_t{id32_of_meta_name}<<64) + uint128_t{name(target).value});
+    if (itr_resolves != index.end() && itr_resolves->id32_of_meta_name == id32_of_meta_name && itr_resolves->target_object == target.to_string()) {
+        auto id = itr_resolves->id;
+        auto itr = _resolves.find(id);
+        if (itr != _resolves.end()) {
+            _resolves.erase(itr);
+            sub_total_num_of_records_in_resolv_table();
+        }
+    }
 }
 
 // 初始化全局变量表

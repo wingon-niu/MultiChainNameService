@@ -22,6 +22,7 @@
 #define  MAIN_SYMBOL         symbol(symbol_code(NAME_SERVICE_MAIN_TOKEN), 4)
 #define  ZERO_ASSET          asset((int64_t)0, MAIN_SYMBOL)                       // 0 EOS
 #define  VAULT_ACCOUNT       name("eosnamesrvce")
+#define  REGULATOR_ACCOUNT   name("niuzzzzzzzzz")          // 监管账户，可以删除违规的名称、解析记录
 
 using namespace eosio;
 using namespace std;
