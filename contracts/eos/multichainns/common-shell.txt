@@ -12,6 +12,9 @@ cleoslocal -v push action multichainns makesellord  '["niuaaaaaaaaa", "abc", "10
 cleoslocal -v push action multichainns cancelsellod '["niuaaaaaaaaa", "abc"                ]'             -p niuaaaaaaaaa@owner
 cleoslocal -v push action multichainns cancelactpo  '["niuaaaaaaaaa", "abc", "100.0001 SYS"]'             -p niuaaaaaaaaa@owner
 cleoslocal -v push action multichainns directdealpo '["niuaaaaaaaaa", "niubbbbbbbbb", "abc", "10.0001 SYS"]'      -p niuaaaaaaaaa@owner
+cleoslocal -v push action multichainns userrmrr     '["niuaaaaaaaaa", "abc", "btc"]'                              -p niuaaaaaaaaa@owner
+cleoslocal -v push action multichainns supvisermrr  '[                "abc", "btc"]'                              -p niuzzzzzzzzz@active
+cleoslocal -v push action multichainns supvisermmn  '[                "abc"       ]'                              -p niuzzzzzzzzz@active
 
 cleoslocal get currency balance eosio.token niuaaaaaaaaa SYS
 cleoslocal get currency balance eosio.token niubbbbbbbbb SYS
