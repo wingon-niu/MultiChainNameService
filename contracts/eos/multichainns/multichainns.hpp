@@ -168,6 +168,9 @@ private:
     // x级名称的总数量加1
     void add_num_of_level_x_name_total(const uint32_t x);
 
+    // x级名称的总数量减1
+    void sub_num_of_level_x_name_total(const uint32_t x);
+
     // 累加总成交金额
     void add_total_transaction_amount(const asset& quantity);
 
@@ -185,6 +188,9 @@ private:
 
     // y个字节的x级名称的数量加1
     void add_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
+
+    // y个字节的x级名称的数量减1
+    void sub_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y);
 
     // 设置y个字节的x级名称的收费
     void set_fee_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y, const asset& quantity);

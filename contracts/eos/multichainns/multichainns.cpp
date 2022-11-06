@@ -1094,6 +1094,53 @@ ACTION multichainns::supvisermmn(const string& meta_name)
 
     // 更新相关计数
 
+    auto num_of_dot = get_num_of_dot_in_string(meta_name);
+
+    string  level_1_str = "";
+    string  level_2_str = "";
+    string  level_3_str = "";
+    uint8_t my_level    = 0;
+    uint8_t my_length   = 0;
+
+    if      (num_of_dot == 0) { my_level = 1; }
+    else if (num_of_dot == 1) { my_level = 2; }
+    else if (num_of_dot == 2) { my_level = 3; }
+
+    // 将名称分拆到各级字符串
+    if (my_level == 1) {
+        level_1_str = meta_name;
+    }
+    else if (my_level == 2) {
+        auto i = meta_name.find(".");
+        level_1_str = meta_name.substr(i + 1, meta_name.size() - i - 1);
+        level_2_str = meta_name.substr(0, i);
+    }
+    else if (my_level == 3) {
+        auto i = meta_name.find(".");
+        auto j = meta_name.find(".", i + 1);
+        level_1_str = meta_name.substr(j + 1, meta_name.size() - j - 1);
+        level_2_str = meta_name.substr(i + 1, j - i - 1);
+        level_3_str = meta_name.substr(0, i);
+    }
+
+    // 计算各级字符串的长度
+    if (my_level == 1) {
+        my_length = level_1_str.size();
+    }
+    else if (my_level == 2) {
+        my_length = level_2_str.size();
+    }
+    else if (my_level == 3) {
+        my_length = level_3_str.size();
+    }
+    uint32_t name_length = 0;
+    if (my_length < 17) { name_length = my_length; }
+    else                { name_length = 17; }
+
+    // 更新名称数量
+    sub_num_of_level_x_name_total((uint32_t)my_level);
+    sub_num_of_y_bytes_level_x_name((uint32_t)my_level, (uint32_t)name_length);
+
     // 删除这个名称对应的所有解析记录
     remove_all_resolve_records_of_a_meta_name(id32_meta_name);
 }
@@ -1210,6 +1257,18 @@ void multichainns::add_num_of_level_x_name_total(const uint32_t x)
     }
 }
 
+// x级名称的总数量减1
+void multichainns::sub_num_of_level_x_name_total(const uint32_t x)
+{
+    uint64_t id = 1;
+    auto itr = _global_vars.find(id);
+    if( itr != _global_vars.end() ) {
+        if      (x == 1) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_level_1_name_total -= 1; }); }
+        else if (x == 2) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_level_2_name_total -= 1; }); }
+        else if (x == 3) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_level_3_name_total -= 1; }); }
+    }
+}
+
 // 累加总成交金额
 void multichainns::add_total_transaction_amount(const asset& quantity)
 {
@@ -1322,6 +1381,72 @@ void multichainns::add_num_of_y_bytes_level_x_name(const uint32_t x, const uint3
             else if (y == 15) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_15_bytes_level_3_name += 1; }); }
             else if (y == 16) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_16_bytes_level_3_name += 1; }); }
             else if (y == 17) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_17_bytes_level_3_name += 1; }); }
+        }
+    }
+}
+
+// y个字节的x级名称的数量减1
+void multichainns::sub_num_of_y_bytes_level_x_name(const uint32_t x, const uint32_t y)
+{
+    uint64_t id = 1;
+    auto itr = _global_vars.find(id);
+    if( itr != _global_vars.end() ) {
+        if      (x == 1) {
+            if      (y == 1)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_1_byte_level_1_name   -= 1; }); }
+            else if (y == 2)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_2_bytes_level_1_name  -= 1; }); }
+            else if (y == 3)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_3_bytes_level_1_name  -= 1; }); }
+            else if (y == 4)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_4_bytes_level_1_name  -= 1; }); }
+            else if (y == 5)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_5_bytes_level_1_name  -= 1; }); }
+            else if (y == 6)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_6_bytes_level_1_name  -= 1; }); }
+            else if (y == 7)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_7_bytes_level_1_name  -= 1; }); }
+            else if (y == 8)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_8_bytes_level_1_name  -= 1; }); }
+            else if (y == 9)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_9_bytes_level_1_name  -= 1; }); }
+            else if (y == 10) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_10_bytes_level_1_name -= 1; }); }
+            else if (y == 11) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_11_bytes_level_1_name -= 1; }); }
+            else if (y == 12) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_12_bytes_level_1_name -= 1; }); }
+            else if (y == 13) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_13_bytes_level_1_name -= 1; }); }
+            else if (y == 14) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_14_bytes_level_1_name -= 1; }); }
+            else if (y == 15) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_15_bytes_level_1_name -= 1; }); }
+            else if (y == 16) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_16_bytes_level_1_name -= 1; }); }
+            else if (y == 17) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_17_bytes_level_1_name -= 1; }); }
+        }
+        else if (x == 2) {
+            if      (y == 1)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_1_byte_level_2_name   -= 1; }); }
+            else if (y == 2)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_2_bytes_level_2_name  -= 1; }); }
+            else if (y == 3)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_3_bytes_level_2_name  -= 1; }); }
+            else if (y == 4)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_4_bytes_level_2_name  -= 1; }); }
+            else if (y == 5)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_5_bytes_level_2_name  -= 1; }); }
+            else if (y == 6)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_6_bytes_level_2_name  -= 1; }); }
+            else if (y == 7)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_7_bytes_level_2_name  -= 1; }); }
+            else if (y == 8)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_8_bytes_level_2_name  -= 1; }); }
+            else if (y == 9)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_9_bytes_level_2_name  -= 1; }); }
+            else if (y == 10) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_10_bytes_level_2_name -= 1; }); }
+            else if (y == 11) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_11_bytes_level_2_name -= 1; }); }
+            else if (y == 12) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_12_bytes_level_2_name -= 1; }); }
+            else if (y == 13) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_13_bytes_level_2_name -= 1; }); }
+            else if (y == 14) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_14_bytes_level_2_name -= 1; }); }
+            else if (y == 15) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_15_bytes_level_2_name -= 1; }); }
+            else if (y == 16) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_16_bytes_level_2_name -= 1; }); }
+            else if (y == 17) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_17_bytes_level_2_name -= 1; }); }
+        }
+        else if (x == 3) {
+            if      (y == 1)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_1_byte_level_3_name   -= 1; }); }
+            else if (y == 2)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_2_bytes_level_3_name  -= 1; }); }
+            else if (y == 3)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_3_bytes_level_3_name  -= 1; }); }
+            else if (y == 4)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_4_bytes_level_3_name  -= 1; }); }
+            else if (y == 5)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_5_bytes_level_3_name  -= 1; }); }
+            else if (y == 6)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_6_bytes_level_3_name  -= 1; }); }
+            else if (y == 7)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_7_bytes_level_3_name  -= 1; }); }
+            else if (y == 8)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_8_bytes_level_3_name  -= 1; }); }
+            else if (y == 9)  { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_9_bytes_level_3_name  -= 1; }); }
+            else if (y == 10) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_10_bytes_level_3_name -= 1; }); }
+            else if (y == 11) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_11_bytes_level_3_name -= 1; }); }
+            else if (y == 12) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_12_bytes_level_3_name -= 1; }); }
+            else if (y == 13) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_13_bytes_level_3_name -= 1; }); }
+            else if (y == 14) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_14_bytes_level_3_name -= 1; }); }
+            else if (y == 15) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_15_bytes_level_3_name -= 1; }); }
+            else if (y == 16) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_16_bytes_level_3_name -= 1; }); }
+            else if (y == 17) { _global_vars.modify( itr, _self, [&]( auto& item ) { item.num_of_17_bytes_level_3_name -= 1; }); }
         }
     }
 }
