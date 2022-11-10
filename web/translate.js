@@ -66,6 +66,8 @@ function change_lang(lang_type)
             $("#names_of_my_bidding").html($.i18n.prop('names_of_my_bidding'));
             $("#names_of_my_bidding_info_span").html($.i18n.prop('names_of_my_bidding'));
             $("#create_name_span").html($.i18n.prop('create_name_span'));
+            $("#system_statistics_info").html($.i18n.prop('system_statistics_info'));
+            $("#system_statistics_info_info_span").html($.i18n.prop('system_statistics_info'));
 
             //
 

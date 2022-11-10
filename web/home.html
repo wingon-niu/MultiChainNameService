@@ -47,18 +47,16 @@
 <script src="/js/eosjs-jssig.min.js"></script>
 <script src="/js/eosjsname.js"></script>
 <script src="/defines.js"></script>
-<script src="/home.js"></script>
+<script src="/pagecontrol.js"></script>
 <script src="/translate.js"></script>
 <script src="/utils.js"></script>
+<script src="/home.js"></script>
 
 
 
 <!--  顶部  -->
 <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
   <div class="am-header-left am-header-nav">
-    <a href="##" class="" id="header_go_back">
-      <i class="am-header-icon am-icon-chevron-left"></i>
-    </a>
     <a href="##" class="" id="icon_en">
       <img class="am-header-icon-custom" src="/assets/i/en.png" alt="" />
     </a>
@@ -99,55 +97,15 @@
               <a href="##" class="" id="names_of_my_bidding">Names of my bidding</a>
           </li>
           <li class="">
+              <a href="##" class="" id="system_statistics_info">System statistics info</a>
+          </li>
+          <li class="">
               <a href="##" class="" id="logoff">Logoff</a>
           </li>
       </ul>
     </div>
   </div>
 </nav>
-
-
-
-<!--  现实笔记、梦想笔记 Tabs
-//<div data-am-widget="tabs" class="am-tabs am-tabs-default" id="all_tabs">
-//    <ul class="am-tabs-nav am-cf">
-//        <li class="am-active"><a href="[data-tab-panel-0]" id="tab_real" >Real Notes</a></li>
-//        <li class="">         <a href="[data-tab-panel-1]" id="tab_dream">Dream Notes</a></li>
-//        <li class="">         <a href="[data-tab-panel-2]" id="tab_album">Album</a></li>
-//    </ul>
-//    <div class="am-tabs-bd">
-//        <div data-tab-panel-0 class="am-tab-panel am-active">
-//            <div class="am-g" id="real_notes_div">
-//                <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-//            </div>
-//           <div>&nbsp;</div>
-//           <div>&nbsp;</div>
-//        </div>
-//        <div data-tab-panel-1 class="am-tab-panel">
-//            <div class="am-g" id="dream_notes_div">
-//                <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-//            </div>
-//            <div>&nbsp;</div>
-//            <div>&nbsp;</div>
-//        </div>
-//        <div data-tab-panel-2 class="am-tab-panel">
-//            <div class="" id="album_div">
-//                <p>
-//                    <a href="##" class="" id="link_post_picture">Post Picture</a>
-//                    <a href="##" class="" id="link_post_video">| Post Video</a>
-//                    <a href="##" class="" id="link_post_audio">| Post Audio</a>
-//                    <a href="##" class="" id="link_post_other_file">| Post Other File</a>
-//                </p>
-//                <div class="am-g" id="album_items_div">
-//                </div>
-//                <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-//            </div>
-//            <div>&nbsp;</div>
-//            <div>&nbsp;</div>
-//        </div>
-//    </div>
-//</div>
------------->
 
 
 
@@ -180,6 +138,18 @@
     <div><table width="100%"><tr><td align="center"><span id="names_of_my_bidding_info_span">names_of_my_bidding</span></td></tr></table></div>
     <div id="names_of_my_bidding_contents_div">names_of_my_bidding_contents</div>
     <div id="names_of_my_bidding_footer_div">&nbsp;</div>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+</div>
+
+
+
+<!--  系统统计信息  -->
+<div style="position:absolute;z-index:100;top:60px;width:100%;background-color:#FBFBFF;" id="system_statistics_info_div">
+    <div><table width="100%"><tr><td align="center"><span id="system_statistics_info_info_span">system_statistics_info</span></td></tr></table></div>
+    <div id="system_statistics_info_contents_div">system_statistics_info_contents</div>
+    <div id="system_statistics_info_footer_div">&nbsp;</div>
     <div>&nbsp;</div>
     <div>&nbsp;</div>
     <div>&nbsp;</div>

@@ -22,19 +22,27 @@ $(document).ready(function () {
         $("#menu_body").offCanvas('close');
     });
 
-    $("#write_an_article_href").on("click", function() {
+    $("#create_name_href").on("click", function() {
         if(current_user_account === "") {
             alert($("#please_login").html());
             return;
         }
-        $("#forward_article_id").val("0");
-        write_an_article_show_modal();
+        //$("#forward_article_id").val("0");
+        //write_an_article_show_modal();
+    });
+
+    $("#my_names_href").on("click", function() {
+        show_my_names();
     });
 
     //
 
-    $("#my_messages_div").hide();
+    doc_scroll_top        = 0;
+    current_page          = "name_market";
     page_control_init();
+    hide_all_pages();
+    $("#my_messages_div").hide();
+    $("#name_market_div").show();
 
     setTimeout(
         function(){
