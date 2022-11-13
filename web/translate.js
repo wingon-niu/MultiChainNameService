@@ -75,6 +75,8 @@ function change_lang(lang_type)
             $(".level_3_names_info_span").html($.i18n.prop('level_3_names_info_span'));
             $("#no_data_found").html($.i18n.prop('no_data_found'));
             $("#this_is_the_last_page").html($.i18n.prop('this_is_the_last_page'));
+            $("#selling_price").html($.i18n.prop('selling_price'));
+            $("#purchase_price").html($.i18n.prop('purchase_price'));
 
             //
 

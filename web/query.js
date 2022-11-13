@@ -43,9 +43,21 @@ function do_get_names_of_market(id32_of_upper_level, level, index_position, key_
             let next_page = '';
             let i = 0;
             let len = resp.rows.length;
+            let onclick_str = '';
             // 以下逐个生成名称的信息
             for (i = 0; i < len; i++) {
-                //
+                if (level === 1 || level === 2) {
+                    let child_level = level + 1;
+                    onclick_str = ' onclick="get_names_of_market(' + resp.rows[i].id32 + ', ' + child_level + ');"';
+                } else {
+                    onclick_str = '';
+                }
+                results = results + '<tr>';
+                results = results + '<td width="25%" valign="middle" style="word-wrap:break-word; word-break:break-all;"><a href="##"' + onclick_str + '>' + resp.rows[i].meta_name + '</a></td>';
+                results = results + '<td width="25%" valign="middle">&nbsp;</td>';
+                results = results + '<td width="25%" valign="middle">&nbsp;</td>';
+                results = results + '<td width="25%" valign="middle">&nbsp;</td>';
+                results = results + '</tr>';
                 //let f = cate + '<a href="##" onclick="alert(\'' + $("#head_hash").html() + storage_locations[resp.rows[i].storage_location] + '{' + resp.rows[i].article_hash + '}\');">id' + resp.rows[i].article_id + '</a>&nbsp;&nbsp;&nbsp;';
                 //if (resp.rows[i].forward_article_id > 0) {
                 //    f = f + '<span>' + $("#forward_article").html() + '</span>&nbsp;<a href="##" onclick="show_article_content_div(' + resp.rows[i].forward_article_id + ');">id' + resp.rows[i].forward_article_id + '</a>';
@@ -63,6 +75,7 @@ function do_get_names_of_market(id32_of_upper_level, level, index_position, key_
             }
             // 如果没有下一页并且当前有数据
             else if (resp.more === false && len > 0) {
+                results   = '<table width="100%" border="1"><tr><td width="25%" align="center">&nbsp;</td><td width="25%" align="center">' + $("#selling_price").html() + '</td><td width="25%" align="center">' + $("#purchase_price").html() + '</td><td width="25%" align="center">&nbsp;</td></tr>' + results + '</table>';
                 next_page = '<table width="100%" border="0"><tr><td align="center">' + $("#this_is_the_last_page").html() + '</td></tr></table>';
             }
             // 如果有下一页并且当前无数据
@@ -72,6 +85,7 @@ function do_get_names_of_market(id32_of_upper_level, level, index_position, key_
             }
             // 如果有下一页并且当前有数据
             else if (resp.more === true && len > 0) {
+                results   = '<table width="100%" border="1"><tr><td width="25%" align="center">&nbsp;</td><td width="25%" align="center">' + $("#selling_price").html() + '</td><td width="25%" align="center">' + $("#purchase_price").html() + '</td><td width="25%" align="center">&nbsp;</td></tr>' + results + '</table>';
                 next_page = '<table width="100%" border="0"><tr><td align="center"><a href="##" onclick="do_get_names_of_market(' + id32_of_upper_level + ', ' + level + ', ' + index_position + ', \'' + key_type + '\', \'' + resp.next_key + '\', \'' + upper_bound + '\');">' + $("#next_page").html() + '</a></td></tr></table>';
             }
             // 向目标容器赋值
