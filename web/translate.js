@@ -68,6 +68,9 @@ function change_lang(lang_type)
             $("#create_name_span").html($.i18n.prop('create_name_span'));
             $("#system_statistics_info").html($.i18n.prop('system_statistics_info'));
             $("#system_statistics_info_info_span").html($.i18n.prop('system_statistics_info'));
+            $(".level_1_names_info_span").html($.i18n.prop('level_1_names_info_span'));
+            $(".level_2_names_info_span").html($.i18n.prop('level_2_names_info_span'));
+            $(".level_3_names_info_span").html($.i18n.prop('level_3_names_info_span'));
 
             //
 
