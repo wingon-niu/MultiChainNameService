@@ -1,4 +1,6 @@
 
+// utf8编码
+
 const runmode               = "dev";                    // prod or dev
 
 const my_contract           = 'multichainns';

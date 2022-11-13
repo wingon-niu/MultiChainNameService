@@ -1,4 +1,6 @@
 
+// utf8编码
+
 function set_lang_cookie(lang_type)
 {
     var exdate = new Date();
@@ -71,6 +73,8 @@ function change_lang(lang_type)
             $(".level_1_names_info_span").html($.i18n.prop('level_1_names_info_span'));
             $(".level_2_names_info_span").html($.i18n.prop('level_2_names_info_span'));
             $(".level_3_names_info_span").html($.i18n.prop('level_3_names_info_span'));
+            $("#no_data_found").html($.i18n.prop('no_data_found'));
+            $("#this_is_the_last_page").html($.i18n.prop('this_is_the_last_page'));
 
             //
 

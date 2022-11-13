@@ -1,4 +1,6 @@
 
+// utf8编码
+
 function page_control_init()
 {
     $("#name_market").on("click", function() {
@@ -32,7 +34,7 @@ function show_name_market()
     hide_all_pages();
     current_page = "name_market";
     $("#name_market_div").show();
-    //get name_market
+    get_names_of_market(0, 1);
 }
 
 function show_my_names()

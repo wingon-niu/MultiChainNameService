@@ -1,4 +1,6 @@
 
+// utf8编码
+
 $(document).ready(function () {
     if ( get_cookie('i18n_lang') == undefined || get_cookie('i18n_lang') == null || get_cookie('i18n_lang') == "" ) {  
         change_lang("en");
@@ -46,7 +48,7 @@ $(document).ready(function () {
 
     setTimeout(
         function(){
-            //get_home_page_articles()
+            get_names_of_market(0, 1)
         }, 1000
     );
 });
