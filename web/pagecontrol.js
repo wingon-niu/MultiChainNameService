@@ -69,5 +69,5 @@ function show_system_statistics_info()
     hide_all_pages();
     current_page = "system_statistics_info";
     $("#system_statistics_info_div").show();
-    //get system_statistics_info
+    get_system_statistics_info();
 }

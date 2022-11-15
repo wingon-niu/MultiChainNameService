@@ -105,3 +105,47 @@ function do_get_names_of_market(id32_of_upper_level, level, index_position, key_
         }
     })();
 }
+
+function get_system_statistics_info()
+{
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            const resp1 = await rpc.get_table_rows({
+                json:  true,
+                code:  current_my_contract,
+                scope: current_my_contract,
+                table: 'globalvars',
+                index_position: 1,
+                key_type: 'i64',
+                lower_bound: 1,
+                upper_bound: 2,
+                limit: 1,
+                reverse: false,
+                show_payer: false
+            });
+            const resp2 = await rpc.get_table_rows({
+                json:  true,
+                code:  current_my_contract,
+                scope: current_my_contract,
+                table: 'globalparams',
+                index_position: 1,
+                key_type: 'i64',
+                lower_bound: 1,
+                upper_bound: 2,
+                limit: 1,
+                reverse: false,
+                show_payer: false
+            });
+            // 向目标容器赋值
+            $("#system_statistics_info_contents_globalvars_pre").html(   JSON.stringify(resp1, null, 1) );
+            $("#system_statistics_info_contents_globalparams_pre").html( JSON.stringify(resp2, null, 1) );
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
+}

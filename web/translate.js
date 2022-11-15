@@ -78,6 +78,8 @@ function change_lang(lang_type)
             $("#selling_price").html($.i18n.prop('selling_price'));
             $("#purchase_price").html($.i18n.prop('purchase_price'));
             $("#operations").html($.i18n.prop('operations'));
+            $("#system_variables_span").html($.i18n.prop('system_variables_span'));
+            $("#system_parameters_span").html($.i18n.prop('system_parameters_span'));
 
             //
 
