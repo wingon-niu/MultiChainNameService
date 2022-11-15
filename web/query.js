@@ -68,25 +68,25 @@ function do_get_names_of_market(id32_of_upper_level, level, index_position, key_
                 //articles = articles + '<tr>' + '<td align="right"><a href="##" onclick="copy_article_link_to_clipboard(' + resp.rows[i].article_id + ');">' + $("#copy_link_only").html() + '</a>&nbsp;&nbsp;<span class="am-icon-share"></span>&nbsp;' + resp.rows[i].forwarded_times + '&nbsp;&nbsp;<span class="am-icon-comment"></span>&nbsp;' + resp.rows[i].replied_times + '&nbsp;&nbsp;</td>' + '</tr>';
                 //articles = articles + '</table></div><hr />';
             }
-            // 如果没有下一页并且当前无数据
-            if (resp.more === false && len === 0) {
-                results   = '<table width="100%" border="0"><tr><td align="center">' + $("#no_data_found").html() + '</td></tr></table>';
-                next_page = '&nbsp;';
+            // 如果 当前有数据 并且 有下一页
+            if (len > 0 && resp.more === true) {
+                results   = '<table width="100%" border="1"><tr><td width="25%" align="center">&nbsp;</td><td width="25%" align="center">' + $("#selling_price").html() + '</td><td width="25%" align="center">' + $("#purchase_price").html() + '</td><td width="25%" align="center">&nbsp;</td></tr>' + results + '</table>';
+                next_page = '<table width="100%" border="0"><tr><td align="center"><a href="##" onclick="do_get_names_of_market(' + id32_of_upper_level + ', ' + level + ', ' + index_position + ', \'' + key_type + '\', \'' + resp.next_key + '\', \'' + upper_bound + '\');">' + $("#next_page").html() + '</a></td></tr></table>';
             }
-            // 如果没有下一页并且当前有数据
-            else if (resp.more === false && len > 0) {
+            // 如果 当前有数据 并且 没有下一页
+            else if (len > 0 && resp.more === false) {
                 results   = '<table width="100%" border="1"><tr><td width="25%" align="center">&nbsp;</td><td width="25%" align="center">' + $("#selling_price").html() + '</td><td width="25%" align="center">' + $("#purchase_price").html() + '</td><td width="25%" align="center">&nbsp;</td></tr>' + results + '</table>';
                 next_page = '<table width="100%" border="0"><tr><td align="center">' + $("#this_is_the_last_page").html() + '</td></tr></table>';
             }
-            // 如果有下一页并且当前无数据
-            else if (resp.more === true && len === 0) {
+            // 如果 当前无数据 并且 有下一页
+            else if (len === 0 && resp.more === true) {
                 results   = '&nbsp;';
                 next_page = '<table width="100%" border="0"><tr><td align="center"><a href="##" onclick="do_get_names_of_market(' + id32_of_upper_level + ', ' + level + ', ' + index_position + ', \'' + key_type + '\', \'' + resp.next_key + '\', \'' + upper_bound + '\');">' + $("#next_page").html() + '</a></td></tr></table>';
             }
-            // 如果有下一页并且当前有数据
-            else if (resp.more === true && len > 0) {
-                results   = '<table width="100%" border="1"><tr><td width="25%" align="center">&nbsp;</td><td width="25%" align="center">' + $("#selling_price").html() + '</td><td width="25%" align="center">' + $("#purchase_price").html() + '</td><td width="25%" align="center">&nbsp;</td></tr>' + results + '</table>';
-                next_page = '<table width="100%" border="0"><tr><td align="center"><a href="##" onclick="do_get_names_of_market(' + id32_of_upper_level + ', ' + level + ', ' + index_position + ', \'' + key_type + '\', \'' + resp.next_key + '\', \'' + upper_bound + '\');">' + $("#next_page").html() + '</a></td></tr></table>';
+            // 如果 当前无数据 并且 没有下一页
+            else if (len === 0 && resp.more === false) {
+                results   = '<table width="100%" border="0"><tr><td align="center">' + $("#no_data_found").html() + '</td></tr></table>';
+                next_page = '&nbsp;';
             }
             // 向目标容器赋值
             $("#name_market_level_" + level + "_names_list_div").html(results);
