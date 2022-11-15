@@ -77,6 +77,7 @@ function change_lang(lang_type)
             $("#this_is_the_last_page").html($.i18n.prop('this_is_the_last_page'));
             $("#selling_price").html($.i18n.prop('selling_price'));
             $("#purchase_price").html($.i18n.prop('purchase_price'));
+            $("#operations").html($.i18n.prop('operations'));
 
             //
 
