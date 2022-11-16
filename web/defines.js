@@ -47,7 +47,7 @@ var default_wallet        = 'anchor';      // 默认使用 Anchor 钱包
 // 以下 Anchor 相关
 
 const anchor_identifier = my_contract;
-var   anchor_transport;
+var   transport;
 var   anchor_link;
 var   anchor_chain_id = '';
 var   anchor_node_url = '';

@@ -4,9 +4,9 @@
 function init_wallet()
 {
     if (default_wallet === 'anchor') {
-        anchor_transport = new AnchorLinkBrowserTransport();
+        transport   = new AnchorLinkBrowserTransport();
         anchor_link = new AnchorLink({
-            anchor_transport,
+            transport,
             chains: [{
                 chainId: anchor_chain_id,
                 nodeUrl: anchor_node_url
