@@ -37,10 +37,27 @@ var current_my_contract   = my_contract;
 var current_network       = eos_network;
 var current_endpoint      = eos_endpoint;
 var current_user_account  = "";
-var trn_success           = true;   // 最近一次交易的状态
-var trn_hash              = "";     // 最近一次成功的交易的交易hash
 
 var doc_scroll_top        = 0;
 var current_page          = "name_market"; // 当前页面: name_market/my_names/names_of_my_bidding/system_statistics_info
 var item_num_per_page     = 3;             // 每页显示条目数量
 
+var default_wallet        = 'anchor';      // 默认使用 Anchor 钱包
+
+// 以下 Anchor 相关
+
+const anchor_identifier = my_contract;
+var   anchor_transport;
+var   anchor_link;
+var   anchor_chain_id = '';
+var   anchor_node_url = '';
+var   anchor_session;
+
+if (runmode === "prod") {    // 生产环境
+    anchor_chain_id = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
+    anchor_node_url = 'https://eos.greymass.com:443';
+}
+else {                       // 开发测试环境
+    anchor_chain_id = '8a34ec7df1b8cd06ff4a8abbaa7cc50300823350cadc59ab296cb00d104d2b8f';
+    anchor_node_url = 'http://192.168.135.100:8888';
+}

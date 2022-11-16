@@ -46,6 +46,17 @@ $(document).ready(function () {
     $("#my_messages_div").hide();
     $("#name_market_div").show();
 
+    if (default_wallet === 'anchor') {
+        anchor_transport = new AnchorLinkBrowserTransport();
+        anchor_link = new AnchorLink({
+            anchor_transport,
+            chains: [{
+                chainId: anchor_chain_id,
+                nodeUrl: anchor_node_url
+            }]
+        });
+    }
+
     setTimeout(
         function(){
             get_names_of_market(0, 1)
