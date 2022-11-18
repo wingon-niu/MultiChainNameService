@@ -85,6 +85,10 @@ function change_lang(lang_type)
             $("#check_and_query_fee").html($.i18n.prop('check_and_query_fee'));
             $("#create_name_button").html($.i18n.prop('create_name_button'));
             $("#name_belong_to_span").html($.i18n.prop('name_belong_to_span'));
+            $("#allowed_num_of_bytes_of_level_1_name_span").html($.i18n.prop('allowed_num_of_bytes_of_level_1_name_span'));
+            $("#allowed_num_of_bytes_of_level_2_name_span").html($.i18n.prop('allowed_num_of_bytes_of_level_2_name_span'));
+            $("#allowed_num_of_bytes_of_level_3_name_span").html($.i18n.prop('allowed_num_of_bytes_of_level_3_name_span'));
+            $("#max_num_of_bytes_of_name_span").html($.i18n.prop('max_num_of_bytes_of_name_span'));
 
             //
 

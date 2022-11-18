@@ -83,6 +83,39 @@ function restore_session()
 
 function create_name_show_modal()
 {
+    // 查询各级名称允许的长度
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            const resp = await rpc.get_table_rows({
+                json:  true,
+                code:  current_my_contract,
+                scope: current_my_contract,
+                table: 'globalparams',
+                index_position: 1,
+                key_type: 'i64',
+                lower_bound: 1,
+                upper_bound: 2,
+                limit: 1,
+                reverse: false,
+                show_payer: false
+            });
+            let len = resp.rows.length;
+            if (len === 1) {
+                $("#allowed_num_of_bytes_of_level_1_name_value_span").html(resp.rows[0].allowed_num_of_bytes_of_level_1_name);
+                $("#allowed_num_of_bytes_of_level_2_name_value_span").html(resp.rows[0].allowed_num_of_bytes_of_level_2_name);
+                $("#allowed_num_of_bytes_of_level_3_name_value_span").html(resp.rows[0].allowed_num_of_bytes_of_level_3_name);
+                $("#max_num_of_bytes_of_name_value_span").html(            resp.rows[0].max_num_of_bytes_of_name);
+            }
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
+
     $('#div_create_name').modal({
         relatedTarget: this,
         onCancel: function() {},
@@ -168,9 +201,91 @@ function check_and_query_fee()
     if (get_cookie('i18n_lang') === "zh") { $("#name_belong_to_value_span").html(my_level + "级名称, 长度为" + name_length + "字节。（注：超过17个字节的当作17个字节处理。UTF8编码，一个汉字为3个字节。）"); }
     else                                  { $("#name_belong_to_value_span").html("Level=" + my_level + ", Length=" + name_length + "bytes. (Note: If there are more than 17 bytes, they will be treated as 17 bytes.)"); }
 
-    // 根据级别与长度查询费用
-    
-
+    // 根据名称的级别与长度查询费用
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            const resp = await rpc.get_table_rows({
+                json:  true,
+                code:  current_my_contract,
+                scope: current_my_contract,
+                table: 'globalparams',
+                index_position: 1,
+                key_type: 'i64',
+                lower_bound: 1,
+                upper_bound: 2,
+                limit: 1,
+                reverse: false,
+                show_payer: false
+            });
+            let len = resp.rows.length;
+            if (len === 1) {
+                if (my_level === 1) {
+                    if      (name_length ===  1) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_1_byte_level_1_name);   }
+                    else if (name_length ===  2) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_2_bytes_level_1_name);  }
+                    else if (name_length ===  3) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_3_bytes_level_1_name);  }
+                    else if (name_length ===  4) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_4_bytes_level_1_name);  }
+                    else if (name_length ===  5) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_5_bytes_level_1_name);  }
+                    else if (name_length ===  6) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_6_bytes_level_1_name);  }
+                    else if (name_length ===  7) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_7_bytes_level_1_name);  }
+                    else if (name_length ===  8) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_8_bytes_level_1_name);  }
+                    else if (name_length ===  9) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_9_bytes_level_1_name);  }
+                    else if (name_length === 10) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_10_bytes_level_1_name); }
+                    else if (name_length === 11) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_11_bytes_level_1_name); }
+                    else if (name_length === 12) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_12_bytes_level_1_name); }
+                    else if (name_length === 13) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_13_bytes_level_1_name); }
+                    else if (name_length === 14) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_14_bytes_level_1_name); }
+                    else if (name_length === 15) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_15_bytes_level_1_name); }
+                    else if (name_length === 16) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_16_bytes_level_1_name); }
+                    else if (name_length === 17) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_17_bytes_level_1_name); }
+                }
+                else if (my_level === 2) {
+                    if      (name_length ===  1) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_1_byte_level_2_name);   }
+                    else if (name_length ===  2) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_2_bytes_level_2_name);  }
+                    else if (name_length ===  3) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_3_bytes_level_2_name);  }
+                    else if (name_length ===  4) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_4_bytes_level_2_name);  }
+                    else if (name_length ===  5) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_5_bytes_level_2_name);  }
+                    else if (name_length ===  6) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_6_bytes_level_2_name);  }
+                    else if (name_length ===  7) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_7_bytes_level_2_name);  }
+                    else if (name_length ===  8) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_8_bytes_level_2_name);  }
+                    else if (name_length ===  9) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_9_bytes_level_2_name);  }
+                    else if (name_length === 10) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_10_bytes_level_2_name); }
+                    else if (name_length === 11) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_11_bytes_level_2_name); }
+                    else if (name_length === 12) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_12_bytes_level_2_name); }
+                    else if (name_length === 13) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_13_bytes_level_2_name); }
+                    else if (name_length === 14) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_14_bytes_level_2_name); }
+                    else if (name_length === 15) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_15_bytes_level_2_name); }
+                    else if (name_length === 16) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_16_bytes_level_2_name); }
+                    else if (name_length === 17) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_17_bytes_level_2_name); }
+                }
+                else if (my_level === 3) {
+                    if      (name_length ===  1) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_1_byte_level_3_name);   }
+                    else if (name_length ===  2) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_2_bytes_level_3_name);  }
+                    else if (name_length ===  3) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_3_bytes_level_3_name);  }
+                    else if (name_length ===  4) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_4_bytes_level_3_name);  }
+                    else if (name_length ===  5) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_5_bytes_level_3_name);  }
+                    else if (name_length ===  6) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_6_bytes_level_3_name);  }
+                    else if (name_length ===  7) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_7_bytes_level_3_name);  }
+                    else if (name_length ===  8) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_8_bytes_level_3_name);  }
+                    else if (name_length ===  9) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_9_bytes_level_3_name);  }
+                    else if (name_length === 10) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_10_bytes_level_3_name); }
+                    else if (name_length === 11) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_11_bytes_level_3_name); }
+                    else if (name_length === 12) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_12_bytes_level_3_name); }
+                    else if (name_length === 13) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_13_bytes_level_3_name); }
+                    else if (name_length === 14) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_14_bytes_level_3_name); }
+                    else if (name_length === 15) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_15_bytes_level_3_name); }
+                    else if (name_length === 16) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_16_bytes_level_3_name); }
+                    else if (name_length === 17) { $("#new_name_fee_value_span").html(resp.rows[0].fee_of_17_bytes_level_3_name); }
+                }
+            }
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
 }
 
 function create_name()
