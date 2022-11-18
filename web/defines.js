@@ -59,5 +59,5 @@ if (runmode === "prod") {    // 生产环境
 }
 else {                       // 开发测试环境
     anchor_chain_id = '8a34ec7df1b8cd06ff4a8abbaa7cc50300823350cadc59ab296cb00d104d2b8f';
-    anchor_node_url = 'http://192.168.135.100:8888';
+    anchor_node_url = 'https://192.168.135.100:8899';
 }

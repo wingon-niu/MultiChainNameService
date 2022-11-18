@@ -290,26 +290,35 @@ function check_and_query_fee()
 
 function create_name()
 {
+    let fee = $("#new_name_fee_value_span").html();
+    if (fee.trim() === '') {
+        if (get_cookie('i18n_lang') === "zh") { alert("提示：请先查询所需费用。"); }
+        else                                  { alert("Prompt: Please query the required fee first."); }
+        return;
+    }
+
     if(current_user_account === "") {
         alert($("#please_login").html());
         return;
     }
-}
 
-//// transfer tokens using a session
-//function transfer() {
-//    const action = {
-//        account: 'eosio.token',
-//        name: 'transfer',
-//        authorization: [session.auth],
-//        data: {
-//            from: session.auth.actor,
-//            to: 'teamgreymass',
-//            quantity: '0.0001 EOS',
-//            memo: 'Anchor is the best! Thank you <3'
-//        }
-//    }
-//    session.transact({action}).then((result) => {
-//        document.getElementById('log').innerHTML += `Transaction broadcast! ${ result.processed.id }\n`
-//    })
-//}
+    // 发送交易
+    (async () => {
+        try {
+            const action = {
+                account:       'eosio.token',
+                name:          'transfer',
+                authorization: [anchor_session.auth],
+                data: {
+                    from:     anchor_session.auth.actor,
+                    to:       current_my_contract,
+                    quantity: fee,
+                    memo:     'Create meta name: ' + $("#new_name_input").val().trim()
+                }
+            };
+            let result = await anchor_session.transact({action});
+            alert("OK");
+        } catch (e) {
+        }
+    })();
+}
