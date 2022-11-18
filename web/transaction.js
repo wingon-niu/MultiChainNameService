@@ -92,6 +92,66 @@ function create_name_show_modal()
 
 function check_and_query_fee()
 {
+    let meta_name = $("#new_name_input").val().trim();
+
+    if (meta_name === '') {
+        if (get_cookie('i18n_lang') === "zh") { alert("错误：名称不能为空。"); }
+        else                                  { alert("Error: Name can not be empty."); }
+        return;
+    }
+
+    let level_1_str = '';
+    let level_2_str = '';
+    let level_3_str = '';
+    let my_level    = 0;
+    let my_length   = 0;
+
+    // 将名称分拆到各级字符串
+    let words = meta_name.split('.');
+    if (words.length === 1) {
+        level_1_str = words[0];
+        my_level = 1;
+    }
+    else if (words.length === 2) {
+        level_1_str = words[1];
+        level_2_str = words[0];
+        my_level = 2;
+    }
+    else if (words.length === 3) {
+        level_1_str = words[2];
+        level_2_str = words[1];
+        level_3_str = words[0];
+        my_level = 3;
+    }
+    else {
+        if (get_cookie('i18n_lang') === "zh") { alert("错误：最多只支持3级名称。"); }
+        else                                  { alert("Error: Only 3 levels are supported at most."); }
+        return;
+    }
+
+    // 检查各级字符串的首尾是否有空格
+    if (my_level === 1) {
+        if(level_1_str === '' || level_1_str.trim() === '' || level_1_str != level_1_str.trim()) {
+            if (get_cookie('i18n_lang') === "zh") { alert("错误：名称的开头和结尾不能是空格，并且名称不能为空。"); }
+            else                                  { alert("Error: The beginning and end of the name can not be spaces, or name can not be empty."); }
+            return;
+        }
+    }
+    else if (my_level === 2) {
+        if(level_1_str === '' || level_1_str.trim() === '' || level_1_str != level_1_str.trim() || level_2_str === '' || level_2_str.trim() === '' || level_2_str != level_2_str.trim()) {
+            if (get_cookie('i18n_lang') === "zh") { alert("错误：名称的开头和结尾不能是空格，并且名称不能为空。"); }
+            else                                  { alert("Error: The beginning and end of the name can not be spaces, or name can not be empty."); }
+            return;
+        }
+    }
+    else if (my_level === 3) {
+        if(level_1_str === '' || level_1_str.trim() === '' || level_1_str != level_1_str.trim() || level_2_str === '' || level_2_str.trim() === '' || level_2_str != level_2_str.trim() || level_3_str === '' || level_3_str.trim() === '' || level_3_str != level_3_str.trim()) {
+            if (get_cookie('i18n_lang') === "zh") { alert("错误：名称的开头和结尾不能是空格，并且名称不能为空。"); }
+            else                                  { alert("Error: The beginning and end of the name can not be spaces, or name can not be empty."); }
+            return;
+        }
+    }
+
 }
 
 function create_name()
