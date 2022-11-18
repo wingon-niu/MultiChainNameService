@@ -80,6 +80,11 @@ function change_lang(lang_type)
             $("#operations").html($.i18n.prop('operations'));
             $("#system_variables_span").html($.i18n.prop('system_variables_span'));
             $("#system_parameters_span").html($.i18n.prop('system_parameters_span'));
+            $("#new_name_span").html($.i18n.prop('new_name_span'));
+            $("#new_name_fee_span").html($.i18n.prop('new_name_fee_span'));
+            $("#check_and_query_fee").html($.i18n.prop('check_and_query_fee'));
+            $("#create_name_button").html($.i18n.prop('create_name_button'));
+            $("#name_belong_to_span").html($.i18n.prop('name_belong_to_span'));
 
             //
 

@@ -81,6 +81,27 @@ function restore_session()
     }
 }
 
+function create_name_show_modal()
+{
+    $('#div_create_name').modal({
+        relatedTarget: this,
+        onCancel: function() {},
+        onConfirm: function() {}
+    });
+}
+
+function check_and_query_fee()
+{
+}
+
+function create_name()
+{
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
+}
+
 //// transfer tokens using a session
 //function transfer() {
 //    const action = {

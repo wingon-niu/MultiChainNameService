@@ -26,13 +26,18 @@ $(document).ready(function () {
         my_logoff();
     });
 
+    $("#check_and_query_fee").on("click", function() {
+        check_and_query_fee();
+    });
+
+    $("#create_name_button").on("click", function() {
+        create_name();
+    });
+
     $("#create_name_href").on("click", function() {
-        if(current_user_account === "") {
-            alert($("#please_login").html());
-            return;
-        }
-        //$("#forward_article_id").val("0");
-        //write_an_article_show_modal();
+        $("#new_name_fee_value_span").html("");
+        $("#name_belong_to_value_span").html("");
+        create_name_show_modal();
     });
 
     $("#my_names_href").on("click", function() {
