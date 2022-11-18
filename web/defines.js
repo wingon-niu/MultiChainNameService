@@ -42,7 +42,7 @@ var doc_scroll_top        = 0;
 var current_page          = "name_market"; // 当前页面: name_market/my_names/names_of_my_bidding/system_statistics_info
 var item_num_per_page     = 3;             // 每页显示条目数量
 
-var default_wallet        = 'anchor';      // 默认使用 Anchor 钱包
+var current_wallet        = 'anchor';      // 默认使用 Anchor 钱包
 
 // 以下 Anchor 相关
 

@@ -3,7 +3,7 @@
 
 function init_wallet()
 {
-    if (default_wallet === 'anchor') {
+    if (current_wallet === 'anchor') {
         transport   = new AnchorLinkBrowserTransport();
         anchor_link = new AnchorLink({
             transport,
@@ -24,7 +24,7 @@ function my_login()
         else                                  { alert("Prompt: You are already logged in."); }
         return;
     }
-    if (default_wallet === 'anchor') {
+    if (current_wallet === 'anchor') {
         anchor_link.login(anchor_identifier).then((result) => {
             anchor_session = result.session;
             current_user_account = anchor_session.auth.actor;
@@ -48,7 +48,7 @@ function my_logoff()
         else                                  { alert("Prompt: You are not logged in."); }
         return;
     }
-    if (default_wallet === 'anchor') {
+    if (current_wallet === 'anchor') {
         anchor_session.remove();
         current_user_account = '';
         clear_login_flag();
@@ -68,7 +68,7 @@ function clear_login_flag()
 
 function restore_session()
 {
-    if (default_wallet === 'anchor') {
+    if (current_wallet === 'anchor') {
         anchor_link.restoreSession(anchor_identifier).then((result) => {
             anchor_session = result;
             if (anchor_session) {
