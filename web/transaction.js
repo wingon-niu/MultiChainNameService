@@ -152,6 +152,25 @@ function check_and_query_fee()
         }
     }
 
+    // 计算本级名称的长度，单位：字节
+    if (my_level === 1) {
+        my_length = get_length_of_bytes_of_utf8_str(level_1_str);
+    }
+    else if (my_level === 2) {
+        my_length = get_length_of_bytes_of_utf8_str(level_2_str);
+    }
+    else if (my_level === 3) {
+        my_length = get_length_of_bytes_of_utf8_str(level_3_str);
+    }
+    let name_length = 0;
+    if (my_length < 17) { name_length = my_length; }
+    else                { name_length = 17; }
+    if (get_cookie('i18n_lang') === "zh") { $("#name_belong_to_value_span").html(my_level + "级名称, 长度为" + name_length + "字节。（注：超过17个字节的当作17个字节处理。UTF8编码，一个汉字为3个字节。）"); }
+    else                                  { $("#name_belong_to_value_span").html("Level=" + my_level + ", Length=" + name_length + "bytes. (Note: If there are more than 17 bytes, they will be treated as 17 bytes.)"); }
+
+    // 根据级别与长度查询费用
+    
+
 }
 
 function create_name()

@@ -92,3 +92,9 @@ function convert_dot_to_underline(eos_name)
     let str = eos_name;
     return str.replace(/\./g, '_');
 }
+
+// 计算一个UTF8字符串所占的字节长度
+function get_length_of_bytes_of_utf8_str(str)
+{
+    return (Web3.utils.utf8ToHex(str).length - 2)/2;
+}
