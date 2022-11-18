@@ -303,22 +303,26 @@ function create_name()
     }
 
     // 发送交易
-    (async () => {
-        try {
-            const action = {
-                account:       'eosio.token',
-                name:          'transfer',
-                authorization: [anchor_session.auth],
-                data: {
-                    from:     anchor_session.auth.actor,
-                    to:       current_my_contract,
-                    quantity: fee,
-                    memo:     'Create meta name: ' + $("#new_name_input").val().trim()
-                }
-            };
-            let result = await anchor_session.transact({action});
-            alert("OK");
-        } catch (e) {
-        }
-    })();
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       'eosio.token',
+                    name:          'transfer',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        from:     anchor_session.auth.actor,
+                        to:       current_my_contract,
+                        quantity: fee,
+                        memo:     'Create meta name: ' + $("#new_name_input").val().trim()
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
+    }
 }
