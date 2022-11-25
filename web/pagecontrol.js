@@ -55,12 +55,12 @@ function show_names_of_my_bidding()
     $("#menu_body").offCanvas('close');
     if(current_user_account === "") {
         alert($("#please_login").html());
-        //return;
+        return;
     }
     hide_all_pages();
     current_page = "names_of_my_bidding";
     $("#names_of_my_bidding_div").show();
-    //get names_of_my_bidding
+    get_names_of_my_bidding(current_user_account);
 }
 
 function show_system_statistics_info()

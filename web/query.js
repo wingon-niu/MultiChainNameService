@@ -242,3 +242,96 @@ function do_get_my_names(index_position, key_type, lower_bound, upper_bound)
         }
     })();
 }
+
+function get_names_of_my_bidding(user_account)
+{
+    let index_position = 9;
+    let key_type       = 'i128';
+
+    let lower_bd  = new BigNumber( my_eos_name_to_uint64t(user_account) );
+    let upper_bd  = new BigNumber( lower_bd.plus(1) );
+
+    lower_bd      = lower_bd.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+    lower_bd      = lower_bd.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+
+    upper_bd      = upper_bd.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+    upper_bd      = upper_bd.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+
+    do_get_names_of_my_bidding(index_position, key_type, lower_bd.toFixed(), upper_bd.toFixed());
+}
+
+function do_get_names_of_my_bidding(index_position, key_type, lower_bound, upper_bound)
+{
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            const resp = await rpc.get_table_rows({
+                json:  true,
+                code:  current_my_contract,
+                scope: current_my_contract,
+                table: 'metanames',
+                index_position: index_position,
+                key_type: key_type,
+                lower_bound: lower_bound,
+                upper_bound: upper_bound,
+                limit: item_num_per_page,
+                reverse: false,
+                show_payer: false
+            });
+            let results   = '';
+            let next_page = '';
+            let i = 0;
+            let len = resp.rows.length;
+            let selling_price_str         = '';
+            let active_purchase_price_str = '';
+            // 以下逐个生成名称的信息
+            for (i = 0; i < len; i++) {
+                if (resp.rows[i].status === 1) {
+                    selling_price_str = resp.rows[i].selling_price;
+                } else {
+                    selling_price_str = '&nbsp;';
+                }
+                if (resp.rows[i].active_buyer === current_my_contract) {
+                    active_purchase_price_str = '&nbsp;';
+                } else {
+                    active_purchase_price_str = resp.rows[i].active_purchase_price + '<br />buyer: ' + resp.rows[i].active_buyer;
+                }
+                results = results + '<tr>';
+                results = results + '<td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + resp.rows[i].meta_name + '<br />owner: ' + resp.rows[i].owner + '</td>';
+                results = results + '<td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + selling_price_str         + '</td>';
+                results = results + '<td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + active_purchase_price_str + '</td>';
+                results = results + '<td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + $("#operations").html()   + '</td>';
+                results = results + '</tr>';
+            }
+            // 如果 当前有数据 并且 有下一页
+            if (len > 0 && resp.more === true) {
+                results   = '<table width="100%" border="1"><tr><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">&nbsp;</td><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + $("#selling_price").html() + '</td><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + $("#purchase_price").html() + '</td><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">&nbsp;</td></tr>' + results + '</table>';
+                next_page = '<table width="100%" border="0"><tr><td align="center"><a href="##" onclick="do_get_names_of_my_bidding(' + index_position + ', \'' + key_type + '\', \'' + resp.next_key + '\', \'' + upper_bound + '\');">' + $("#next_page").html() + '</a></td></tr></table>';
+            }
+            // 如果 当前有数据 并且 没有下一页
+            else if (len > 0 && resp.more === false) {
+                results   = '<table width="100%" border="1"><tr><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">&nbsp;</td><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + $("#selling_price").html() + '</td><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + $("#purchase_price").html() + '</td><td style="width:25%; vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">&nbsp;</td></tr>' + results + '</table>';
+                next_page = '<table width="100%" border="0"><tr><td align="center">' + $("#this_is_the_last_page").html() + '</td></tr></table>';
+            }
+            // 如果 当前无数据 并且 有下一页
+            else if (len === 0 && resp.more === true) {
+                results   = '&nbsp;';
+                next_page = '<table width="100%" border="0"><tr><td align="center"><a href="##" onclick="do_get_names_of_my_bidding(' + index_position + ', \'' + key_type + '\', \'' + resp.next_key + '\', \'' + upper_bound + '\');">' + $("#next_page").html() + '</a></td></tr></table>';
+            }
+            // 如果 当前无数据 并且 没有下一页
+            else if (len === 0 && resp.more === false) {
+                results   = '<table width="100%" border="0"><tr><td align="center">' + $("#no_data_found").html() + '</td></tr></table>';
+                next_page = '&nbsp;';
+            }
+            // 向目标容器赋值
+            $("#names_of_my_bidding_list_div").html(results);
+            $("#names_of_my_bidding_next_page_div").html(next_page);
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
+}
