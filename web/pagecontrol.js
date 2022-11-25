@@ -42,12 +42,12 @@ function show_my_names()
     $("#menu_body").offCanvas('close');
     if(current_user_account === "") {
         alert($("#please_login").html());
-        //return;
+        return;
     }
     hide_all_pages();
     current_page = "my_names";
     $("#my_names_div").show();
-    //get my_names
+    get_my_names(current_user_account);
 }
 
 function show_names_of_my_bidding()
