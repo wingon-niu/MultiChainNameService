@@ -47,7 +47,7 @@ function show_my_names()
     hide_all_pages();
     current_page = "my_names";
     $("#my_names_div").show();
-    get_my_names(current_user_account);
+    get_my_names('' + current_user_account + '');            // 登录之后，current_user_account 成了一个对象，这样可以自动转换为字符串。
 }
 
 function show_names_of_my_bidding()
@@ -60,7 +60,7 @@ function show_names_of_my_bidding()
     hide_all_pages();
     current_page = "names_of_my_bidding";
     $("#names_of_my_bidding_div").show();
-    get_names_of_my_bidding(current_user_account);
+    get_names_of_my_bidding('' + current_user_account + ''); // 登录之后，current_user_account 成了一个对象，这样可以自动转换为字符串。
 }
 
 function show_system_statistics_info()
