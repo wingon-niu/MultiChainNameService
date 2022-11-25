@@ -326,3 +326,43 @@ function create_name()
     else {
     }
 }
+
+function make_sale_order(id)
+{
+    $("#my_names_dropdown_" + id).dropdown('close');
+}
+
+function cancel_sale_order(id)
+{
+    $("#my_names_dropdown_" + id).dropdown('close');
+}
+
+function direct_deal_purchase_order(id)
+{
+    $("#my_names_dropdown_" + id).dropdown('close');
+}
+
+function manage_resolution_records(id)
+{
+    $("#my_names_dropdown_" + id).dropdown('close');
+}
+
+function direct_buy(id)
+{
+    $("#names_of_market_dropdown_" + id).dropdown('close');
+}
+
+function make_purchase_order(id)
+{
+    $("#names_of_market_dropdown_" + id).dropdown('close');
+}
+
+function create_sub_name(id)
+{
+    $("#names_of_market_dropdown_" + id).dropdown('close');
+}
+
+function cancel_purchase_order(id)
+{
+    $("#names_of_my_bidding_dropdown_" + id).dropdown('close');
+}

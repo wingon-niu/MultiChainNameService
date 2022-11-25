@@ -89,6 +89,14 @@ function change_lang(lang_type)
             $("#allowed_num_of_bytes_of_level_2_name_span").html($.i18n.prop('allowed_num_of_bytes_of_level_2_name_span'));
             $("#allowed_num_of_bytes_of_level_3_name_span").html($.i18n.prop('allowed_num_of_bytes_of_level_3_name_span'));
             $("#max_num_of_bytes_of_name_span").html($.i18n.prop('max_num_of_bytes_of_name_span'));
+            $("#make_sale_order").html($.i18n.prop('make_sale_order'));
+            $("#cancel_sale_order").html($.i18n.prop('cancel_sale_order'));
+            $("#direct_deal_purchase_order").html($.i18n.prop('direct_deal_purchase_order'));
+            $("#manage_resolution_records").html($.i18n.prop('manage_resolution_records'));
+            $("#direct_buy").html($.i18n.prop('direct_buy'));
+            $("#make_purchase_order").html($.i18n.prop('make_purchase_order'));
+            $("#create_sub_name").html($.i18n.prop('create_sub_name'));
+            $("#cancel_purchase_order").html($.i18n.prop('cancel_purchase_order'));
 
             //
 
