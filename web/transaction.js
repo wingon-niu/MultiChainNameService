@@ -348,15 +348,61 @@ function make_sale_order(id, name_base64)
 
 function do_make_sale_order()
 {
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       current_my_contract,
+                    name:          'makesellord',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        user:      anchor_session.auth.actor,
+                        meta_name: $("#make_sale_order_name_input").val(),
+                        quantity:  $("#make_sale_order_price_input").val()
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
+    }
 }
 
-function cancel_sale_order(id)
+function cancel_sale_order(id, name_base64)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
 
     if(current_user_account === "") {
         alert($("#please_login").html());
         return;
+    }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       current_my_contract,
+                    name:          'cancelsellod',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        user:      anchor_session.auth.actor,
+                        meta_name: meta_name
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
     }
 }
 
@@ -380,13 +426,39 @@ function manage_resolution_records(id)
     }
 }
 
-function direct_buy(id)
+function direct_buy(id, name_base64, owner, selling_price)
 {
     $("#names_of_market_dropdown_" + id).dropdown('close');
 
     if(current_user_account === "") {
         alert($("#please_login").html());
         return;
+    }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       'eosio.token',
+                    name:          'transfer',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        from:     anchor_session.auth.actor,
+                        to:       current_my_contract,
+                        quantity: selling_price,
+                        memo:     'Direct buy meta name: ' + owner + ' ' + meta_name
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
     }
 }
 
