@@ -327,34 +327,77 @@ function create_name()
     }
 }
 
-function make_sale_order(id)
+function make_sale_order(id, name_base64)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+    $("#make_sale_order_name_input").val(meta_name);
+
+    $('#div_make_sale_order').modal({
+        relatedTarget: this,
+        onCancel: function() {},
+        onConfirm: function() {}
+    });
+}
+
+function do_make_sale_order()
+{
 }
 
 function cancel_sale_order(id)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
 }
 
 function direct_deal_purchase_order(id)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
 }
 
 function manage_resolution_records(id)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
 }
 
 function direct_buy(id)
 {
     $("#names_of_market_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
 }
 
 function make_purchase_order(id)
 {
     $("#names_of_market_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
 }
 
 function create_sub_name(id)
@@ -365,4 +408,9 @@ function create_sub_name(id)
 function cancel_purchase_order(id)
 {
     $("#names_of_my_bidding_dropdown_" + id).dropdown('close');
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
 }

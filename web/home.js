@@ -44,6 +44,10 @@ $(document).ready(function () {
         show_my_names();
     });
 
+    $("#make_sale_order_href").on("click", function() {
+        do_make_sale_order();
+    });
+
     //
 
     doc_scroll_top        = 0;

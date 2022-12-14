@@ -229,6 +229,27 @@
 
 
 
+<!--  将名称挂单出售  显示的模态框  -->
+<div class="am-modal am-modal-confirm" tabindex="-1" id="div_make_sale_order">
+    <div class="am-modal-dialog" style="border: 2px solid blue;">
+        <div>
+            <span id="make_sale_order_name_span">Name: </span>
+            <input type="text" class="am-modal-prompt-input" id="make_sale_order_name_input" placeholder="" value="" readonly="readonly" />
+            <span id="make_sale_order_price_span">Selling Price: </span>
+            <input type="text" class="am-modal-prompt-input" id="make_sale_order_price_input" placeholder="" value="100.0000 EOS" />
+            <span id="make_sale_order_max_price_span">Due to the limitation of smart contract index, the maximum selling price is: 429496.7295 EOS</span>
+            <div>
+              <a href="##" id="make_sale_order_href"><span class="am-modal-btn my_confirm">Confirm</span></a>
+            </div>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn my_close"  data-am-modal-cancel >Close</span>
+        </div>
+    </div>
+</div>
+
+
+
 <!--  写回复  显示的模态框
 //<div class="am-modal am-modal-confirm" tabindex="-1" id="div_write_a_reply">
 //    <div class="am-modal-dialog">

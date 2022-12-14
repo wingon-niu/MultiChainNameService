@@ -97,6 +97,9 @@ function change_lang(lang_type)
             $("#make_purchase_order").html($.i18n.prop('make_purchase_order'));
             $("#create_sub_name").html($.i18n.prop('create_sub_name'));
             $("#cancel_purchase_order").html($.i18n.prop('cancel_purchase_order'));
+            $("#make_sale_order_name_span").html($.i18n.prop('make_sale_order_name_span'));
+            $("#make_sale_order_price_span").html($.i18n.prop('make_sale_order_price_span'));
+            $("#make_sale_order_max_price_span").html($.i18n.prop('make_sale_order_max_price_span'));
 
             //
 
