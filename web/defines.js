@@ -40,7 +40,7 @@ var current_user_account  = "";
 
 var doc_scroll_top        = 0;
 var current_page          = "name_market"; // 当前页面: name_market/my_names/names_of_my_bidding/system_statistics_info
-var item_num_per_page     = 2;             // 每页显示条目数量
+var item_num_per_page     = 6;             // 每页显示条目数量
 
 var current_wallet        = 'anchor';      // 默认使用 Anchor 钱包
 
