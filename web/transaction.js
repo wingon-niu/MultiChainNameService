@@ -406,13 +406,39 @@ function cancel_sale_order(id, name_base64)
     }
 }
 
-function direct_deal_purchase_order(id)
+function direct_deal_purchase_order(id, name_base64, buyer, purchase_price)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
 
     if(current_user_account === "") {
         alert($("#please_login").html());
         return;
+    }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       current_my_contract,
+                    name:          'directdealpo',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        user:      anchor_session.auth.actor,
+                        buyer:     buyer,
+                        meta_name: meta_name,
+                        quantity:  purchase_price
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
     }
 }
 
@@ -483,6 +509,29 @@ function make_purchase_order(id, name_base64)
 
 function do_make_purchase_order()
 {
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       'eosio.token',
+                    name:          'transfer',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        from:     anchor_session.auth.actor,
+                        to:       current_my_contract,
+                        quantity: $("#make_purchase_order_price_input").val(),
+                        memo:     'Actively place purchase order for meta name: ' + $("#make_purchase_order_name_input").val()
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
+    }
 }
 
 function create_sub_name(id)
@@ -490,12 +539,37 @@ function create_sub_name(id)
     $("#names_of_market_dropdown_" + id).dropdown('close');
 }
 
-function cancel_purchase_order(id)
+function cancel_purchase_order(id, name_base64, purchase_price)
 {
     $("#names_of_my_bidding_dropdown_" + id).dropdown('close');
 
     if(current_user_account === "") {
         alert($("#please_login").html());
         return;
+    }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       current_my_contract,
+                    name:          'cancelactpo',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        user:      anchor_session.auth.actor,
+                        meta_name: meta_name,
+                        quantity:  purchase_price
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
     }
 }
