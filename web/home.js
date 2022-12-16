@@ -48,6 +48,10 @@ $(document).ready(function () {
         do_make_sale_order();
     });
 
+    $("#make_purchase_order_href").on("click", function() {
+        do_make_purchase_order();
+    });
+
     //
 
     doc_scroll_top        = 0;

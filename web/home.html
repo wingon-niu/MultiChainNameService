@@ -252,6 +252,26 @@
 
 
 
+<!--  下采购订单  显示的模态框  -->
+<div class="am-modal am-modal-confirm" tabindex="-1" id="div_make_purchase_order">
+    <div class="am-modal-dialog" style="border: 2px solid blue;">
+        <div>
+            <span id="make_purchase_order_name_span">Name: </span>
+            <input type="text" class="am-modal-prompt-input" id="make_purchase_order_name_input" placeholder="" value="" readonly="readonly" />
+            <span id="make_purchase_order_price_span">Purchase Price: </span>
+            <input type="text" class="am-modal-prompt-input" id="make_purchase_order_price_input" placeholder="" value="100.0000 EOS" />
+            <div>
+              <a href="##" id="make_purchase_order_href"><span class="am-modal-btn my_confirm">Confirm</span></a>
+            </div>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn my_close"  data-am-modal-cancel >Close</span>
+        </div>
+    </div>
+</div>
+
+
+
 <!--  写回复  显示的模态框
 //<div class="am-modal am-modal-confirm" tabindex="-1" id="div_write_a_reply">
 //    <div class="am-modal-dialog">

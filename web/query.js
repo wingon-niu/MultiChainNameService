@@ -72,7 +72,7 @@ function do_get_names_of_market(id32_of_upper_level, level, index_position, key_
                 results = results + '<div class="am-dropdown am-dropdown-down" id="names_of_market_dropdown_' + resp.rows[i].id32 + '" data-am-dropdown>';
                 results = results + '<button class="am-btn am-btn-success am-round am-dropdown-toggle" onclick="show_names_of_market_dropdown(' + resp.rows[i].id32 + ');" data-am-dropdown-toggle>' + $("#operations").html() + ' <span class="am-icon-caret-down"></span></button><ul class="am-dropdown-content">';
                 results = results + '<li><a href="##" onclick="direct_buy('            + resp.rows[i].id32 + ', \'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\', \'' + resp.rows[i].owner + '\', \'' + resp.rows[i].selling_price + '\');">' + $("#direct_buy").html() + '</a></li>';
-                results = results + '<li><a href="##" onclick="make_purchase_order('   + resp.rows[i].id32 + ');">' + $("#make_purchase_order").html() + '</a></li>';
+                results = results + '<li><a href="##" onclick="make_purchase_order('   + resp.rows[i].id32 + ', \'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\');">' + $("#make_purchase_order").html() + '</a></li>';
                 results = results + '<li><a href="##" onclick="create_sub_name('       + resp.rows[i].id32 + ');">' + $("#create_sub_name").html() + '</a></li>';
                 results = results + '</ul>';
                 results = results + '</div>';

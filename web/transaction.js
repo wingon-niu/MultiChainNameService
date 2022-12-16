@@ -462,7 +462,7 @@ function direct_buy(id, name_base64, owner, selling_price)
     }
 }
 
-function make_purchase_order(id)
+function make_purchase_order(id, name_base64)
 {
     $("#names_of_market_dropdown_" + id).dropdown('close');
 
@@ -470,6 +470,19 @@ function make_purchase_order(id)
         alert($("#please_login").html());
         return;
     }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+    $("#make_purchase_order_name_input").val(meta_name);
+
+    $('#div_make_purchase_order').modal({
+        relatedTarget: this,
+        onCancel: function() {},
+        onConfirm: function() {}
+    });
+}
+
+function do_make_purchase_order()
+{
 }
 
 function create_sub_name(id)
