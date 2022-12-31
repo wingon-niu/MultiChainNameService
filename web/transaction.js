@@ -534,9 +534,16 @@ function do_make_purchase_order()
     }
 }
 
-function create_sub_name(id)
+function create_sub_name(id, name_base64)
 {
     $("#names_of_market_dropdown_" + id).dropdown('close');
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+
+    $("#new_name_input").val('.' + meta_name);
+    $("#new_name_fee_value_span").html("");
+    $("#name_belong_to_value_span").html("");
+    create_name_show_modal();
 }
 
 function cancel_purchase_order(id, name_base64, purchase_price)
