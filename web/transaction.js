@@ -470,7 +470,7 @@ function manage_resolution_records(id, name_base64)
                     index_position: 2,
                     key_type: 'i64',
                     lower_bound: lower_bd,
-                    limit: 2,
+                    limit: 20,
                     reverse: false,
                     show_payer: false
                 });
