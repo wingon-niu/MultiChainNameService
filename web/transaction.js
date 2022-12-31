@@ -449,8 +449,47 @@ function manage_resolution_records(id, name_base64)
     let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
     $("#manage_resolution_records_name_input").val(meta_name);
     $("#manage_resolution_records_fee_value_span").html("");
+    $("#manage_resolution_records_target_select").html("");
 
     // 查询解析目标的列表，并生成下拉选择框
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            var resp;
+            let lower_bd = '1';
+            let len      = 0;
+            let i        = 0;
+            let more     = true;
+            while (more) {
+                resp = await rpc.get_table_rows({
+                    json:  true,
+                    code:  current_my_contract,
+                    scope: current_my_contract,
+                    table: 'rslvtargets',
+                    index_position: 2,
+                    key_type: 'i64',
+                    lower_bound: lower_bd,
+                    limit: 2,
+                    reverse: false,
+                    show_payer: false
+                });
+                len = resp.rows.length;
+                for (i = 0; i < len; i++) {
+                    $("#manage_resolution_records_target_select").append('<option value="' + resp.rows[i].target + '">' + resp.rows[i].target + '</option>');
+                }
+                more = resp.more;
+                if (more) {
+                    lower_bd = resp.next_key;
+                }
+            }
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
 
     $('#div_manage_resolution_records').modal({
         relatedTarget: this,
