@@ -442,14 +442,21 @@ function direct_deal_purchase_order(id, name_base64, buyer, purchase_price)
     }
 }
 
-function manage_resolution_records(id)
+function manage_resolution_records(id, name_base64)
 {
     $("#my_names_dropdown_" + id).dropdown('close');
 
-    if(current_user_account === "") {
-        alert($("#please_login").html());
-        return;
-    }
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+    $("#manage_resolution_records_name_input").val(meta_name);
+    $("#manage_resolution_records_fee_value_span").html("");
+
+    // 查询解析目标的列表，并生成下拉选择框
+
+    $('#div_manage_resolution_records').modal({
+        relatedTarget: this,
+        onCancel: function() {},
+        onConfirm: function() {}
+    });
 }
 
 function direct_buy(id, name_base64, owner, selling_price)

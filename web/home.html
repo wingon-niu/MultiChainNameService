@@ -272,29 +272,31 @@
 
 
 
-<!--  写回复  显示的模态框
-//<div class="am-modal am-modal-confirm" tabindex="-1" id="div_write_a_reply">
-//    <div class="am-modal-dialog">
-//        <div>
-//            <div><input type="hidden" id="target_article_id" value="0" /></div>
-//            <div><input type="hidden" id="target_reply_id"   value="0" /></div>
-//            <span class="trn_tip">Transfer amount per transaction:</span>
-//            <input type="text" class="am-modal-prompt-input" id="amount_per_trn_reply" placeholder="" value="0.0001 EOS" />
-//            <span id="reply_content">Reply content: (Unlimited length)</span>
-//            <textarea class="am-modal-prompt-input" rows="12" id="content_of_reply" placeholder=""></textarea>
-//            <div id="div_reply_posting"><i class="am-icon-spinner am-icon-pulse"></i>&nbsp;<i class="am-icon-spinner am-icon-pulse"></i>&nbsp;<i class="am-icon-spinner am-icon-pulse"></i>&nbsp;<i class="am-icon-spinner am-icon-pulse"></i>&nbsp;<i class="am-icon-spinner am-icon-pulse"></i>&nbsp;<i class="am-icon-spinner am-icon-pulse"></i></div>
-//            <div>
-//              <a href="##"><span class="number_of_trns" id="view_times_of_txn_reply">View times of txn</span></a>&nbsp;&nbsp;&nbsp;
-//              <a href="##"><span                        id="post_reply">Post</span></a><br />
-//              <a href="##"><span                        id="resume_from_break_point_post_reply">Resume from break point</span></a>
-//            </div>
-//        </div>
-//        <div class="am-modal-footer">
-//            <span class="am-modal-btn my_cancel"  data-am-modal-cancel >Cancel</span>
-//        </div>
-//    </div>
-//</div>
------------->
+<!--  管理解析  显示的模态框  -->
+<div class="am-modal am-modal-confirm" tabindex="-1" id="div_manage_resolution_records">
+    <div class="am-modal-dialog" style="border: 2px solid blue;">
+        <div>
+            <span class="class_name_span">Name: </span>
+            <input type="text" class="am-modal-prompt-input" id="manage_resolution_records_name_input" placeholder="" value="" readonly="readonly" />
+            <span class="class_target_span">Target: </span>
+            <select id="manage_resolution_records_target_select">
+                <option value="a">a</option>
+                <option value="b">b</option>
+                <option value="c">c</option>
+            </select>
+            <span class="class_content_span">Content: </span>
+            <input type="text" class="am-modal-prompt-input" id="manage_resolution_records_content_input" placeholder="" value="" />
+            <span id="manage_resolution_records_fee_span">Fee: </span>&nbsp;<span id="manage_resolution_records_fee_value_span"></span><br />
+            <div>
+              <a href="##"><span id="manage_resolution_records_query_fee">Query fee</span></a>&nbsp;&nbsp;
+              <a href="##"><span id="manage_resolution_records_insert_or_update_one_resolv_record">Insert or update one resolv record</span></a>
+            </div>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn my_close"  data-am-modal-cancel >Close</span>
+        </div>
+    </div>
+</div>
 
 
 

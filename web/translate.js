@@ -102,6 +102,12 @@ function change_lang(lang_type)
             $("#make_sale_order_max_price_span").html($.i18n.prop('make_sale_order_max_price_span'));
             $("#make_purchase_order_name_span").html($.i18n.prop('make_purchase_order_name_span'));
             $("#make_purchase_order_price_span").html($.i18n.prop('make_purchase_order_price_span'));
+            $(".class_name_span").html($.i18n.prop('class_name_span'));
+            $(".class_target_span").html($.i18n.prop('class_target_span'));
+            $(".class_content_span").html($.i18n.prop('class_content_span'));
+            $("#manage_resolution_records_fee_span").html($.i18n.prop('manage_resolution_records_fee_span'));
+            $("#manage_resolution_records_query_fee").html($.i18n.prop('manage_resolution_records_query_fee'));
+            $("#manage_resolution_records_insert_or_update_one_resolv_record").html($.i18n.prop('manage_resolution_records_insert_or_update_one_resolv_record'));
 
             //
 

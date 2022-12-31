@@ -222,7 +222,7 @@ function do_get_my_names(index_position, key_type, lower_bound, upper_bound)
                 results = results + '<li><a href="##" onclick="make_sale_order('            + resp.rows[i].id32 + ', \'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\');">' + $("#make_sale_order").html() + '</a></li>';
                 results = results + '<li><a href="##" onclick="cancel_sale_order('          + resp.rows[i].id32 + ', \'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\');">' + $("#cancel_sale_order").html() + '</a></li>';
                 results = results + '<li><a href="##" onclick="direct_deal_purchase_order(' + resp.rows[i].id32 + ', \'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\', \'' + resp.rows[i].active_buyer + '\', \'' + resp.rows[i].active_purchase_price + '\');">' + $("#direct_deal_purchase_order").html() + '</a></li>';
-                results = results + '<li><a href="##" onclick="manage_resolution_records('  + resp.rows[i].id32 + ');">' + $("#manage_resolution_records").html() + '</a></li>';
+                results = results + '<li><a href="##" onclick="manage_resolution_records('  + resp.rows[i].id32 + ', \'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\');">' + $("#manage_resolution_records").html() + '</a></li>';
                 results = results + '</ul>';
                 results = results + '</div>';
                 results = results + '</td>';
