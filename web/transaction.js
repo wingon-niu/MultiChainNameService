@@ -603,7 +603,7 @@ function do_manage_resolution_records_insert_or_update_one_resolv_record()
                         from:     anchor_session.auth.actor,
                         to:       current_my_contract,
                         quantity: fee,
-                        memo:     'Insert or update one resolv record: <meta_name_begin_flag>' + $("#manage_resolution_records_name_input").val() + '<meta_name_end_flag> ' + $("#manage_resolution_records_target_select").val() + ' ' + $("#manage_resolution_records_content_input").val();
+                        memo:     'Insert or update one resolv record: <meta_name_begin_flag>' + $("#manage_resolution_records_name_input").val() + '<meta_name_end_flag> ' + $("#manage_resolution_records_target_select").val() + ' ' + $("#manage_resolution_records_content_input").val()
                     }
                 };
                 let result = await anchor_session.transact({action});
