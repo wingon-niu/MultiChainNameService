@@ -451,7 +451,6 @@ function manage_resolution_records(id, name_base64)
     $("#manage_resolution_records_fee_value_span").html("");
     $("#manage_resolution_records_target_select").html("");
 
-    // 查询解析目标的列表，并生成下拉选择框
     $("#my_modal_loading").modal('open');
     const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
     (async () => {
@@ -461,6 +460,7 @@ function manage_resolution_records(id, name_base64)
             let len      = 0;
             let i        = 0;
             let more     = true;
+            // 查询解析目标的列表，并生成下拉选择框
             while (more) {
                 resp = await rpc.get_table_rows({
                     json:  true,
@@ -471,6 +471,36 @@ function manage_resolution_records(id, name_base64)
                     key_type: 'i64',
                     lower_bound: lower_bd,
                     limit: 20,
+                    reverse: false,
+                    show_payer: false
+                });
+                len = resp.rows.length;
+                for (i = 0; i < len; i++) {
+                    $("#manage_resolution_records_target_select").append('<option value="' + resp.rows[i].target + '">' + resp.rows[i].target + '</option>');
+                }
+                more = resp.more;
+                if (more) {
+                    lower_bd = resp.next_key;
+                }
+            }
+            // 查询并显示已有的解析记录
+            let lower_bound = new BigNumber( id );
+            lower_bound     = lower_bound.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+            lower_bound     = lower_bound.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+            lower_bd        = lower_bound.toFixed();
+            len      = 0;
+            i        = 0;
+            more     = true;
+            while (more) {
+                resp = await rpc.get_table_rows({
+                    json:  true,
+                    code:  current_my_contract,
+                    scope: current_my_contract,
+                    table: 'resolves',
+                    index_position: 2,
+                    key_type: 'i128',
+                    lower_bound: lower_bd,
+                    limit: 2,
                     reverse: false,
                     show_payer: false
                 });
