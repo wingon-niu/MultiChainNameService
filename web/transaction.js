@@ -618,6 +618,35 @@ function do_manage_resolution_records_insert_or_update_one_resolv_record()
 
 function user_remove_one_resolv_record(name_base64, target_object)
 {
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
+
+    let meta_name = CryptoJS.enc.Base64.parse(name_base64).toString(CryptoJS.enc.Utf8);
+
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       current_my_contract,
+                    name:          'userrmrr',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        user:      anchor_session.auth.actor,
+                        meta_name: meta_name,
+                        target:    target_object
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
+    }
 }
 
 function direct_buy(id, name_base64, owner, selling_price)
