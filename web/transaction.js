@@ -484,6 +484,8 @@ function manage_resolution_records(id, name_base64)
                 }
             }
             // 查询并显示已有的解析记录
+            $("#div_list_of_resolv_records").html("");
+            let results     = '';
             let lower_bound = new BigNumber( id );
             lower_bound     = lower_bound.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
             lower_bound     = lower_bound.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
@@ -506,7 +508,16 @@ function manage_resolution_records(id, name_base64)
                 });
                 len = resp.rows.length;
                 for (i = 0; i < len; i++) {
-                    $("#manage_resolution_records_target_select").append('<option value="' + resp.rows[i].target + '">' + resp.rows[i].target + '</option>');
+                    if (resp.rows[i].id32_of_meta_name === id) {
+                        results = results + '<tr>';
+                        results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + resp.rows[i].target_object  + '</td>';
+                        results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + resp.rows[i].target_content + '</td>';
+                        results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;"><a href="##" onclick="user_remove_one_resolv_record(\'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\', \'' + resp.rows[i].target_object + '\');">' + $("#remove_one_resolv_record").html() + '</a></td>';
+                        results = results + '</tr>';
+                    }
+                    else {
+                        break;
+                    }
                 }
                 more = resp.more;
                 if (more) {
@@ -514,6 +525,12 @@ function manage_resolution_records(id, name_base64)
                 }
             }
             // 完成
+            if (results === '') {
+            }
+            else {
+                results = '<table width="100%" border="1">' + results + '</table>';
+            }
+            $("#div_list_of_resolv_records").html(results);
             $("#my_modal_loading").modal('close');
         } catch (e) {
             $("#my_modal_loading").modal('close');
@@ -597,6 +614,10 @@ function do_manage_resolution_records_insert_or_update_one_resolv_record()
     }
     else {
     }
+}
+
+function user_remove_one_resolv_record(name_base64, target_object)
+{
 }
 
 function direct_buy(id, name_base64, owner, selling_price)

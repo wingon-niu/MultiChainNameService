@@ -108,6 +108,7 @@ function change_lang(lang_type)
             $("#manage_resolution_records_fee_span").html($.i18n.prop('manage_resolution_records_fee_span'));
             $("#manage_resolution_records_query_fee").html($.i18n.prop('manage_resolution_records_query_fee'));
             $("#manage_resolution_records_insert_or_update_one_resolv_record").html($.i18n.prop('manage_resolution_records_insert_or_update_one_resolv_record'));
+            $("#remove_one_resolv_record").html($.i18n.prop('remove_one_resolv_record'));
 
             //
 
