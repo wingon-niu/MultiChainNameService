@@ -498,6 +498,77 @@ function manage_resolution_records(id, name_base64)
     });
 }
 
+function do_manage_resolution_records_query_fee()
+{
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            const resp = await rpc.get_table_rows({
+                json:  true,
+                code:  current_my_contract,
+                scope: current_my_contract,
+                table: 'globalparams',
+                index_position: 1,
+                key_type: 'i64',
+                lower_bound: 1,
+                upper_bound: 2,
+                limit: 1,
+                reverse: false,
+                show_payer: false
+            });
+            let len = resp.rows.length;
+            if (len === 1) {
+                $("#manage_resolution_records_fee_value_span").html(resp.rows[0].fee_of_one_resolv_record);
+            }
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
+}
+
+function do_manage_resolution_records_insert_or_update_one_resolv_record()
+{
+    let fee = $("#manage_resolution_records_fee_value_span").html();
+    if (fee.trim() === '') {
+        if (get_cookie('i18n_lang') === "zh") { alert("提示：请先查询所需费用。"); }
+        else                                  { alert("Prompt: Please query the required fee first."); }
+        return;
+    }
+
+    if(current_user_account === "") {
+        alert($("#please_login").html());
+        return;
+    }
+
+    // 发送交易
+    if (current_wallet === 'anchor') {
+        (async () => {
+            try {
+                const action = {
+                    account:       'eosio.token',
+                    name:          'transfer',
+                    authorization: [anchor_session.auth],
+                    data: {
+                        from:     anchor_session.auth.actor,
+                        to:       current_my_contract,
+                        quantity: fee,
+                        memo:     'Insert or update one resolv record: <meta_name_begin_flag>' + $("#manage_resolution_records_name_input").val() + '<meta_name_end_flag> ' + $("#manage_resolution_records_target_select").val() + ' ' + $("#manage_resolution_records_content_input").val();
+                    }
+                };
+                let result = await anchor_session.transact({action});
+                alert("OK");
+            } catch (e) {
+            }
+        })();
+    }
+    else {
+    }
+}
+
 function direct_buy(id, name_base64, owner, selling_price)
 {
     $("#names_of_market_dropdown_" + id).dropdown('close');

@@ -52,6 +52,14 @@ $(document).ready(function () {
         do_make_purchase_order();
     });
 
+    $("#manage_resolution_records_query_fee").on("click", function() {
+        do_manage_resolution_records_query_fee();
+    });
+
+    $("#manage_resolution_records_insert_or_update_one_resolv_record").on("click", function() {
+        do_manage_resolution_records_insert_or_update_one_resolv_record();
+    });
+
     //
 
     doc_scroll_top        = 0;
