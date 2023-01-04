@@ -110,6 +110,9 @@ function change_lang(lang_type)
             $("#manage_resolution_records_insert_or_update_one_resolv_record").html($.i18n.prop('manage_resolution_records_insert_or_update_one_resolv_record'));
             $("#remove_one_resolv_record").html($.i18n.prop('remove_one_resolv_record'));
             $(".class_resolution_records_span").html($.i18n.prop('class_resolution_records_span'));
+            $("#menu_query_resolution_record").html($.i18n.prop('menu_query_resolution_record'));
+            $("#menu_system_instructions").html($.i18n.prop('menu_system_instructions'));
+            $("#query_resolution_record_button").html($.i18n.prop('query_resolution_record_button'));
 
             //
 

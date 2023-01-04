@@ -104,6 +104,12 @@
               <a href="##" class="" id="names_of_my_bidding">Names of my bidding</a>
           </li>
           <li class="">
+              <a href="##" class="" id="menu_query_resolution_record">Query resolution record</a>
+          </li>
+          <li class="">
+              <a href="##" class="" id="menu_system_instructions">System instructions</a>
+          </li>
+          <li class="">
               <a href="##" class="" id="system_statistics_info">System statistics info</a>
           </li>
           <li class="">
@@ -298,6 +304,32 @@
         <div><span class="class_resolution_records_span">Resolution records: </span>
         </div>
         <div id="div_list_of_resolv_records">
+        </div>
+    </div>
+</div>
+
+
+
+<!--  查询解析记录  显示的模态框  -->
+<div class="am-modal am-modal-confirm" tabindex="-1" id="div_query_resolution_record">
+    <div class="am-modal-dialog" style="border: 2px solid blue;">
+        <div>
+            <span class="class_name_span">Name: </span>
+            <input type="text" class="am-modal-prompt-input" id="query_resolution_record_name_input" placeholder="" value="" />
+            <span class="class_target_span">Target: </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select id="query_resolution_record_target_select">
+                <option value="a">a</option>
+                <option value="b">b</option>
+                <option value="c">c</option>
+            </select><br />
+            <span class="class_content_span">Content: </span><br />
+            <span id="query_resolution_record_content_span"></span><br />
+            <div>
+              <a href="##"><span id="query_resolution_record_button">Query</span></a>
+            </div>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn my_close"  data-am-modal-cancel >Close</span>
         </div>
     </div>
 </div>
