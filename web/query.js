@@ -428,6 +428,16 @@ function query_resolution_record()
 
 function do_query_resolution_record()
 {
+    let meta_name = $("#query_resolution_record_name_input").val().trim();
+
+    if (meta_name === '') {
+        if (get_cookie('i18n_lang') === "zh") { alert("错误：名称不能为空。"); }
+        else                                  { alert("Error: Name can not be empty."); }
+        return;
+    }
+
+    let meta_name_sha256_hash = CryptoJS.SHA256(meta_name).toString();
+
 }
 
 function show_system_instructions()
