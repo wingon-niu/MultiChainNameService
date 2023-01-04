@@ -405,7 +405,7 @@ function query_resolution_record()
                     index_position: 2,
                     key_type: 'i64',
                     lower_bound: lower_bd,
-                    limit: 2,
+                    limit: 20,
                     reverse: false,
                     show_payer: false
                 });
