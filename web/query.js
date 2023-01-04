@@ -373,3 +373,15 @@ function show_names_of_my_bidding_dropdown(id)
 {
     $("#names_of_my_bidding_dropdown_" + id).dropdown('open');
 }
+
+function query_resolution_record()
+{
+}
+
+function do_query_resolution_record()
+{
+}
+
+function show_system_instructions()
+{
+}

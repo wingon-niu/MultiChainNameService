@@ -60,6 +60,20 @@ $(document).ready(function () {
         do_manage_resolution_records_insert_or_update_one_resolv_record();
     });
 
+    $("#menu_query_resolution_record").on("click", function() {
+        $("#menu_body").offCanvas('close');
+        query_resolution_record();
+    });
+
+    $("#query_resolution_record_button").on("click", function() {
+        do_query_resolution_record();
+    });
+
+    $("#menu_system_instructions").on("click", function() {
+        $("#menu_body").offCanvas('close');
+        show_system_instructions();
+    });
+
     //
 
     doc_scroll_top        = 0;
