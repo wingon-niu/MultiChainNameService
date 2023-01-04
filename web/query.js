@@ -376,6 +376,54 @@ function show_names_of_my_bidding_dropdown(id)
 
 function query_resolution_record()
 {
+    $("#query_resolution_record_name_input").val("");
+    $("#query_resolution_record_content_span").html("");
+    $("#query_resolution_record_target_select").html("");
+
+    $('#div_query_resolution_record').modal({
+        relatedTarget: this,
+        onCancel: function() {},
+        onConfirm: function() {}
+    });
+
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            var resp;
+            let lower_bd = '1';
+            let len      = 0;
+            let i        = 0;
+            let more     = true;
+            // 查询解析目标的列表，并生成下拉选择框
+            while (more) {
+                resp = await rpc.get_table_rows({
+                    json:  true,
+                    code:  current_my_contract,
+                    scope: current_my_contract,
+                    table: 'rslvtargets',
+                    index_position: 2,
+                    key_type: 'i64',
+                    lower_bound: lower_bd,
+                    limit: 2,
+                    reverse: false,
+                    show_payer: false
+                });
+                len = resp.rows.length;
+                for (i = 0; i < len; i++) {
+                    $("#query_resolution_record_target_select").append('<option value="' + resp.rows[i].target + '">' + resp.rows[i].target + '</option>');
+                }
+                more = resp.more;
+                if (more) {
+                    lower_bd = resp.next_key;
+                }
+            }
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
 }
 
 function do_query_resolution_record()
