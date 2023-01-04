@@ -438,6 +438,103 @@ function do_query_resolution_record()
 
     let meta_name_sha256_hash = CryptoJS.SHA256(meta_name).toString();
 
+    $("#my_modal_loading").modal('open');
+    const rpc = new eosjs_jsonrpc.JsonRpc(current_endpoint);
+    (async () => {
+        try {
+            let meta_name_existing = false;
+            let id32_of_meta_name  = 0;
+            var resp;
+            let lower_bd = meta_name_sha256_hash;
+            let len      = 0;
+            let more     = true;
+            // 查询名称
+            while (more) {
+                resp = await rpc.get_table_rows({
+                    json:  true,
+                    code:  current_my_contract,
+                    scope: current_my_contract,
+                    table: 'metanames',
+                    index_position: 6,
+                    key_type: 'sha256',
+                    lower_bound: lower_bd,
+                    limit: 1,
+                    reverse: false,
+                    show_payer: false
+                });
+                len = resp.rows.length;
+                if (len === 1) {
+                    if (resp.rows[0].meta_name === meta_name) {
+                        meta_name_existing = true;
+                        id32_of_meta_name  = resp.rows[0].id32;
+                        break;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                more = resp.more;
+                if (more) {
+                    lower_bd = resp.next_key;
+                }
+            }
+            if (meta_name_existing === false) {
+                if (get_cookie('i18n_lang') === "zh") { $("#query_resolution_record_content_span").html("查询的名称不存在。"); }
+                else                                  { $("#query_resolution_record_content_span").html("The name of the query does not exist."); }
+                $("#my_modal_loading").modal('close');
+                return;
+            }
+            // 查询并显示解析记录
+            let target_object = $("#query_resolution_record_target_select").val();
+            let resolution_record_existing = false;
+            let lower_bound = new BigNumber( id32_of_meta_name );
+            lower_bound     = lower_bound.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+            lower_bound     = lower_bound.multipliedBy(4294967296); // 4294967296 = 2的32次方，相当于左移32位。
+            let right_value = new BigNumber( my_eos_name_to_uint64t(target_object) );
+            lower_bound     = lower_bound.plus(right_value);
+            lower_bd        = lower_bound.toFixed();
+            len      = 0;
+            more     = true;
+            while (more) {
+                resp = await rpc.get_table_rows({
+                    json:  true,
+                    code:  current_my_contract,
+                    scope: current_my_contract,
+                    table: 'resolves',
+                    index_position: 2,
+                    key_type: 'i128',
+                    lower_bound: lower_bd,
+                    limit: 1,
+                    reverse: false,
+                    show_payer: false
+                });
+                len = resp.rows.length;
+                if (len === 1) {
+                    if (resp.rows[0].id32_of_meta_name === id32_of_meta_name && resp.rows[0].target_object === target_object) {
+                        resolution_record_existing = true;
+                        $("#query_resolution_record_content_span").html(my_escapeHTML(resp.rows[0].target_content));
+                        break;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                more = resp.more;
+                if (more) {
+                    lower_bd = resp.next_key;
+                }
+            }
+            if (resolution_record_existing === false) {
+                if (get_cookie('i18n_lang') === "zh") { $("#query_resolution_record_content_span").html("解析记录不存在。"); }
+                else                                  { $("#query_resolution_record_content_span").html("Resolution record does not exist."); }
+            }
+            // 完成
+            $("#my_modal_loading").modal('close');
+        } catch (e) {
+            $("#my_modal_loading").modal('close');
+            alert(e);
+        }
+    })();
 }
 
 function show_system_instructions()
