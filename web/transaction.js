@@ -511,7 +511,7 @@ function manage_resolution_records(id, name_base64)
                     if (resp.rows[i].id32_of_meta_name === id) {
                         results = results + '<tr>';
                         results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + resp.rows[i].target_object  + '</td>';
-                        results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + resp.rows[i].target_content + '</td>';
+                        results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;">' + my_escapeHTML(resp.rows[i].target_content) + '</td>';
                         results = results + '<td style="vertical-align:middle; text-align:center; word-wrap:break-word; word-break:break-all;"><a href="##" onclick="user_remove_one_resolv_record(\'' + CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(resp.rows[i].meta_name)) + '\', \'' + resp.rows[i].target_object + '\');">' + $("#remove_one_resolv_record").html() + '</a></td>';
                         results = results + '</tr>';
                     }
