@@ -539,4 +539,11 @@ function do_query_resolution_record()
 
 function show_system_instructions()
 {
+    let my_lang = get_cookie('i18n_lang');
+
+    $('#div_system_instructions_' + my_lang).modal({
+        relatedTarget: this,
+        onCancel: function() {},
+        onConfirm: function() {}
+    });
 }
