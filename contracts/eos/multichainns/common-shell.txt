@@ -88,7 +88,7 @@ cleoslocal -v push action multichainns setallfee '[]'                     -p mul
 ###### 注意：在名称最大长度为18字节的情况下，解析出来的内容允许的最大长度（单位：字节），最大可以设置为107字节。否则可能超出EOS的MEMO的长度限制255字节。
 cleoslocal -v push action multichainns crtedrtarget '["btc",          100,   68,     "",          "<>"]' -p multichainns@active      # 生产使用。
 cleoslocal -v push action multichainns crtedrtarget '["eth",          200,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
-cleoslocal -v push action multichainns crtedrtarget '["bnb",          400,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["bnb",          300,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
 cleoslocal -v push action multichainns crtedrtarget '["usdt",         500,   68,     "",          "<>"]' -p multichainns@active      # 生产使用。
 cleoslocal -v push action multichainns crtedrtarget '["ada",          600,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
 cleoslocal -v push action multichainns crtedrtarget '["sol",          700,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
