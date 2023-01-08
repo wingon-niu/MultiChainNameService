@@ -86,11 +86,44 @@ cleoslocal -v push action multichainns setallfee '[]'                     -p mul
 
 ###### 以下的命令是初始化解析目标的，可以多次执行。生产使用。
 ###### 注意：在名称最大长度为18字节的情况下，解析出来的内容允许的最大长度（单位：字节），最大可以设置为107字节。否则可能超出EOS的MEMO的长度限制255字节。
-cleoslocal -v push action multichainns crtedrtarget '["btc",      100,  68,     "",          "<>"]' -p multichainns@active      # 生产使用。
-cleoslocal -v push action multichainns crtedrtarget '["eth",      200,  84,     "",          "<>"]' -p multichainns@active      # 生产使用。
-cleoslocal -v push action multichainns crtedrtarget '["arweave",  300,  86,     "",          "<>"]' -p multichainns@active      # 生产使用。
-cleoslocal -v push action multichainns crtedrtarget '["ipvfour",  500,  30,     "",          "<>"]' -p multichainns@active      # 生产使用。
-cleoslocal -v push action multichainns crtedrtarget '["ipvsix",   600,  78,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["btc",          100,   68,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["eth",          200,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["bnb",          400,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["usdt",         500,   68,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["ada",          600,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["sol",          700,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["dot",          800,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["xrp",          900,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["shib",        1000,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["doge",        1100,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["ltc",         1200,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["etc",         1300,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["bch",         1500,   68,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["bsv",         1600,   68,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["arweave",     1700,   86,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["fil",         1800,   86,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["ipfs",        1900,   86,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["usdc",        2000,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["ht",          2100,   84,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["realname",    2200,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["gender",      2300,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["age",         2500,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["email",       2600,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["website",     2700,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["twitter",     2800,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["weibo",       2900,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["telegram",    3000,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["discord",     3100,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["qq",          3200,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["wechat",      3300,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["mobile",      3500,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["telephone",   3600,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["address",     3700,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["country",     3800,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["motto",       3900,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["description", 6000,  100,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["ipvfour",     6100,   30,     "",          "<>"]' -p multichainns@active      # 生产使用。
+cleoslocal -v push action multichainns crtedrtarget '["ipvsix",      6200,   78,     "",          "<>"]' -p multichainns@active      # 生产使用。
 
 ###### 以下的命令是初始化解析目标的，可以多次执行。测试使用。
 cleoslocal -v push action multichainns crtedrtarget '["btc",       10,   1,  "abc<>",          "<>"]' -p multichainns@active      # 测试使用。
